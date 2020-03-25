@@ -1,5 +1,7 @@
 package paranoia;
 
+import paranoia.core.Clone;
+import paranoia.core.SecurityClearance;
 import paranoia.core.cpu.Skill;
 import paranoia.core.cpu.Stat;
 import paranoia.services.hpdmc.ControlUnit;
@@ -17,14 +19,12 @@ public class Paranoia {
         //CerebrealCoretech coreTech = new CerebrealCoretech();
         //coreTech.setVisible(true);
 
-        Stat stat = Stat.BRAINS;
-        Skill skill = Skill.ALPHA_COMPLEX;
-        stat.setValue(3);
-        skill.setValue(3);
+        Clone clone = new Clone("SYD", "ULS", SecurityClearance.RED, 3);
 
         RollMessage message = new RollMessage(
-                stat, true,
-                skill, true,
+                clone,
+                Stat.BRAINS, true,
+                Skill.ALPHA_COMPLEX, true,
                 Collections.emptyList(),
                 Collections.emptyList(),
                 "Please roll with..."
