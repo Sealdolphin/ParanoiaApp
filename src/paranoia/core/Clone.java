@@ -1,11 +1,13 @@
 package paranoia.core;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import java.awt.Dimension;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Clone {
+public class Clone implements Cloneable {
     private static final String UNKNOWN = "UNKNOWN";
     private String name;
     private int treasonStars;

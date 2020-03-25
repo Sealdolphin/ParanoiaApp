@@ -1,6 +1,6 @@
 package paranoia.core;
 
-import java.awt.*;
+import java.awt.Color;
 
 public enum SecurityClearance {
     INFRARED(Color.BLACK),
