@@ -102,7 +102,7 @@ public class RollMessage extends JDialog {
             lbStat.setText(selected.getValue().toString());
             lbDiceValue.setText(calculateDiceValue().toString());
         });
-
+        //Set initial selection
         skills.setSelectedItem(defaultSkill);
         stats.setSelectedItem(defaultStat);
 
@@ -161,6 +161,7 @@ public class RollMessage extends JDialog {
 
         //Assemble layout
         pack();
+        setLocationRelativeTo(null);
         setResizable(false);
     }
 
