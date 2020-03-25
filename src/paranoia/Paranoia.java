@@ -7,7 +7,8 @@ import paranoia.core.cpu.Stat;
 import paranoia.services.hpdmc.ControlUnit;
 import paranoia.visuals.RollMessage;
 
-import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The game itself
@@ -20,13 +21,18 @@ public class Paranoia {
         //coreTech.setVisible(true);
 
         Clone clone = new Clone("SYD", "ULS", SecurityClearance.RED, 3);
+        Map<String, Integer> positive = new HashMap<>();
+        Map<String, Integer> negative = new HashMap<>();
+
+        positive.put("The GM likes your style", 1);
+        positive.put("Action card", 2);
+        negative.put("Injury", 2);
 
         RollMessage message = new RollMessage(
                 clone,
                 Stat.BRAINS, true,
                 Skill.ALPHA_COMPLEX, true,
-                Collections.emptyList(),
-                Collections.emptyList(),
+                positive, negative,
                 "Please roll with..."
         );
         message.setVisible(true);

@@ -15,7 +15,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.font.TextAttribute;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static javax.swing.GroupLayout.Alignment.BASELINE;
@@ -24,8 +23,8 @@ import static javax.swing.GroupLayout.Alignment.LEADING;
 
 public class RollMessage extends JDialog {
 
-    private List<Integer> positive;
-    private List<Integer> negative;
+    private Map<String, Integer> positive;
+    private Map<String, Integer> negative;
     private JComboBox<Skill> skills;
     private JComboBox<Stat> stats;
     private Clone clone;
@@ -36,8 +35,8 @@ public class RollMessage extends JDialog {
             Boolean allowChangeSkill,
             Skill defaultSkill,
             Boolean allowChangeStat,
-            List<Integer> positiveModifiers,
-            List<Integer> negativeModifiers,
+            Map<String, Integer> positiveModifiers,
+            Map<String, Integer> negativeModifiers,
             String message
     ) {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -56,17 +55,11 @@ public class RollMessage extends JDialog {
         Font boldFont15 = new Font("Arial", Font.BOLD, 15).deriveFont(fontAttributes);
 
         //Properties
+        JTextPane lbText = new JTextPane();
         JLabel lbMessage = new JLabel(message);
         lbMessage.setFont(boldFont30);
         JLabel lbDice = new JLabel("NODE");
         lbDice.setFont(boldFont15);
-
-        //Modifiers text
-        JTextPane lbText = new JTextPane();
-        lbText.setContentType("text/html");
-        lbText.setText(updateModifierText());
-        lbText.setEditable(false);
-        lbText.setOpaque(false);
         //Dice value
         JLabel lbDiceValue = new JLabel();
         lbDiceValue.setFont(boldFont20);
@@ -88,6 +81,7 @@ public class RollMessage extends JDialog {
             Skill selected = (Skill) skills.getSelectedItem();
             assert selected != null;
             lbSkill.setText(selected.getValue().toString());
+            lbText.setToolTipText(updateTooltipText());
             lbDiceValue.setText(calculateDiceValue().toString());
         });
         //Selected Stat
@@ -100,11 +94,18 @@ public class RollMessage extends JDialog {
             Stat selected = (Stat) stats.getSelectedItem();
             assert selected != null;
             lbStat.setText(selected.getValue().toString());
+            lbText.setToolTipText(updateTooltipText());
             lbDiceValue.setText(calculateDiceValue().toString());
         });
         //Set initial selection
         skills.setSelectedItem(defaultSkill);
         stats.setSelectedItem(defaultStat);
+        //Modifiers text
+        lbText.setContentType("text/html");
+        lbText.setText(updateModifierText());
+        lbText.setToolTipText(updateTooltipText());
+        lbText.setEditable(false);
+        lbText.setOpaque(false);
 
         //Set Layout
         GroupLayout root = new GroupLayout(getContentPane());
@@ -165,14 +166,45 @@ public class RollMessage extends JDialog {
         setResizable(false);
     }
 
-    private String updateModifierText() {
-        int positiveModifiers = positive.stream().mapToInt(Integer::intValue).sum();
-        int negativeModifiers = negative.stream().mapToInt(Integer::intValue).sum();
+    private String updateTooltipText() {
+        int skillPoint = clone.getSkills()[skills.getSelectedIndex()].getValue();
+        int statPoint = clone.getStats()[stats.getSelectedIndex()].getValue();
+
+        String positives = positive.entrySet().stream().map(entry ->
+            entry.getKey() + ": " + getHTMLColoredValue(entry.getValue()))
+            .reduce("", (total, str) -> total + str + "<br>");
+        String negatives = negative.entrySet().stream().map(entry ->
+            entry.getKey() + ": " + getHTMLColoredValue(-entry.getValue()))
+            .reduce("", (total, str) -> total + str + "<br>");
+
         return "<html> " +
             "<font face = \"Arial\" size=\"5\">" +
-            "<b>Positive</b> modifiers <font color=\"green\">" + positiveModifiers + "</font>" +
+            "<b>Skills and Stats:</b><br>" +
+            "Skill: " + getHTMLColoredValue(skillPoint) + "<br>" +
+            "Stat: " + getHTMLColoredValue(statPoint) +
+            "<br><b>Positive modifiers:</b><br>" +
+            positives +
+            "<b>Negative modifiers:</b><br>" +
+            negatives +
+            "<hr><font face = \"Arial\" size=\"5\">" +
+            "<b>Total: " + getHTMLColoredValue(calculateDiceValue()) +
+            "</b></html>";
+    }
+
+    private String getHTMLColoredValue(int value){
+        return "<font color=\"" +
+            ((value < 0) ? "red"  : "green") +
+            "\">" + value + "</font>";
+    }
+
+    private String updateModifierText() {
+        int positiveModifiers = positive.values().stream().mapToInt(Integer::intValue).sum();
+        int negativeModifiers = negative.values().stream().mapToInt(Integer::intValue).sum();
+        return "<html> " +
+            "<font face = \"Arial\" size=\"5\">" +
+            "<b>Positive</b> modifiers: " + getHTMLColoredValue(positiveModifiers) +
             "<br>" +
-            "<b>Negative</b> modifiers <font color=\"red\">" + negativeModifiers + "</font>" +
+            "<b>Negative</b> modifiers " + getHTMLColoredValue(-negativeModifiers) +
             "</font>" +
             "</html>";
     }
@@ -180,8 +212,8 @@ public class RollMessage extends JDialog {
     private Integer calculateDiceValue() {
          int skillPoint = clone.getSkills()[skills.getSelectedIndex()].getValue();
          int statPoint = clone.getStats()[stats.getSelectedIndex()].getValue();
-         int positiveModifiers = positive.stream().mapToInt(Integer::intValue).sum();
-         int negativeModifiers = negative.stream().mapToInt(Integer::intValue).sum();
+         int positiveModifiers = positive.values().stream().mapToInt(Integer::intValue).sum();
+         int negativeModifiers = negative.values().stream().mapToInt(Integer::intValue).sum();
          return skillPoint + statPoint + positiveModifiers - negativeModifiers;
     }
 }
