@@ -8,6 +8,8 @@ import paranoia.services.hpdmc.ControlUnit;
 import paranoia.visuals.CerebrealCoretech;
 import paranoia.visuals.RollMessage;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,5 +41,13 @@ public class Paranoia {
         message.setVisible(true);
     }
 
+    public static String getParanoiaResource(String path) throws IOException {
+        URL url = Paranoia.class.getClassLoader().getResource(path);
+        if(url != null) {
+            return url.getFile();
+        } else {
+            throw new IOException("Could not load file: " + path);
+        }
+    }
 
 }
