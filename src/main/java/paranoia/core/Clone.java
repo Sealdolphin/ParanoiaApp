@@ -2,11 +2,10 @@ package paranoia.core;
 
 import paranoia.core.cpu.Skill;
 import paranoia.core.cpu.Stat;
+import paranoia.visuals.clones.ClonePanel;
 
-import javax.swing.BoxLayout;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import java.awt.Dimension;
+import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -16,22 +15,32 @@ public class Clone implements Cloneable {
     private static final String UNKNOWN = "UNKNOWN";
     private String name;
     private int treasonStars;
+    private int injury;
     private String sectorName;
     private String gender;
     private SecurityClearance clearance;
     private int cloneID;
+    private BufferedImage profilePicture;
 
     private Map<String, String> info = new HashMap<>();
     private List<Skill> skills = Arrays.asList(Skill.values());
     private List<Stat> stats = Arrays.asList(Stat.values());
 
-    public Clone(String name, String sector, SecurityClearance clearance, int treasonStars) {
+    public Clone(
+        String name,
+        String sector,
+        SecurityClearance clearance,
+        int treasonStars,
+        BufferedImage image
+    ) {
         this.name = name;
         this.sectorName = sector;
         this.clearance = clearance;
         this.treasonStars = treasonStars;
+        this.injury = 0;
         this.gender = "MALE";
         this.cloneID = 1;
+        this.profilePicture = image;
         //TODO: do not need it
         setUpSkillsNStats();
 
@@ -74,13 +83,14 @@ public class Clone implements Cloneable {
     }
 
     public JPanel getVisual() {
-        JPanel visual = new JPanel();
-        visual.setLayout(new BoxLayout(visual, BoxLayout.PAGE_AXIS));
-        visual.setSize(new Dimension(200,200));
-        visual.add(new JLabel("/// CITIZEN: " + getFullName()));
-        info.forEach( (key, value) -> visual.add(new JLabel("/// " + key + ": " + value)));
-
-        return visual;
+        return new ClonePanel(
+            profilePicture,
+            getFullName(),
+            info,
+            clearance,
+            treasonStars,
+            injury
+        );
     }
 
     private String getFullName() {

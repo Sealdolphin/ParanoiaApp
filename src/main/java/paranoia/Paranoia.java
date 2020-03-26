@@ -8,6 +8,9 @@ import paranoia.services.hpdmc.ControlUnit;
 import paranoia.visuals.CerebrealCoretech;
 import paranoia.visuals.RollMessage;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
@@ -21,9 +24,18 @@ public class Paranoia {
     public static void main(String[] args) {
         ControlUnit cpu = new ControlUnit();
         CerebrealCoretech coreTech = new CerebrealCoretech();
+
+        BufferedImage img = null;
+        //Show Picture
+        try {
+            img = ImageIO.read(new File(getParanoiaResource("clones/clone0.png")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Clone clone = new Clone("SYD", "ULS", SecurityClearance.RED, 3, img);
+        coreTech.addClone(clone);
         coreTech.setVisible(true);
 
-        Clone clone = new Clone("SYD", "ULS", SecurityClearance.RED, 3);
         Map<String, Integer> positive = new HashMap<>();
         Map<String, Integer> negative = new HashMap<>();
 

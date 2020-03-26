@@ -25,6 +25,6 @@ public enum SecurityClearance {
     public Color getColor() { return color; }
     public Color getFontColor() {return fontColor; }
     public Color getBackgroundColor() { return backgroundColor; }
-    public int getShort() { return name().charAt(0); }
+    public String getShort() { return name().substring(0,1); }
 
 }
