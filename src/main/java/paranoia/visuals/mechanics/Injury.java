@@ -7,15 +7,21 @@ public class Injury extends ParanoiaMechanic {
     public static final int INJURY_COUNT = 3;
 
     public Injury() {
-        this(false);
+        this(false, 32);
     }
 
     public Injury(Boolean active) {
+        this(active, 32);
+    }
+
+    public Injury(Boolean active, int size) {
         super(
             active,
             "mechanics/injuryActive.png",
-            "mechanics/injury.png"
+            "mechanics/injury.png",
+            size
         );
+        setSize(64);
     }
 
     public static JPanel createInjuryPanel(int active) {

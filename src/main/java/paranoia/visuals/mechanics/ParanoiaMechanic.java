@@ -16,11 +16,13 @@ public abstract class ParanoiaMechanic extends ParanoiaImage {
 
     private Boolean active;
     private String imagePath;
+    private int size;
     String imagePathDisabled;
 
-    ParanoiaMechanic(Boolean active, String imagePath, String imagePathDisabled) {
+    ParanoiaMechanic(Boolean active, String imagePath, String imagePathDisabled, int size) {
         super(null);
-        setPreferredSize(new Dimension(64,64));
+        setPreferredSize(new Dimension(size,size));
+        this.size = size;
         this.active = active;
         this.imagePath = imagePath;
         this.imagePathDisabled = imagePathDisabled;
@@ -28,6 +30,11 @@ public abstract class ParanoiaMechanic extends ParanoiaImage {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+
+    public void setSize(int size){
+        this.size = size;
+        setPreferredSize(new Dimension(size, size));
     }
 
     public Boolean isActive() {

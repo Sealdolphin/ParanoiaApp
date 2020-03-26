@@ -8,14 +8,19 @@ public class Moxie extends ParanoiaMechanic {
     private Boolean disabled = false;
 
     public Moxie() {
-        this(true);
+        this(true, 32);
     }
 
     public Moxie(Boolean active) {
+        this(active, 32);
+    }
+
+    public Moxie(Boolean active, int size) {
         super(
             active,
             "mechanics/moxieFilled.png",
-            "mechanics/moxie.png"
+            "mechanics/moxie.png",
+            size
         );
     }
 
