@@ -39,6 +39,7 @@ public class Paranoia {
                 "Please roll with..."
         );
         message.setVisible(true);
+
     }
 
     public static String getParanoiaResource(String path) throws IOException {
