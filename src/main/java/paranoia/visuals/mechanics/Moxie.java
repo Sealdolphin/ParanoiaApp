@@ -5,19 +5,18 @@ import javax.swing.JPanel;
 public class Moxie extends ParanoiaMechanic {
 
     public static final int MOXIE_COUNT = 8;
-    private Boolean disabled;
+    private Boolean disabled = false;
 
     public Moxie() {
-        this(true, false);
+        this(true);
     }
 
-    public Moxie(Boolean active, Boolean disabled) {
+    public Moxie(Boolean active) {
         super(
             active,
             "mechanics/moxieFilled.png",
             "mechanics/moxie.png"
         );
-        this.disabled = disabled;
     }
 
     public void crossOut() {
@@ -32,11 +31,11 @@ public class Moxie extends ParanoiaMechanic {
     }
 
     public static JPanel createMoxiePanel(int active, int crossedOut) {
-        if(active + crossedOut > MOXIE_COUNT) return null;
+        if(active > MOXIE_COUNT) return null;
         JPanel moxiePanel = createMechanicPanel(active, Moxie.class, MOXIE_COUNT);
         //Cross out moxies
         for (int i = 0; i < crossedOut ; i++) {
-            Moxie m = (Moxie) moxiePanel.getComponent(MOXIE_COUNT - i);
+            Moxie m = (Moxie) moxiePanel.getComponent(MOXIE_COUNT - i - 1);
             m.crossOut();
         }
         return moxiePanel;

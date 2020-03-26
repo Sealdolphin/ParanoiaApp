@@ -10,11 +10,11 @@ public class Injury extends ParanoiaMechanic {
         this(false);
     }
 
-    Injury(Boolean active) {
+    public Injury(Boolean active) {
         super(
             active,
-            "mechanics/injury.png",
-            "mechanics/injuryActive.png"
+            "mechanics/injuryActive.png",
+            "mechanics/injury.png"
         );
     }
 

@@ -16,7 +16,7 @@ public abstract class ParanoiaMechanic extends ParanoiaImage {
 
     private Boolean active;
     private String imagePath;
-    private String imagePathDisabled;
+    String imagePathDisabled;
 
     ParanoiaMechanic(Boolean active, String imagePath, String imagePathDisabled) {
         super(null);
@@ -58,7 +58,8 @@ public abstract class ParanoiaMechanic extends ParanoiaImage {
         try {
             for (int i = 0; i < activated; i++) {
                 staticPanel.add(mechanic
-                    .newInstance());
+                    .getConstructor(Boolean.class)
+                    .newInstance(true));
             }
             for (int i = 0; i < count - activated; i++) {
                 staticPanel.add(mechanic
