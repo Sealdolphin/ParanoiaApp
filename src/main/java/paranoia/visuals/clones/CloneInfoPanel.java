@@ -9,10 +9,16 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.util.Map;
 
-public class CloneInfoPeanel extends JTextArea {
+public class CloneInfoPanel extends JTextArea {
 
-    public CloneInfoPeanel(Map<String, String> info, SecurityClearance clearance) {
-        setBackground(clearance.getColor());
+    private Boolean detailsPanel;
+
+    public CloneInfoPanel(Map<String, String> info, SecurityClearance clearance) {
+        this(info, clearance, false);
+    }
+
+    public CloneInfoPanel(Map<String, String> info, SecurityClearance clearance, Boolean details) {
+        setBackground(details ? clearance.getBackgroundColor() : clearance.getColor());
         setForeground(clearance.getFontColor());
         setEditable(false);
         setFont(new Font("Monospaced", Font.BOLD, 30));
@@ -22,10 +28,14 @@ public class CloneInfoPeanel extends JTextArea {
         setText(text);
         //Setting up some visuals
         setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
+        detailsPanel = details;
     }
 
     @Override
     public Dimension getPreferredSize() {
-        return new Dimension(super.getPreferredSize().width, 50);
+        if(detailsPanel)
+            return super.getPreferredSize();
+        else
+            return new Dimension(super.getPreferredSize().width, 50);
     }
 }
