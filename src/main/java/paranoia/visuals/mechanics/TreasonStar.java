@@ -7,11 +7,11 @@ public class TreasonStar extends ParanoiaMechanic {
     public static final int TREASON_STAR_COUNT = 5;
 
     public TreasonStar() {
-        this(true, 32);
+        this(true, 16);
     }
 
     public TreasonStar(Boolean active) {
-        this(active, 32);
+        this(active, 16);
     }
 
     public TreasonStar(Boolean active, int size) {

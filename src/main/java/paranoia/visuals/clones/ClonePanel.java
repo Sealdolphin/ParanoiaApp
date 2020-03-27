@@ -5,11 +5,9 @@ import paranoia.visuals.custom.ParanoiaImage;
 import paranoia.visuals.mechanics.Injury;
 import paranoia.visuals.mechanics.TreasonStar;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
+import javax.swing.GroupLayout;
 import javax.swing.JPanel;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.image.BufferedImage;
 import java.util.Collections;
 import java.util.HashMap;
@@ -37,7 +35,7 @@ public class ClonePanel extends JPanel {
         int injury
     ) {
         //Setup assets
-        BoxLayout layout = new BoxLayout(this, BoxLayout.PAGE_AXIS);
+        GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);
 
         //Info
@@ -50,25 +48,35 @@ public class ClonePanel extends JPanel {
         JPanel starPanel = TreasonStar.createTreasonStarPanel(treasonStars);
         JPanel injuryPanel = Injury.createInjuryPanel(injury);
         ParanoiaImage profilePicture = new ParanoiaImage(image, true);
-        profilePicture.setPreferredSize(new Dimension(96,96));
-
-        JPanel bottomPanel = new JPanel();
-        bottomPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
-        bottomPanel.add(profilePicture);
-        bottomPanel.add(injuryPanel);
-
-        //Alingment
-        if(starPanel != null)
-            starPanel.setAlignmentX(RIGHT_ALIGNMENT);
+        profilePicture.setMaximumSize(new Dimension(70,70));
+        profilePicture.setMinimumSize(new Dimension(70,70));
 
         //Set horizontal
-        add(namePanel);
-        add(Box.createRigidArea(new Dimension(0,5)));
-        add(starPanel);
-        add(Box.createRigidArea(new Dimension(0,5)));
-        add(detailsPanel);
-        add(Box.createRigidArea(new Dimension(0,20)));
-        add(bottomPanel);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addComponent(namePanel)
+            .addComponent(starPanel)
+            .addComponent(detailsPanel)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(profilePicture)
+                .addGap(30)
+                .addComponent(injuryPanel)
+            )
+        );
+        //Set vertical
+        layout.setVerticalGroup(
+            layout.createSequentialGroup()
+                .addComponent(namePanel)
+                .addComponent(starPanel)
+                .addComponent(detailsPanel)
+                .addGap(5)
+                .addGroup(
+                    layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(profilePicture)
+                        .addComponent(injuryPanel)
+                )
+        );
+
     }
 
 

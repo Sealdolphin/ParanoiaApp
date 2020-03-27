@@ -21,11 +21,11 @@ public class CloneInfoPanel extends JTextArea {
         setBackground(details ? clearance.getBackgroundColor() : clearance.getColor());
         setForeground(clearance.getFontColor());
         setEditable(false);
-        setFont(new Font("Monospaced", Font.BOLD, 30));
+        setFont(new Font("Arial", Font.BOLD, 15));
         String text = info.entrySet().stream().map( entry ->
             "///" + entry.getKey() + ": " + entry.getValue()
         ).reduce("", (zero, str) -> zero + str + System.lineSeparator());
-        setText(text);
+        setText(text.trim());
         //Setting up some visuals
         setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
         detailsPanel = details;
@@ -36,6 +36,6 @@ public class CloneInfoPanel extends JTextArea {
         if(detailsPanel)
             return super.getPreferredSize();
         else
-            return new Dimension(super.getPreferredSize().width, 50);
+            return new Dimension(super.getPreferredSize().width, 5);
     }
 }

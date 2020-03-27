@@ -7,7 +7,7 @@ import paranoia.visuals.clones.ClonePanel;
 import javax.swing.JPanel;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +22,7 @@ public class Clone implements Cloneable {
     private int cloneID;
     private BufferedImage profilePicture;
 
-    private Map<String, String> info = new HashMap<>();
+    private Map<String, String> info = new LinkedHashMap<>();
     private List<Skill> skills = Arrays.asList(Skill.values());
     private List<Stat> stats = Arrays.asList(Stat.values());
 
@@ -37,7 +37,7 @@ public class Clone implements Cloneable {
         this.sectorName = sector;
         this.clearance = clearance;
         this.treasonStars = treasonStars;
-        this.injury = 0;
+        this.injury = 2;
         this.gender = "MALE";
         this.cloneID = 1;
         this.profilePicture = image;
@@ -46,6 +46,7 @@ public class Clone implements Cloneable {
 
         info.put("CIVIC ZEAL", UNKNOWN);
         info.put("MARKET VALUE", UNKNOWN);
+        info.put("XP POINTS", "250");
     }
 
     private void setUpSkillsNStats() {

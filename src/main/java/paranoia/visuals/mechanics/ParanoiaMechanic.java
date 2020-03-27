@@ -60,18 +60,20 @@ public abstract class ParanoiaMechanic extends ParanoiaImage {
         int count
     ) {
         JPanel staticPanel = new JPanel();
-        staticPanel.setLayout(new FlowLayout());
+        staticPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
         if(count < activated) return staticPanel;
         try {
             for (int i = 0; i < activated; i++) {
                 staticPanel.add(mechanic
                     .getConstructor(Boolean.class)
-                    .newInstance(true));
+                    .newInstance(true)
+                );
             }
             for (int i = 0; i < count - activated; i++) {
                 staticPanel.add(mechanic
                     .getConstructor(Boolean.class)
-                    .newInstance(false));
+                    .newInstance(false)
+                );
             }
         } catch (IllegalAccessException | InstantiationException |
             NoSuchMethodException | InvocationTargetException e) {
