@@ -8,9 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.LayoutStyle;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.WindowConstants;
-import java.awt.FlowLayout;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,18 +86,7 @@ public class CerebrealCoretech extends JFrame {
     }
 
     private JScrollPane createTroubleShooterPanel() {
-        JPanel tsPanel = new JPanel();
-        FlowLayout panelLayout = new FlowLayout();
-        panelLayout.setHgap(25);
-        panelLayout.setVgap(15);
-        tsPanel.setBackground(PARANOIA_BACKGROUND);
-        tsPanel.setLayout(panelLayout);
-        troubleShooters.forEach( clone -> tsPanel.add(clone.getVisual()));
-        return new JScrollPane(
-            tsPanel,
-            ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER,
-            ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED
-        );
+        return new TroubleShooterPanel(troubleShooters).getScrollPane();
     }
 
     private JScrollPane createMissionPanel() {
