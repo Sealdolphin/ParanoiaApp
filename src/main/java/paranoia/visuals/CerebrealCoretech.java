@@ -3,20 +3,14 @@ package paranoia.visuals;
 import paranoia.core.Clone;
 import paranoia.core.cpu.Mission;
 
-import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.LayoutStyle;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.WindowConstants;
-import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -109,37 +103,7 @@ public class CerebrealCoretech extends JFrame {
     }
 
     private JScrollPane createMissionPanel() {
-        JPanel mPanel = new JPanel();
-        mPanel.setLayout(new BoxLayout(mPanel, BoxLayout.Y_AXIS));
-        JLabel lbTitle = new JLabel("Mission:");
-        lbTitle.setFont(new Font("Segoe", Font.BOLD, 25));
-        lbTitle.setAlignmentX(Component.LEFT_ALIGNMENT);
-        mPanel.add(lbTitle);
-
-        missionFeed.stream().filter(m -> m.getPriority().equals(Mission.MissionPriority.REQUIRED)).forEach(m  -> {
-            JComponent v = m.getVisual();
-            v.setAlignmentX(Component.LEFT_ALIGNMENT);
-            mPanel.add(v);
-        });
-
-        JLabel lbOpTitle = new JLabel("Secondary objectives:");
-        lbOpTitle.setFont(new Font("Segoe", Font.BOLD, 20));
-        mPanel.add(lbOpTitle);
-
-        missionFeed.stream().filter(m -> m.getPriority().equals(Mission.MissionPriority.OPTIONAL)).forEach(m  -> {
-            JComponent v = m.getVisual();
-            v.setAlignmentX(Component.LEFT_ALIGNMENT);
-            mPanel.add(v);
-        });
-
-        mPanel.setOpaque(false);
-        JScrollPane pane = new JScrollPane(
-            mPanel,
-            ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
-            ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER
-        );
-        pane.setPreferredSize(new Dimension(0,400));
-        return pane;
+        return new MissionPanel(missionFeed).getScrollPanel();
     }
 
     private void refreshLayout() {
