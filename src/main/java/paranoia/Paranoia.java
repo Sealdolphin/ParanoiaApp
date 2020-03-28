@@ -9,6 +9,7 @@ import paranoia.visuals.CerebrealCoretech;
 import paranoia.visuals.RollMessage;
 
 import javax.imageio.ImageIO;
+import java.awt.Frame;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -22,8 +23,6 @@ import java.util.Map;
 public class Paranoia {
 
     public static void main(String[] args) {
-        ControlUnit cpu = new ControlUnit();
-        CerebrealCoretech coreTech = new CerebrealCoretech();
 
         BufferedImage img = null;
         //Show Picture
@@ -32,8 +31,23 @@ public class Paranoia {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Clone clone = new Clone("SYD", "ULS", SecurityClearance.RED, 3, img);
+
+        Clone clone = new Clone("SYD", "ULS", SecurityClearance.RED, 4, img);
+        Clone self = new Clone("CARA", "RLY", SecurityClearance.YELLOW, 3, img);
+
+        ControlUnit cpu = new ControlUnit();
+        CerebrealCoretech coreTech = new CerebrealCoretech(self);
+
+        coreTech.setExtendedState(Frame.MAXIMIZED_BOTH);
+
         coreTech.addClone(clone);
+        coreTech.addClone(clone);
+        coreTech.addClone(clone);
+        coreTech.addClone(clone);
+        coreTech.addClone(clone);
+        coreTech.addClone(clone);
+
+        coreTech.setSelf(clone);
         coreTech.setVisible(true);
 
         Map<String, Integer> positive = new HashMap<>();
@@ -50,7 +64,8 @@ public class Paranoia {
                 positive, negative,
                 "Please roll with..."
         );
-        message.setVisible(true);
+
+        //message.setVisible(true);
 
     }
 
