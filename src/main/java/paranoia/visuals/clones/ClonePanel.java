@@ -45,8 +45,8 @@ public class ClonePanel extends JPanel {
         //Setup fields
         CloneInfoPanel namePanel = new CloneInfoPanel(nameMap, clearance);
         CloneInfoPanel detailsPanel = new CloneInfoPanel(details, clearance, true);
-        JPanel starPanel = TreasonStar.createTreasonStarPanel(treasonStars);
-        JPanel injuryPanel = Injury.createInjuryPanel(injury);
+        JPanel starPanel = TreasonStar.createTreasonStarPanel(treasonStars, 16);
+        JPanel injuryPanel = Injury.createInjuryPanel(injury, 40);
         ParanoiaImage profilePicture = new ParanoiaImage(image, true);
         profilePicture.setMaximumSize(new Dimension(70,70));
         profilePicture.setMinimumSize(new Dimension(70,70));

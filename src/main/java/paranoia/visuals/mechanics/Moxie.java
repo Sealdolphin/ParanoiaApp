@@ -8,14 +8,14 @@ public class Moxie extends ParanoiaMechanic {
     private Boolean disabled = false;
 
     public Moxie() {
-        this(true, 32);
+        this(true, DEFAULT_SIZE);
     }
 
     public Moxie(Boolean active) {
-        this(active, 32);
+        this(active, DEFAULT_SIZE);
     }
 
-    public Moxie(Boolean active, int size) {
+    public Moxie(Boolean active, Integer size) {
         super(
             active,
             "mechanics/moxieFilled.png",
@@ -36,8 +36,12 @@ public class Moxie extends ParanoiaMechanic {
     }
 
     public static JPanel createMoxiePanel(int active, int crossedOut) {
+        return createMoxiePanel(active, crossedOut, DEFAULT_SIZE);
+    }
+
+    public static JPanel createMoxiePanel(int active, int crossedOut, int size) {
         if(active > MOXIE_COUNT) return null;
-        JPanel moxiePanel = createMechanicPanel(active, Moxie.class, MOXIE_COUNT);
+        JPanel moxiePanel = createMechanicPanel(active, Moxie.class, MOXIE_COUNT, size);
         //Cross out moxies
         for (int i = 0; i < crossedOut ; i++) {
             Moxie m = (Moxie) moxiePanel.getComponent(MOXIE_COUNT - i - 1);

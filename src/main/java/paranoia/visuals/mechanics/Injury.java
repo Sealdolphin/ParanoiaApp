@@ -7,14 +7,14 @@ public class Injury extends ParanoiaMechanic {
     public static final int INJURY_COUNT = 3;
 
     public Injury() {
-        this(false, 40);
+        this(false, DEFAULT_SIZE);
     }
 
     public Injury(Boolean active) {
-        this(active, 40);
+        this(active, DEFAULT_SIZE);
     }
 
-    public Injury(Boolean active, int size) {
+    public Injury(Boolean active, Integer size) {
         super(
             active,
             "mechanics/injuryActive.png",
@@ -24,7 +24,11 @@ public class Injury extends ParanoiaMechanic {
     }
 
     public static JPanel createInjuryPanel(int active) {
+        return createInjuryPanel(active, DEFAULT_SIZE);
+    }
+
+    public static JPanel createInjuryPanel(int active, int size) {
         if( active > INJURY_COUNT) return null;
-        return createMechanicPanel(active, Injury.class, INJURY_COUNT);
+        return createMechanicPanel(active, Injury.class, INJURY_COUNT, size);
     }
 }

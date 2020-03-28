@@ -18,6 +18,7 @@ public abstract class ParanoiaMechanic extends ParanoiaImage {
     private String imagePath;
     private int size;
     String imagePathDisabled;
+    static final int DEFAULT_SIZE = 32;
 
     ParanoiaMechanic(Boolean active, String imagePath, String imagePathDisabled, int size) {
         super(null);
@@ -57,7 +58,8 @@ public abstract class ParanoiaMechanic extends ParanoiaImage {
     static <M extends ParanoiaMechanic> JPanel createMechanicPanel(
         int activated,
         Class<M> mechanic,
-        int count
+        int count,
+        int size
     ) {
         JPanel staticPanel = new JPanel();
         staticPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
@@ -65,14 +67,14 @@ public abstract class ParanoiaMechanic extends ParanoiaImage {
         try {
             for (int i = 0; i < activated; i++) {
                 staticPanel.add(mechanic
-                    .getConstructor(Boolean.class)
-                    .newInstance(true)
+                    .getConstructor(Boolean.class, Integer.class)
+                    .newInstance(true, size)
                 );
             }
             for (int i = 0; i < count - activated; i++) {
                 staticPanel.add(mechanic
-                    .getConstructor(Boolean.class)
-                    .newInstance(false)
+                    .getConstructor(Boolean.class, Integer.class)
+                    .newInstance(false, size)
                 );
             }
         } catch (IllegalAccessException | InstantiationException |
