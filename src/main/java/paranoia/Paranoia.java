@@ -23,7 +23,7 @@ import java.util.Map;
  */
 public class Paranoia {
 
-    public static final Color PARANOIA_BACKGROUND = new Color(161, 144, 132);
+    public static final Color PARANOIA_BACKGROUND = new Color(255, 255, 255);
 
     public static void main(String[] args) {
 

@@ -52,7 +52,7 @@ public class Clone implements Cloneable {
 
         info.put("CIVIC ZEAL", UNKNOWN);
         info.put("MARKET VALUE", UNKNOWN);
-        info.put("XP POINTS", "250");
+        info.put("XP POINTS", Integer.toString(xpPoints));
     }
 
     private void setUpSkillsNStats() {
