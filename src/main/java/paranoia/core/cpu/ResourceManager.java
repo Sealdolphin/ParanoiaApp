@@ -19,6 +19,9 @@ public abstract class ResourceManager {
         MOXIE,
         MOXIE_OFF,
         MOXIE_CROSSED,
+        MISSION,
+        MISSION_FAILED,
+        MISSION_COMPLETED
     }
 
     private static Map<ResourceIcon, BufferedImage> images = new HashMap<>();
@@ -31,6 +34,9 @@ public abstract class ResourceManager {
         images.put(ResourceIcon.MOXIE, ImageIO.read(new File(getParanoiaResource("mechanics/moxie.png"))));
         images.put(ResourceIcon.MOXIE_OFF, ImageIO.read(new File(getParanoiaResource("mechanics/moxieFilled.png"))));
         images.put(ResourceIcon.MOXIE_CROSSED, ImageIO.read(new File(getParanoiaResource("mechanics/moxieCrossed.png"))));
+        images.put(ResourceIcon.MISSION, ImageIO.read(new File(getParanoiaResource("mechanics/mission.png"))));
+        images.put(ResourceIcon.MISSION_COMPLETED, ImageIO.read(new File(getParanoiaResource("mechanics/missionComplete.png"))));
+        images.put(ResourceIcon.MISSION_FAILED, ImageIO.read(new File(getParanoiaResource("mechanics/missionFailed.png"))));
     }
 
     public static BufferedImage getResource(ResourceIcon key) {

@@ -19,7 +19,6 @@ public abstract class ParanoiaMechanic extends ParanoiaImage {
 
     ParanoiaMechanic(Boolean active, BufferedImage imgActive, BufferedImage imgDisabled, int size) {
         super(imgActive);
-        setBackground(PARANOIA_BACKGROUND);
         setPreferredSize(new Dimension(size,size));
         this.active = active;
         this.imgActive = imgActive;
