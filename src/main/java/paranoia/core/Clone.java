@@ -12,7 +12,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Clone implements Cloneable {
+public class Clone implements Cloneable, ICoreTechPart {
     private static final String UNKNOWN = "UNKNOWN";
     private String name;
     private int treasonStars;
@@ -47,7 +47,7 @@ public class Clone implements Cloneable {
         this.gender = "MALE";
         this.cloneID = 1;
         this.profilePicture = image;
-        //TODO: do not need it
+        //TODO: remove later
         setUpSkillsNStats();
 
         info.put("CIVIC ZEAL", UNKNOWN);
@@ -89,6 +89,7 @@ public class Clone implements Cloneable {
         return stats.toArray(new Stat[0]);
     }
 
+    @Override
     public JPanel getVisual() {
         return new ClonePanel(
             profilePicture,

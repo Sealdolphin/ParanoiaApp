@@ -54,18 +54,17 @@ public class CerebrealCoretech extends JFrame {
         //Setup visuals
         getContentPane().setBackground(PARANOIA_BACKGROUND);
 
-        Mission m0 = new Mission("Secure the package", "");
-        Mission m1 = new Mission("Disable terrorist bomb", "");
+        //TODO: remove later
+        Mission m0 = new Mission("Secure the package", "Quest given by the Computer. Reward: 500 XP points");
+        Mission m1 = new Mission("Disable terrorist bomb", "Quest given by the Computer. Reward: 300 XP points");
         Mission m2 = new Mission(
-            "Don't let the Commies take the package", "",
+            "Don't let the Commies take the package", "Quest for IntSec. Reward: Elevated security cake",
             Mission.MissionPriority.OPTIONAL
         );
         m0.complete();
         m2.fail();
         missionFeed.add(m0);
         missionFeed.add(m1);
-        missionFeed.add(m2);
-        missionFeed.add(m2);
         missionFeed.add(m2);
 
         //Assets

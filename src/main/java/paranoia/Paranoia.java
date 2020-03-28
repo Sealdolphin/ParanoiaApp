@@ -28,6 +28,7 @@ public class Paranoia {
 
     public static void main(String[] args) {
 
+        //TODO: remove later
         BufferedImage img0 = null;
         BufferedImage img1 = null;
         BufferedImage img2 = null;
@@ -35,7 +36,7 @@ public class Paranoia {
         BufferedImage img4 = null;
         //Show Picture
         try {
-            ResourceManager.loadResources();
+            ResourceManager.loadResources();    //not this!! This is important
             img0 = ImageIO.read(new File(getParanoiaResource("clones/clone0.png")));
             img1 = ImageIO.read(new File(getParanoiaResource("clones/clone1.png")));
             img2 = ImageIO.read(new File(getParanoiaResource("clones/clone2.png")));
@@ -53,17 +54,16 @@ public class Paranoia {
 
         ControlUnit cpu = new ControlUnit();
         CerebrealCoretech coreTech = new CerebrealCoretech(clone4);
-
         coreTech.setExtendedState(Frame.MAXIMIZED_BOTH);
 
         coreTech.addClone(clone0);
         coreTech.addClone(clone1);
         coreTech.addClone(clone2);
         coreTech.addClone(clone3);
-
         coreTech.setSelf(clone4);
         coreTech.setVisible(true);
 
+        //TODO: remove later
         Map<String, Integer> positive = new HashMap<>();
         Map<String, Integer> negative = new HashMap<>();
 

@@ -77,6 +77,7 @@ public class Mission implements ICoreTechPart {
     @Override
     public JPanel getVisual() {
         JTextArea missionText = new JTextArea(title);
+        missionText.setToolTipText(description);
         missionText.setEditable(false);
         missionText.setForeground(
             failed ? new Color(185,0,0) : new Color(0,0,0)
