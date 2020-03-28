@@ -41,9 +41,9 @@ public class Clone implements Cloneable {
         this.sectorName = sector;
         this.clearance = clearance;
         this.treasonStars = treasonStars;
-        this.moxie = 1;
-        this.crossedOutMoxie = 3;
-        this.injury = 2;
+        this.moxie = 7;
+        this.crossedOutMoxie = 0;
+        this.injury = 0;
         this.gender = "MALE";
         this.cloneID = 1;
         this.profilePicture = image;
