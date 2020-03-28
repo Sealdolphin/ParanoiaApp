@@ -2,6 +2,7 @@ package paranoia;
 
 import paranoia.core.Clone;
 import paranoia.core.SecurityClearance;
+import paranoia.core.cpu.ResourceManager;
 import paranoia.core.cpu.Skill;
 import paranoia.core.cpu.Stat;
 import paranoia.services.hpdmc.ControlUnit;
@@ -34,6 +35,7 @@ public class Paranoia {
         BufferedImage img4 = null;
         //Show Picture
         try {
+            ResourceManager.loadResources();
             img0 = ImageIO.read(new File(getParanoiaResource("clones/clone0.png")));
             img1 = ImageIO.read(new File(getParanoiaResource("clones/clone1.png")));
             img2 = ImageIO.read(new File(getParanoiaResource("clones/clone2.png")));

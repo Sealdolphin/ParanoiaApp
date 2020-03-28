@@ -1,24 +1,18 @@
 package paranoia.visuals.mechanics;
 
+import paranoia.core.cpu.ResourceManager;
+
 import javax.swing.JPanel;
 
 public class TreasonStar extends ParanoiaMechanic {
 
     public static final int TREASON_STAR_COUNT = 5;
 
-    public TreasonStar() {
-        this(true, DEFAULT_SIZE);
-    }
-
-    public TreasonStar(Boolean active) {
-        this(active, DEFAULT_SIZE);
-    }
-
     public TreasonStar(Boolean active, Integer size) {
         super(
             active,
-            "mechanics/treasonStar.png",
-            "mechanics/treasonStarEmpty.png",
+            ResourceManager.getResource(ResourceManager.ResourceIcon.TREASON_STAR),
+            ResourceManager.getResource(ResourceManager.ResourceIcon.TREASON_STAR_OFF),
             size
         );
     }
