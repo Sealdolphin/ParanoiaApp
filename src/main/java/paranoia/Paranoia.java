@@ -8,6 +8,7 @@ import paranoia.core.cpu.Stat;
 import paranoia.services.hpdmc.ControlUnit;
 import paranoia.visuals.CerebrealCoretech;
 import paranoia.visuals.RollMessage;
+import paranoia.visuals.rnd.ParanoiaCard;
 
 import javax.imageio.ImageIO;
 import java.awt.Color;
@@ -37,6 +38,8 @@ public class Paranoia {
         //Show Picture
         try {
             ResourceManager.loadResources();    //not this!! This is important
+            ParanoiaCard.loadAllCardAssets();
+
             img0 = ImageIO.read(new File(getParanoiaResource("clones/clone0.png")));
             img1 = ImageIO.read(new File(getParanoiaResource("clones/clone1.png")));
             img2 = ImageIO.read(new File(getParanoiaResource("clones/clone2.png")));
