@@ -1,4 +1,4 @@
-package paranoia.visuals;
+package paranoia.visuals.panels;
 
 import paranoia.core.cpu.Mission;
 

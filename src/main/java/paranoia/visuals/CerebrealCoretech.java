@@ -2,6 +2,8 @@ package paranoia.visuals;
 
 import paranoia.core.Clone;
 import paranoia.core.cpu.Mission;
+import paranoia.visuals.panels.MissionPanel;
+import paranoia.visuals.panels.TroubleShooterPanel;
 
 import javax.swing.GroupLayout;
 import javax.swing.JFrame;
