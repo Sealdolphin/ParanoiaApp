@@ -15,6 +15,8 @@ import java.awt.image.BufferedImage;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static paranoia.Paranoia.PARANOIA_BACKGROUND;
+
 public class SelfPanel extends JPanel {
 
     public SelfPanel(
@@ -29,6 +31,7 @@ public class SelfPanel extends JPanel {
     ){
         GroupLayout layout = new GroupLayout(this);
         setLayout(layout);
+        setBackground(PARANOIA_BACKGROUND);
 
         Map<String, String> infoPanel = new LinkedHashMap<>();
         infoPanel.put("CITIZEN",fullName);

@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
+import static paranoia.Paranoia.PARANOIA_BACKGROUND;
 import static paranoia.Paranoia.getParanoiaResource;
 
 public abstract class ParanoiaMechanic extends ParanoiaImage {
@@ -22,6 +23,7 @@ public abstract class ParanoiaMechanic extends ParanoiaImage {
 
     ParanoiaMechanic(Boolean active, String imagePath, String imagePathDisabled, int size) {
         super(null);
+        setBackground(PARANOIA_BACKGROUND);
         setPreferredSize(new Dimension(size,size));
         this.size = size;
         this.active = active;
@@ -62,6 +64,7 @@ public abstract class ParanoiaMechanic extends ParanoiaImage {
         int size
     ) {
         JPanel staticPanel = new JPanel();
+        staticPanel.setBackground(PARANOIA_BACKGROUND);
         staticPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
         if(count < activated) return staticPanel;
         try {

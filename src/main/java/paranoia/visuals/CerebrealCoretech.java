@@ -10,10 +10,11 @@ import javax.swing.JScrollPane;
 import javax.swing.LayoutStyle;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.WindowConstants;
-import java.awt.Color;
 import java.awt.FlowLayout;
 import java.util.ArrayList;
 import java.util.List;
+
+import static paranoia.Paranoia.PARANOIA_BACKGROUND;
 
 public class CerebrealCoretech extends JFrame {
 
@@ -23,6 +24,8 @@ public class CerebrealCoretech extends JFrame {
 
     private JScrollPane troubleShooterPanel;
     private JPanel selfPanel;
+
+    private Boolean isFullScreen = false;
 
     public CerebrealCoretech(Clone self) {
         this(self, new ArrayList<>());
@@ -41,7 +44,7 @@ public class CerebrealCoretech extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("Paranoia");
         //Setup visuals
-        getContentPane().setBackground(new Color(59, 59, 59));
+        getContentPane().setBackground(PARANOIA_BACKGROUND);
 
         //Assets
         refreshLayout();
@@ -64,11 +67,17 @@ public class CerebrealCoretech extends JFrame {
         troubleShooterPanel = newScrollPane;
     }
 
+    public void setIsFullScreen(Boolean fullScreen){
+        this.isFullScreen = fullScreen;
+        setUndecorated(isFullScreen);
+    }
+
     private JScrollPane createTroubleShooterPanel() {
         JPanel tsPanel = new JPanel();
         FlowLayout panelLayout = new FlowLayout();
         panelLayout.setHgap(25);
         panelLayout.setVgap(15);
+        tsPanel.setBackground(PARANOIA_BACKGROUND);
         tsPanel.setLayout(panelLayout);
         troubleShooters.forEach( clone -> tsPanel.add(clone.getVisual()));
         return new JScrollPane(

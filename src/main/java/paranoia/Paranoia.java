@@ -9,6 +9,7 @@ import paranoia.visuals.CerebrealCoretech;
 import paranoia.visuals.RollMessage;
 
 import javax.imageio.ImageIO;
+import java.awt.Color;
 import java.awt.Frame;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -21,6 +22,8 @@ import java.util.Map;
  * The game itself
  */
 public class Paranoia {
+
+    public static final Color PARANOIA_BACKGROUND = new Color(161, 144, 132);
 
     public static void main(String[] args) {
 

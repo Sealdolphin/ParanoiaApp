@@ -13,6 +13,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import static paranoia.Paranoia.PARANOIA_BACKGROUND;
+
 public class ClonePanel extends JPanel {
 
     public ClonePanel(BufferedImage image) {
@@ -37,6 +39,8 @@ public class ClonePanel extends JPanel {
         //Setup assets
         GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);
+
+        setBackground(PARANOIA_BACKGROUND);
 
         //Info
         Map<String, String> nameMap = new HashMap<>();
