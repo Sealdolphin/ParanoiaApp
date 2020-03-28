@@ -3,6 +3,7 @@ package paranoia.core;
 import paranoia.core.cpu.Skill;
 import paranoia.core.cpu.Stat;
 import paranoia.visuals.clones.ClonePanel;
+import paranoia.visuals.clones.SelfPanel;
 
 import javax.swing.JPanel;
 import java.awt.image.BufferedImage;
@@ -15,7 +16,10 @@ public class Clone implements Cloneable {
     private static final String UNKNOWN = "UNKNOWN";
     private String name;
     private int treasonStars;
+    private int moxie;
+    private int crossedOutMoxie;
     private int injury;
+    private int xpPoints;
     private String sectorName;
     private String gender;
     private SecurityClearance clearance;
@@ -37,6 +41,8 @@ public class Clone implements Cloneable {
         this.sectorName = sector;
         this.clearance = clearance;
         this.treasonStars = treasonStars;
+        this.moxie = 1;
+        this.crossedOutMoxie = 3;
         this.injury = 2;
         this.gender = "MALE";
         this.cloneID = 1;
@@ -94,7 +100,27 @@ public class Clone implements Cloneable {
         );
     }
 
+    public JPanel getSelfVisual() {
+        return new SelfPanel(
+            profilePicture,
+            getFullName(),
+            clearance,
+            xpPoints,
+            treasonStars,
+            injury,
+            moxie,
+            crossedOutMoxie
+        );
+    }
+
     private String getFullName() {
         return name + "-" + clearance.getShort() + "-" + sectorName + "-" + cloneID;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        Clone c = (Clone) super.clone();
+        c.cloneID = c.cloneID + 1;
+        return c;
     }
 }
