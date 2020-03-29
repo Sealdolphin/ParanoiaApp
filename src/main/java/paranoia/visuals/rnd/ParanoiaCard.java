@@ -13,11 +13,11 @@ import static paranoia.Paranoia.getParanoiaResource;
 
 public abstract class ParanoiaCard extends ParanoiaImage {
 
-    public static final int ACTION_CARDS = 4;
-    public static final int MUTATION_CARDS = 0;
-    public static final int EQUIPMENT_CARDS = 4;
-    public static final int SECRET_SOCIETY_CARDS = 0;
-    public static final int BONUS_DUTY_CARDS = 0;
+    public static final int ACTION_CARDS = 48;
+    public static final int MUTATION_CARDS = 16;
+    public static final int EQUIPMENT_CARDS = 22;
+    public static final int SECRET_SOCIETY_CARDS = 14;
+    public static final int BONUS_DUTY_CARDS = 6;
 
     private static List<BufferedImage> actionCards = new ArrayList<>();
     private static List<BufferedImage> equipmentCards = new ArrayList<>();
@@ -28,6 +28,11 @@ public abstract class ParanoiaCard extends ParanoiaImage {
     private static void loadActionCards() throws IOException {
         for (int i = 0; i < ACTION_CARDS; i++) {
             actionCards.add(i, ImageIO.read(new File(getParanoiaResource("cards/action/a" + i + ".png"))));
+        }
+    }
+    private static void loadEquipmentCards() throws IOException {
+        for (int i = 0; i < EQUIPMENT_CARDS; i++) {
+            equipmentCards.add(i, ImageIO.read(new File(getParanoiaResource("cards/equipment/eq" + i + ".png"))));
         }
     }
     private static void loadMutationCards() throws IOException {
@@ -45,17 +50,12 @@ public abstract class ParanoiaCard extends ParanoiaImage {
             secretSocietyCards.add(i, ImageIO.read(new File(getParanoiaResource("cards/secret_society/ss" + i + ".png"))));
         }
     }
-    private static void loadEquipmentCards() throws IOException {
-        for (int i = 0; i < EQUIPMENT_CARDS; i++) {
-            equipmentCards.add(i, ImageIO.read(new File(getParanoiaResource("cards/equipment/eq" + i + ".png"))));
-        }
-    }
 
     public static void loadAllCardAssets() throws IOException {
         loadActionCards();
-        loadBonusDutyCards();
         loadEquipmentCards();
         loadMutationCards();
+        loadBonusDutyCards();
         loadSecretSocietyCards();
     }
 
@@ -68,10 +68,12 @@ public abstract class ParanoiaCard extends ParanoiaImage {
     }
 
     private CardType type;
+    private int actionOrder;
 
-    ParanoiaCard(CardType type, int id) {
+    ParanoiaCard(CardType type, int id, int actionOrder) {
         super(getCardImage(type, id), true);
         this.type = type;
+        this.actionOrder = actionOrder;
     }
 
     private static BufferedImage getCardImage(CardType type, int id) {

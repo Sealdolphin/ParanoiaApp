@@ -4,12 +4,10 @@ public class ActionCard extends ParanoiaCard {
 
     private Boolean reaction;
     private Boolean action;
-    private int actionOrder;
 
     public ActionCard(int id, Boolean action, Boolean reaction, int actionOrder) {
-        super(CardType.ACTION, id);
+        super(CardType.ACTION, id, actionOrder);
         this.action = action;
         this.reaction = reaction;
-        this.actionOrder = actionOrder;
     }
 }
