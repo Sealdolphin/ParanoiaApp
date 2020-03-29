@@ -74,7 +74,7 @@ public abstract class ParanoiaCard extends ParanoiaImage {
 
     ParanoiaCard(CardType type, int id, int actionOrder) {
         super(getCardImage(type, id), true);
-        setPreferredSize(new Dimension(500,650));
+        setPreferredSize(new Dimension(300,450));
         this.type = type;
         this.actionOrder = actionOrder;
         this.id = id;
@@ -84,6 +84,10 @@ public abstract class ParanoiaCard extends ParanoiaImage {
 
     public int getId() {
         return id;
+    }
+
+    public CardType getType(){
+        return type;
     }
 
     private static BufferedImage getCardImage(CardType type, int id) {

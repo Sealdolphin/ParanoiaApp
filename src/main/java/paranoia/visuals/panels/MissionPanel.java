@@ -48,7 +48,7 @@ public class MissionPanel extends JPanel {
             ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
             ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER
         );
-        pane.setPreferredSize(new Dimension(0,400));
+        pane.setPreferredSize(new Dimension(0,500));
         return pane;
     }
 }

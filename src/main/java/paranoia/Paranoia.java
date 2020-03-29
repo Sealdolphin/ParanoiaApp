@@ -12,10 +12,7 @@ import paranoia.visuals.RollMessage;
 import paranoia.visuals.rnd.ParanoiaCard;
 
 import javax.imageio.ImageIO;
-import javax.swing.JFrame;
-import javax.swing.WindowConstants;
 import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -23,11 +20,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
-
-import static paranoia.visuals.rnd.ParanoiaCard.ACTION_CARDS;
-import static paranoia.visuals.rnd.ParanoiaCard.EQUIPMENT_CARDS;
-import static paranoia.visuals.rnd.ParanoiaCard.MUTATION_CARDS;
 
 /**
  * The game itself
@@ -65,6 +57,15 @@ public class Paranoia {
         Clone clone3 = new Clone("JOE", "RTE", SecurityClearance.BLUE, 1, img3);
         Clone clone4 = new Clone("CARA", "RLY", SecurityClearance.YELLOW, 3, img4);
 
+        clone4.addCard(Computer.getActionCard(3));
+        clone4.addCard(Computer.getActionCard(7));
+        clone4.addCard(Computer.getActionCard(11));
+        clone4.addCard(Computer.getActionCard(25));
+        clone4.addCard(Computer.getEquipmentCard(0));
+        clone4.addCard(Computer.getEquipmentCard(6));
+        clone4.addCard(Computer.getEquipmentCard(18));
+        clone4.addCard(Computer.getEquipmentCard(3));
+
         ControlUnit cpu = new ControlUnit();
         CerebrealCoretech coreTech = new CerebrealCoretech(clone4);
         coreTech.setExtendedState(Frame.MAXIMIZED_BOTH);
@@ -74,26 +75,7 @@ public class Paranoia {
         coreTech.addClone(clone2);
         coreTech.addClone(clone3);
         coreTech.setSelf(clone4);
-        //coreTech.setVisible(true);
-
-        JFrame cardFrame = new JFrame();
-        cardFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        int a = new Random().nextInt(ACTION_CARDS);
-        int e = new Random().nextInt(EQUIPMENT_CARDS);
-        int m = new Random().nextInt(MUTATION_CARDS);
-        cardFrame.getContentPane().removeAll();
-        cardFrame.setLayout(new FlowLayout());
-        ParanoiaCard ac = Computer.getActionCard(a);
-        ParanoiaCard ec = Computer.getEquipmentCard(e);
-        ParanoiaCard mc = Computer.getMutationCard(m);
-        System.out.println(ac.toString());
-        System.out.println(ec.toString());
-        System.out.println(mc.toString());
-        cardFrame.add(ac);
-        cardFrame.add(ec);
-        cardFrame.add(mc);
-        cardFrame.pack();
-        cardFrame.setVisible(true);
+        coreTech.setVisible(true);
 
         //TODO: remove later
         Map<String, Integer> positive = new HashMap<>();
