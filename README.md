@@ -2,10 +2,10 @@
 An interface for your cerebral coretechs. All hail the Computer.
 
 # How does it work?
-coming soon...
+Read the manual in the Alphapedia.
 
 # How can I communicate with Friend Computer?
-coming soon...
+Communication is easy. Your Friend Computer can see and hear everything you do.
 
 # Is there a panel for Gamemasters?
 That is above your security clearance, citizen!
