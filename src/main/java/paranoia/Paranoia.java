@@ -2,10 +2,10 @@ package paranoia;
 
 import paranoia.core.Clone;
 import paranoia.core.SecurityClearance;
-import paranoia.core.cpu.ResourceManager;
 import paranoia.core.cpu.Skill;
 import paranoia.core.cpu.Stat;
 import paranoia.services.hpdmc.ControlUnit;
+import paranoia.services.hpdmc.ResourceManager;
 import paranoia.visuals.CerebrealCoretech;
 import paranoia.visuals.RollMessage;
 import paranoia.visuals.rnd.ParanoiaCard;

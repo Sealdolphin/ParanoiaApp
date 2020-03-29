@@ -1,4 +1,4 @@
-package paranoia.core.cpu;
+package paranoia.services.hpdmc;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
