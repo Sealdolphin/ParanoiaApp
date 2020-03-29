@@ -1,6 +1,7 @@
 package paranoia;
 
 import paranoia.core.Clone;
+import paranoia.core.Computer;
 import paranoia.core.SecurityClearance;
 import paranoia.core.cpu.Skill;
 import paranoia.core.cpu.Stat;
@@ -39,6 +40,7 @@ public class Paranoia {
         try {
             ResourceManager.loadResources();    //not this!! This is important
             ParanoiaCard.loadAllCardAssets();
+            Computer.initDatabase();
 
             img0 = ImageIO.read(new File(getParanoiaResource("clones/clone0.png")));
             img1 = ImageIO.read(new File(getParanoiaResource("clones/clone1.png")));

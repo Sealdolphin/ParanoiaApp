@@ -67,6 +67,7 @@ public abstract class ParanoiaCard extends ParanoiaImage {
         SECRET_SOCIETY
     }
 
+    private int id;
     private CardType type;
     private int actionOrder;
 
@@ -74,6 +75,11 @@ public abstract class ParanoiaCard extends ParanoiaImage {
         super(getCardImage(type, id), true);
         this.type = type;
         this.actionOrder = actionOrder;
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
     }
 
     private static BufferedImage getCardImage(CardType type, int id) {

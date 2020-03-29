@@ -4,6 +4,7 @@ import paranoia.core.cpu.Skill;
 import paranoia.core.cpu.Stat;
 import paranoia.visuals.rnd.ActionCard;
 import paranoia.visuals.rnd.EquipmentCard;
+import paranoia.visuals.rnd.MutationCard;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -52,7 +53,7 @@ public class CardDecoder {
      * reaction 1 if the card is a reaction card (0 otherwise)
      * @return Action card with parameters
      */
-    public LinkedList<ActionCard> decodeActionCard() {
+    public LinkedList<ActionCard> decodeActionCards() {
         LinkedList<ActionCard> list = new LinkedList<>();
 
         for (ParanoiaRow<Integer> record : data.records){
@@ -74,7 +75,7 @@ public class CardDecoder {
      * size the item's size (0 - 3)
      * @return Equipment card with parameters
      */
-    public LinkedList<EquipmentCard> decodeEquipmentCard() {
+    public LinkedList<EquipmentCard> decodeEquipmentCards() {
 
         LinkedList<EquipmentCard> list = new LinkedList<>();
 
@@ -96,6 +97,20 @@ public class CardDecoder {
                 list.add(new EquipmentCard(id, order, skillModifier, level, eqSize));
             }
         }
+        return list;
+    }
+
+    public LinkedList<MutationCard> decodeMutationCards() {
+
+        LinkedList<MutationCard> list = new LinkedList<>();
+
+        for (ParanoiaRow<Integer> record : data.records){
+            int id = record.get(0);
+            int order = record.get(1);
+
+            list.add(new MutationCard(id, order));
+        }
+
         return list;
     }
 
