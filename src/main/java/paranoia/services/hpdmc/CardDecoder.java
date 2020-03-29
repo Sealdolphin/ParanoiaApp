@@ -14,11 +14,18 @@ import java.util.LinkedList;
 
 import static paranoia.Paranoia.getParanoiaResource;
 
-public abstract class CardDecoder {
+public class CardDecoder {
 
-    public static void readDatabase(String filePath) throws IOException {
+    private String filePath;
+    private ParanoiaMap<Integer> data;
+
+    public CardDecoder(String filePath){
+        this.filePath = filePath;
+    }
+
+    public void readDatabase() throws IOException {
         File database = new File(getParanoiaResource(filePath));
-        ParanoiaMap<Integer> data = new ParanoiaMap<>();
+        data = new ParanoiaMap<>();
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(database)));
 
@@ -36,50 +43,60 @@ public abstract class CardDecoder {
         }
 
         reader.close();
-
     }
 
     /**
      * Decodes an action card from the database
-     * @param id the card's ID
-     * @param order the action order (0 - 11). If bigger than 0, then it is considered an action card
-     * @param reaction 1 if the card is a reaction card (0 otherwise)
+     * id the card's ID
+     * order the action order (0 - 11). If bigger than 0, then it is considered an action card
+     * reaction 1 if the card is a reaction card (0 otherwise)
      * @return Action card with parameters
      */
-    public static ActionCard decodeActionCard(
-        int id,
-        int order,
-        int reaction
-    ) {
-        return new ActionCard(id, (order > 0), (reaction == 1), order);
+    public LinkedList<ActionCard> decodeActionCard() {
+        LinkedList<ActionCard> list = new LinkedList<>();
+
+        for (ParanoiaRow<Integer> record : data.records){
+            int id = record.get(0);
+            int order = record.get(1);
+            int reaction = record.get(2);
+            list.add(new ActionCard(id, (order > 0), (reaction == 1), order));
+        }
+
+        return list;
     }
 
     /**
      * Decodes an equipment card from the database
-     * @param id the card's ID
-     * @param order the action order it gives in addition
-     * @param modifier the action order modifier (0 - 3: stat bonus, 4+: skill bonus)
-     * @param level the item level
-     * @param size the item's size (0 - 3)
+     * id the card's ID
+     * order the action order it gives in addition
+     * modifier the action order modifier (0 - 3: stat bonus, 4+: skill bonus)
+     * level the item level
+     * size the item's size (0 - 3)
      * @return Equipment card with parameters
      */
-    public static EquipmentCard decodeEquipmentCard(
-        int id,
-        int order,
-        int modifier,
-        int level,
-        int size
-    ) {
-        EquipmentCard.EquipmentSize eqSize =
-            EquipmentCard.EquipmentSize.values()[size];
+    public LinkedList<EquipmentCard> decodeEquipmentCard() {
 
-        if( modifier < Stat.values().length ) {
-            Stat statModifier = Stat.values()[modifier];
-            return new EquipmentCard(id, order, statModifier, level, eqSize);
-        } else {
-            Skill skillModifier = Skill.values()[modifier - 3];
-            return new EquipmentCard(id, order, skillModifier, level, eqSize);
+        LinkedList<EquipmentCard> list = new LinkedList<>();
+
+        for (ParanoiaRow<Integer> record : data.records){
+            int id = record.get(0);
+            int order = record.get(1);
+            int modifier = record.get(2);
+            int level = record.get(3);
+            int size = record.get(4);
+
+            EquipmentCard.EquipmentSize eqSize =
+                EquipmentCard.EquipmentSize.values()[size];
+
+            if( modifier < Stat.values().length ) {
+                Stat statModifier = Stat.values()[modifier];
+                list.add(new EquipmentCard(id, order, statModifier, level, eqSize));
+            } else {
+                Skill skillModifier = Skill.values()[modifier - 3];
+                list.add(new EquipmentCard(id, order, skillModifier, level, eqSize));
+            }
         }
+        return list;
     }
 
     private static class ParanoiaMap<T> {
@@ -90,7 +107,7 @@ public abstract class CardDecoder {
         }
 
         public void addRow(T[] items) {
-            records.add(new ParanoiaRow<T>(items));
+            records.add(new ParanoiaRow<>(items));
         }
 
         public T getItem(int row, int index) {
