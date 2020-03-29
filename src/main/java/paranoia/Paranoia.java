@@ -65,6 +65,9 @@ public class Paranoia {
         clone4.addCard(Computer.getEquipmentCard(6));
         clone4.addCard(Computer.getEquipmentCard(18));
         clone4.addCard(Computer.getEquipmentCard(3));
+        clone4.addCard(Computer.getMutationCard(3));
+        clone4.addCard(Computer.getSecretSocietyCard(3));
+        clone4.addCard(Computer.getBonusDutyCard(3));
 
         ControlUnit cpu = new ControlUnit();
         CerebrealCoretech coreTech = new CerebrealCoretech(clone4);

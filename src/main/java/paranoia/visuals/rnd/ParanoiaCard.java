@@ -68,9 +68,11 @@ public abstract class ParanoiaCard extends ParanoiaImage {
         SECRET_SOCIETY
     }
 
+    int actionOrder;
     private int id;
     private CardType type;
-    int actionOrder;
+    private String title;
+    private String description;
 
     ParanoiaCard(CardType type, int id, int actionOrder) {
         super(getCardImage(type, id), true);

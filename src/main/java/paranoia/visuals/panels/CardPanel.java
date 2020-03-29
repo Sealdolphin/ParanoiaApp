@@ -10,7 +10,7 @@ public class CardPanel extends JPanel {
 
     List<ParanoiaCard> cards;
 
-    public CardPanel(ParanoiaCard.CardType type, List<ParanoiaCard> cards) {
+    public CardPanel(List<ParanoiaCard> cards) {
         GridLayout layout = new GridLayout(0,4);
         setLayout(layout);
 

@@ -8,12 +8,18 @@ import java.util.List;
 
 public class CardStatHolderPanel extends JTabbedPane {
 
-    public CardStatHolderPanel(List<ParanoiaCard> actionCards, List<ParanoiaCard> equipmentCards) {
-        JPanel action = new CardPanel(ParanoiaCard.CardType.ACTION, actionCards);
-        JPanel equipment = new CardPanel(ParanoiaCard.CardType.EQUIPMENT, equipmentCards);
+    public CardStatHolderPanel(
+        List<ParanoiaCard> actionCards,
+        List<ParanoiaCard> equipmentCards,
+        List<ParanoiaCard> otherCards
+    ) {
+        JPanel action = new CardPanel(actionCards);
+        JPanel equipment = new CardPanel(equipmentCards);
+        JPanel other = new CardPanel(otherCards);
 
         addTab("Action cards", null, action);
         addTab("Equipment cards", null, equipment);
+        addTab("Miscellaneous cards", null, other);
     }
 
 }

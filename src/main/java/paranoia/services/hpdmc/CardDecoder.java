@@ -5,12 +5,14 @@ import paranoia.core.cpu.Stat;
 import paranoia.visuals.rnd.ActionCard;
 import paranoia.visuals.rnd.EquipmentCard;
 import paranoia.visuals.rnd.MutationCard;
+import paranoia.visuals.rnd.ParanoiaCard;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
 
 import static paranoia.Paranoia.getParanoiaResource;
@@ -111,6 +113,19 @@ public class CardDecoder {
             list.add(new MutationCard(id, order));
         }
 
+        return list;
+    }
+
+    public static <T extends ParanoiaCard>LinkedList<T> decodeCardsGeneral(int max, Class<T> clazz) {
+        LinkedList<T> list = new LinkedList<>();
+        try {
+        for (int i = 0; i < max; i++) {
+            list.add(clazz.getConstructor(Integer.class).newInstance(i));
+        }
+        } catch (InstantiationException | NoSuchMethodException |
+            InvocationTargetException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
         return list;
     }
 

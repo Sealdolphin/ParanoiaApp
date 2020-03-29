@@ -136,4 +136,10 @@ public class Clone implements Cloneable, ICoreTechPart {
     public List<ParanoiaCard> getCards(ParanoiaCard.CardType cardType) {
         return cards.stream().filter(card -> card.getType().equals(cardType)).collect(Collectors.toList());
     }
+
+    public List<ParanoiaCard> getMiscCards() {
+        return  cards.stream().filter( card -> card.getType().equals(ParanoiaCard.CardType.SECRET_SOCIETY) ||
+            card.getType().equals(ParanoiaCard.CardType.MUTATION) ||
+            card.getType().equals(ParanoiaCard.CardType.BONUS_DUTY)).collect(Collectors.toList());
+    }
 }
