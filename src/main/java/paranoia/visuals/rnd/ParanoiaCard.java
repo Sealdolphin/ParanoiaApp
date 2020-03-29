@@ -3,6 +3,7 @@ package paranoia.visuals.rnd;
 import paranoia.visuals.custom.ParanoiaImage;
 
 import javax.imageio.ImageIO;
+import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -69,14 +70,17 @@ public abstract class ParanoiaCard extends ParanoiaImage {
 
     private int id;
     private CardType type;
-    private int actionOrder;
+    int actionOrder;
 
     ParanoiaCard(CardType type, int id, int actionOrder) {
         super(getCardImage(type, id), true);
+        setPreferredSize(new Dimension(500,650));
         this.type = type;
         this.actionOrder = actionOrder;
         this.id = id;
     }
+
+    public abstract String toString();
 
     public int getId() {
         return id;

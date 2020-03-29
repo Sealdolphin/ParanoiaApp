@@ -30,4 +30,9 @@ public class EquipmentCard extends ParanoiaCard {
         this.level = level;
         this.size = size;
     }
+
+    @Override
+    public String toString() {
+        return "EQ: id: " + getId() + " | order: " + actionOrder + " | size: " + size + " | lvl: " + level + " | modifier " + statModifier;
+    }
 }

@@ -114,7 +114,7 @@ public class CardDecoder {
         return list;
     }
 
-    private static class ParanoiaMap<T> {
+    private class ParanoiaMap<T> {
         private LinkedList<ParanoiaRow<T>> records;
 
         public ParanoiaMap() {
@@ -130,7 +130,7 @@ public class CardDecoder {
         }
     }
 
-    private static class ParanoiaRow<T> {
+    private class ParanoiaRow<T> {
         private LinkedList<T> items;
 
         private ParanoiaRow(T[] items){

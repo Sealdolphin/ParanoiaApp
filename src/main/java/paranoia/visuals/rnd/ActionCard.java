@@ -10,4 +10,9 @@ public class ActionCard extends ParanoiaCard {
         this.action = action;
         this.reaction = reaction;
     }
+
+    @Override
+    public String toString() {
+        return "ACTION: id: " + getId() + " | order: " + actionOrder + " | reaction: " + reaction;
+    }
 }

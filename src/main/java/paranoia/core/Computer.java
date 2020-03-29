@@ -8,8 +8,6 @@ import paranoia.visuals.rnd.MutationCard;
 import java.io.IOException;
 import java.util.LinkedList;
 
-import static paranoia.Paranoia.getParanoiaResource;
-
 public abstract class Computer {
 
     private static LinkedList<ActionCard> actionCardDatabase;
@@ -17,9 +15,13 @@ public abstract class Computer {
     private static LinkedList<MutationCard> mutationCardDatabase;
 
     public static void initDatabase() throws IOException {
-        CardDecoder actionCardDecoder = new CardDecoder(getParanoiaResource("data/action.csv"));
-        CardDecoder equipmentCardDecoder = new CardDecoder(getParanoiaResource("data/equipment.csv"));
-        CardDecoder mutationCardDecoder = new CardDecoder(getParanoiaResource("data/mutation.csv"));
+        CardDecoder actionCardDecoder = new CardDecoder("data/action.csv");
+        CardDecoder equipmentCardDecoder = new CardDecoder("data/equipment.csv");
+        CardDecoder mutationCardDecoder = new CardDecoder("data/mutation.csv");
+
+        actionCardDecoder.readDatabase();
+        equipmentCardDecoder.readDatabase();
+        mutationCardDecoder.readDatabase();
 
         actionCardDatabase = actionCardDecoder.decodeActionCards();
         equipmentCardDatabase = equipmentCardDecoder.decodeEquipmentCards();
@@ -28,6 +30,14 @@ public abstract class Computer {
 
     public static ActionCard getActionCard(int index) {
         return actionCardDatabase.get(index);
+    }
+
+    public static EquipmentCard getEquipmentCard(int index) {
+        return equipmentCardDatabase.get(index);
+    }
+
+    public static MutationCard getMutationCard(int index) {
+        return mutationCardDatabase.get(index);
     }
 
 }
