@@ -1,6 +1,7 @@
 package paranoia.core.cpu;
 
 import paranoia.core.ICoreTechPart;
+import paranoia.services.hpdmc.ResourceManager;
 import paranoia.visuals.custom.ParanoiaImage;
 
 import javax.swing.JPanel;
@@ -13,9 +14,9 @@ import java.awt.font.TextAttribute;
 import java.util.HashMap;
 import java.util.Map;
 
-import static paranoia.core.cpu.ResourceManager.ResourceIcon.MISSION;
-import static paranoia.core.cpu.ResourceManager.ResourceIcon.MISSION_COMPLETED;
-import static paranoia.core.cpu.ResourceManager.ResourceIcon.MISSION_FAILED;
+import static paranoia.services.hpdmc.ResourceManager.ResourceIcon.MISSION;
+import static paranoia.services.hpdmc.ResourceManager.ResourceIcon.MISSION_COMPLETED;
+import static paranoia.services.hpdmc.ResourceManager.ResourceIcon.MISSION_FAILED;
 
 public class Mission implements ICoreTechPart {
 

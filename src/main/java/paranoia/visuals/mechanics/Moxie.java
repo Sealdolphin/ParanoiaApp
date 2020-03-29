@@ -1,6 +1,6 @@
 package paranoia.visuals.mechanics;
 
-import paranoia.core.cpu.ResourceManager;
+import paranoia.services.hpdmc.ResourceManager;
 
 import javax.swing.JPanel;
 import java.awt.GridLayout;

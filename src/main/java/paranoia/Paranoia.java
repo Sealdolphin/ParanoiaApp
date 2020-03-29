@@ -1,13 +1,15 @@
 package paranoia;
 
 import paranoia.core.Clone;
+import paranoia.core.Computer;
 import paranoia.core.SecurityClearance;
-import paranoia.core.cpu.ResourceManager;
 import paranoia.core.cpu.Skill;
 import paranoia.core.cpu.Stat;
 import paranoia.services.hpdmc.ControlUnit;
+import paranoia.services.hpdmc.ResourceManager;
 import paranoia.visuals.CerebrealCoretech;
 import paranoia.visuals.RollMessage;
+import paranoia.visuals.rnd.ParanoiaCard;
 
 import javax.imageio.ImageIO;
 import java.awt.Color;
@@ -37,6 +39,9 @@ public class Paranoia {
         //Show Picture
         try {
             ResourceManager.loadResources();    //not this!! This is important
+            ParanoiaCard.loadAllCardAssets();
+            Computer.initDatabase();
+
             img0 = ImageIO.read(new File(getParanoiaResource("clones/clone0.png")));
             img1 = ImageIO.read(new File(getParanoiaResource("clones/clone1.png")));
             img2 = ImageIO.read(new File(getParanoiaResource("clones/clone2.png")));
@@ -51,6 +56,18 @@ public class Paranoia {
         Clone clone2 = new Clone("ROZ", "HYT", SecurityClearance.RED, 0, img2);
         Clone clone3 = new Clone("JOE", "RTE", SecurityClearance.BLUE, 1, img3);
         Clone clone4 = new Clone("CARA", "RLY", SecurityClearance.YELLOW, 3, img4);
+
+        clone4.addCard(Computer.getActionCard(3));
+        clone4.addCard(Computer.getActionCard(7));
+        clone4.addCard(Computer.getActionCard(11));
+        clone4.addCard(Computer.getActionCard(25));
+        clone4.addCard(Computer.getEquipmentCard(0));
+        clone4.addCard(Computer.getEquipmentCard(6));
+        clone4.addCard(Computer.getEquipmentCard(18));
+        clone4.addCard(Computer.getEquipmentCard(3));
+        clone4.addCard(Computer.getMutationCard(3));
+        clone4.addCard(Computer.getSecretSocietyCard(3));
+        clone4.addCard(Computer.getBonusDutyCard(3));
 
         ControlUnit cpu = new ControlUnit();
         CerebrealCoretech coreTech = new CerebrealCoretech(clone4);
