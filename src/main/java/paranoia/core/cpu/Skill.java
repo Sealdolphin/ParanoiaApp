@@ -1,29 +1,16 @@
 package paranoia.core.cpu;
 
-public enum Skill{
-    ATHLETICS,
-    GUNS,
-    MELEE,
-    THROW,
-    SCIENCE,
-    PSYCHOLOGY,
-    BUREAUCRACY,
-    ALPHA_COMPLEX,
-    BLUFF,
-    CHARM,
-    INTIMIDATE,
-    STEALTH,
-    OPERATE,
-    ENGINEER,
-    PROGRAM,
-    DEMOLITIONS;
+public class Skill extends ParanoiaModifier{
 
-    private int value = 0;
+    private Stat parentStat;
 
-    public Integer getValue() {
-        return value;
+    public Skill(String name, Stat parentStat) {
+        super(name);
+        this.parentStat = parentStat;
     }
-    public void setValue(int value) {
-        this.value = value;
+
+    public Stat getParent() {
+        return parentStat;
     }
+
 }

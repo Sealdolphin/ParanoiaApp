@@ -1,8 +1,6 @@
 package paranoia.visuals.rnd;
 
-import paranoia.core.cpu.Skill;
-import paranoia.core.cpu.Stat;
-
+import paranoia.core.cpu.ParanoiaModifier;
 public class EquipmentCard extends ParanoiaCard {
 
     public enum EquipmentSize {
@@ -13,26 +11,19 @@ public class EquipmentCard extends ParanoiaCard {
     }
 
     private int level;
-    private Stat statModifier = null;
-    private Skill skillModifier = null;
+    private ParanoiaModifier modifier;
     private EquipmentSize size;
 
-    public EquipmentCard(int id, int actionOrder, Skill modifier, int level, EquipmentSize size) {
+    public EquipmentCard(int id, int actionOrder, ParanoiaModifier modifier, int level, EquipmentSize size) {
         super(CardType.EQUIPMENT, id, actionOrder);
-        this.skillModifier = modifier;
-        this.level = level;
-        this.size = size;
-    }
-
-    public EquipmentCard(int id, int actionOrder, Stat modifier, int level, EquipmentSize size) {
-        super(CardType.EQUIPMENT, id, actionOrder);
-        this.statModifier = modifier;
+        this.modifier = modifier;
         this.level = level;
         this.size = size;
     }
 
     @Override
     public String toString() {
-        return "EQ: id: " + getId() + " | order: " + actionOrder + " | size: " + size + " | lvl: " + level + " | modifier " + statModifier;
+        return "EQ: id: " + getId() + " | order: " + actionOrder + " | size: " +
+            size + " | lvl: " + level + " | modifier " + modifier.getName() + " (" + modifier.getValue() + ")";
     }
 }
