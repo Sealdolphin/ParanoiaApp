@@ -1,24 +1,18 @@
 package paranoia.visuals.mechanics;
 
+import paranoia.core.cpu.ResourceManager;
+
 import javax.swing.JPanel;
 
 public class Injury extends ParanoiaMechanic {
 
     public static final int INJURY_COUNT = 3;
 
-    public Injury() {
-        this(false, DEFAULT_SIZE);
-    }
-
-    public Injury(Boolean active) {
-        this(active, DEFAULT_SIZE);
-    }
-
     public Injury(Boolean active, Integer size) {
         super(
             active,
-            "mechanics/injuryActive.png",
-            "mechanics/injury.png",
+            ResourceManager.getResource(ResourceManager.ResourceIcon.INJURY),
+            ResourceManager.getResource(ResourceManager.ResourceIcon.INJURY_OFF),
             size
         );
     }

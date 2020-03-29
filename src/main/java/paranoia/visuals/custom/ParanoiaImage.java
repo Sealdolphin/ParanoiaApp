@@ -16,6 +16,7 @@ public class ParanoiaImage extends JPanel {
 
     public ParanoiaImage(BufferedImage image, Boolean hasBorder){
         this.image = image;
+        setOpaque(false);
         if(hasBorder) setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
     }
 

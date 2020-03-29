@@ -2,6 +2,7 @@ package paranoia;
 
 import paranoia.core.Clone;
 import paranoia.core.SecurityClearance;
+import paranoia.core.cpu.ResourceManager;
 import paranoia.core.cpu.Skill;
 import paranoia.core.cpu.Stat;
 import paranoia.services.hpdmc.ControlUnit;
@@ -27,32 +28,42 @@ public class Paranoia {
 
     public static void main(String[] args) {
 
-        BufferedImage img = null;
+        //TODO: remove later
+        BufferedImage img0 = null;
+        BufferedImage img1 = null;
+        BufferedImage img2 = null;
+        BufferedImage img3 = null;
+        BufferedImage img4 = null;
         //Show Picture
         try {
-            img = ImageIO.read(new File(getParanoiaResource("clones/clone0.png")));
+            ResourceManager.loadResources();    //not this!! This is important
+            img0 = ImageIO.read(new File(getParanoiaResource("clones/clone0.png")));
+            img1 = ImageIO.read(new File(getParanoiaResource("clones/clone1.png")));
+            img2 = ImageIO.read(new File(getParanoiaResource("clones/clone2.png")));
+            img3 = ImageIO.read(new File(getParanoiaResource("clones/clone3.png")));
+            img4 = ImageIO.read(new File(getParanoiaResource("clones/clone4.png")));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        Clone clone = new Clone("SYD", "ULS", SecurityClearance.RED, 4, img);
-        Clone self = new Clone("CARA", "RLY", SecurityClearance.YELLOW, 3, img);
+        Clone clone0 = new Clone("SYD", "ULS", SecurityClearance.INFRARED, 4, img0);
+        Clone clone1 = new Clone("CHRIS", "AFG", SecurityClearance.ORANGE, 2, img1);
+        Clone clone2 = new Clone("ROZ", "HYT", SecurityClearance.RED, 0, img2);
+        Clone clone3 = new Clone("JOE", "RTE", SecurityClearance.BLUE, 1, img3);
+        Clone clone4 = new Clone("CARA", "RLY", SecurityClearance.YELLOW, 3, img4);
 
         ControlUnit cpu = new ControlUnit();
-        CerebrealCoretech coreTech = new CerebrealCoretech(self);
-
+        CerebrealCoretech coreTech = new CerebrealCoretech(clone4);
         coreTech.setExtendedState(Frame.MAXIMIZED_BOTH);
 
-        coreTech.addClone(clone);
-        coreTech.addClone(clone);
-        coreTech.addClone(clone);
-        coreTech.addClone(clone);
-        coreTech.addClone(clone);
-        coreTech.addClone(clone);
-
-        coreTech.setSelf(clone);
+        coreTech.addClone(clone0);
+        coreTech.addClone(clone1);
+        coreTech.addClone(clone2);
+        coreTech.addClone(clone3);
+        coreTech.setSelf(clone4);
         coreTech.setVisible(true);
 
+        //TODO: remove later
         Map<String, Integer> positive = new HashMap<>();
         Map<String, Integer> negative = new HashMap<>();
 
@@ -61,7 +72,7 @@ public class Paranoia {
         negative.put("Injury", 2);
 
         RollMessage message = new RollMessage(
-                clone,
+                clone0,
                 Stat.BRAINS, true,
                 Skill.ALPHA_COMPLEX, true,
                 positive, negative,

@@ -2,41 +2,31 @@ package paranoia.visuals.mechanics;
 
 import paranoia.visuals.custom.ParanoiaImage;
 
-import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.io.File;
-import java.io.IOException;
+import java.awt.image.BufferedImage;
 import java.lang.reflect.InvocationTargetException;
 
 import static paranoia.Paranoia.PARANOIA_BACKGROUND;
-import static paranoia.Paranoia.getParanoiaResource;
 
 public abstract class ParanoiaMechanic extends ParanoiaImage {
 
     private Boolean active;
-    private String imagePath;
-    private int size;
-    String imagePathDisabled;
+    private BufferedImage imgActive;
+    BufferedImage imgDisabled;
     static final int DEFAULT_SIZE = 32;
 
-    ParanoiaMechanic(Boolean active, String imagePath, String imagePathDisabled, int size) {
-        super(null);
-        setBackground(PARANOIA_BACKGROUND);
+    ParanoiaMechanic(Boolean active, BufferedImage imgActive, BufferedImage imgDisabled, int size) {
+        super(imgActive);
         setPreferredSize(new Dimension(size,size));
-        this.size = size;
         this.active = active;
-        this.imagePath = imagePath;
-        this.imagePathDisabled = imagePathDisabled;
-        try { updateImage();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+        this.imgActive = imgActive;
+        this.imgDisabled = imgDisabled;
+        updateImage();
     }
 
     public void setSize(int size){
-        this.size = size;
         setPreferredSize(new Dimension(size, size));
     }
 
@@ -46,15 +36,14 @@ public abstract class ParanoiaMechanic extends ParanoiaImage {
 
     public void activate(Boolean active) {
         this.active = active;
-        try { updateImage();
-        } catch (IOException ignored) { }
+        updateImage();
     }
 
-    private void updateImage() throws IOException {
+    private void updateImage() {
         if(active)
-            image = ImageIO.read(new File(getParanoiaResource(imagePath)));
+            image = imgActive;
         else
-            image = ImageIO.read(new File(getParanoiaResource(imagePathDisabled)));
+            image = imgDisabled;
     }
 
     static <M extends ParanoiaMechanic> JPanel createMechanicPanel(

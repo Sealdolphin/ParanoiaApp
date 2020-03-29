@@ -1,5 +1,7 @@
 package paranoia.visuals.mechanics;
 
+import paranoia.core.cpu.ResourceManager;
+
 import javax.swing.JPanel;
 import java.awt.GridLayout;
 
@@ -8,19 +10,11 @@ public class Moxie extends ParanoiaMechanic {
     public static final int MOXIE_COUNT = 8;
     private Boolean disabled = false;
 
-    public Moxie() {
-        this(true, DEFAULT_SIZE);
-    }
-
-    public Moxie(Boolean active) {
-        this(active, DEFAULT_SIZE);
-    }
-
     public Moxie(Boolean active, Integer size) {
         super(
             active,
-            "mechanics/moxieFilled.png",
-            "mechanics/moxie.png",
+            ResourceManager.getResource(ResourceManager.ResourceIcon.MOXIE),
+            ResourceManager.getResource(ResourceManager.ResourceIcon.MOXIE_OFF),
             size
         );
     }
@@ -32,7 +26,7 @@ public class Moxie extends ParanoiaMechanic {
 
     @Override
     public void activate(Boolean active) {
-        if(disabled) imagePathDisabled = "mechanics/moxieCrossed.png";
+        if(disabled) imgDisabled = ResourceManager.getResource(ResourceManager.ResourceIcon.MOXIE_CROSSED);
         super.activate(active && !disabled);
     }
 
