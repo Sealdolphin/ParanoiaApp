@@ -1,13 +1,19 @@
 package paranoia.core.cpu;
 
-public class Stat extends ParanoiaModifier{
+public enum Stat {
 
-    public static final Stat VIOLENCE = new Stat("Violence");
-    public static final Stat BRAINS = new Stat("Brains");
-    public static final Stat CHUTZPAH = new Stat("Chutzpah");
-    public static final Stat MECHANICS = new Stat("Mechanics");
+    VIOLENCE("Violence"),
+    BRAINS("Brains"),
+    CHUTZPAH("Chutzpah"),
+    MECHANICS("Mechanics");
 
-    public Stat(String name) {
-        super(name);
+    private String name;
+
+    Stat(String name) {
+        this.name = name;
+    }
+
+    public String toString() {
+        return name;
     }
 }

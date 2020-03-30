@@ -1,6 +1,6 @@
 package paranoia.visuals.rnd;
 
-import paranoia.core.cpu.ParanoiaModifier;
+import paranoia.core.cpu.ParanoiaAttribute;
 public class EquipmentCard extends ParanoiaCard {
 
     public enum EquipmentSize {
@@ -11,10 +11,10 @@ public class EquipmentCard extends ParanoiaCard {
     }
 
     private int level;
-    private ParanoiaModifier modifier;
+    private ParanoiaAttribute modifier;
     private EquipmentSize size;
 
-    public EquipmentCard(int id, int actionOrder, ParanoiaModifier modifier, int level, EquipmentSize size) {
+    public EquipmentCard(int id, int actionOrder, ParanoiaAttribute modifier, int level, EquipmentSize size) {
         super(CardType.EQUIPMENT, id, actionOrder);
         this.modifier = modifier;
         this.level = level;

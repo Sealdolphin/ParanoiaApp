@@ -1,11 +1,16 @@
 package paranoia.core.cpu;
 
-public abstract class ParanoiaModifier {
+public class ParanoiaAttribute {
 
     private String name;
-    private int value = 0;
+    private int value;
 
-    public ParanoiaModifier(String name){
+    public ParanoiaAttribute(String name) {
+        this(name, 0);
+    }
+
+    public ParanoiaAttribute(String name, Integer value){
+        this.value = value;
         this.name = name;
     }
 

@@ -106,7 +106,8 @@ public class CerebrealCoretech extends JFrame {
         cardStatPanel = new CardStatHolderPanel(
             self.getCards(ParanoiaCard.CardType.ACTION),
             self.getCards(ParanoiaCard.CardType.EQUIPMENT),
-            self.getMiscCards()
+            self.getMiscCards(),
+            self.getSkillPanel()
         );
 
         //set horizontal

@@ -11,7 +11,8 @@ public class CardStatHolderPanel extends JTabbedPane {
     public CardStatHolderPanel(
         List<ParanoiaCard> actionCards,
         List<ParanoiaCard> equipmentCards,
-        List<ParanoiaCard> otherCards
+        List<ParanoiaCard> otherCards,
+        SkillPanel skillPanel
     ) {
         JPanel action = new CardPanel(actionCards);
         JPanel equipment = new CardPanel(equipmentCards);
@@ -20,6 +21,7 @@ public class CardStatHolderPanel extends JTabbedPane {
         addTab("Action cards", null, action);
         addTab("Equipment cards", null, equipment);
         addTab("Miscellaneous cards", null, other);
+        addTab("Skills and Stats", null, skillPanel);
     }
 
 }

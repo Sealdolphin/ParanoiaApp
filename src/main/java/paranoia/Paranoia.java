@@ -96,7 +96,7 @@ public class Paranoia {
                 "Please roll with..."
         );
 
-        //message.setVisible(true);
+        message.setVisible(true);
 
     }
 

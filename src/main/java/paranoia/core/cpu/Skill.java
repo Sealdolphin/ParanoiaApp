@@ -1,36 +1,32 @@
 package paranoia.core.cpu;
 
-import static paranoia.core.cpu.Stat.BRAINS;
-import static paranoia.core.cpu.Stat.CHUTZPAH;
-import static paranoia.core.cpu.Stat.MECHANICS;
-import static paranoia.core.cpu.Stat.VIOLENCE;
+public enum Skill {
 
-public class Skill extends ParanoiaModifier{
+    ATHLETICS("Athletics", Stat.VIOLENCE),
+    GUNS("Guns", Stat.VIOLENCE),
+    MELEE("Melee", Stat.VIOLENCE),
+    THROW("Throw", Stat.VIOLENCE),
 
-    public static final Skill ATHLETICS = new Skill("Athletics", VIOLENCE);
-    public static final Skill GUNS = new Skill("Guns", VIOLENCE);
-    public static final Skill MELEE = new Skill("Melee", VIOLENCE);
-    public static final Skill THROW = new Skill("Throw", VIOLENCE);
+    SCIENCE("Science", Stat.BRAINS),
+    PSYCHOLOGY("Psychology", Stat.BRAINS),
+    BUREAUCRACY("Bureaucracy", Stat.BRAINS),
+    ALPHA_COMPLEX("Alpha Complex", Stat.BRAINS),
 
-    public static final Skill SCIENCE = new Skill("Science", BRAINS);
-    public static final Skill PSYCHOLOGY = new Skill("Psychology", BRAINS);
-    public static final Skill BUREAUCRACY = new Skill("Bureaucracy", BRAINS);
-    public static final Skill ALPHA_COMPLEX = new Skill("Alpha Complex", BRAINS);
+    BLUFF("Bluff", Stat.CHUTZPAH),
+    CHARM("Charm", Stat.CHUTZPAH),
+    INTIMIDATE("Intimidate", Stat.CHUTZPAH),
+    STEALTH("Stalth", Stat.CHUTZPAH),
 
-    public static final Skill BLUFF = new Skill("Bluff", CHUTZPAH);
-    public static final Skill CHARM = new Skill("Charm", CHUTZPAH);
-    public static final Skill INTIMIDATE = new Skill("Intimidate", CHUTZPAH);
-    public static final Skill STEALTH = new Skill("Stalth", CHUTZPAH);
+    OPERATE("Operate", Stat.MECHANICS),
+    ENGINEER("Engineer", Stat.MECHANICS),
+    PROGRAM("Program", Stat.MECHANICS),
+    DEMOLITIONS("Demolitions", Stat.MECHANICS);
 
-    public static final Skill OPERATE = new Skill("Operate", MECHANICS);
-    public static final Skill ENGINEER = new Skill("Engineer", MECHANICS);
-    public static final Skill PROGRAM = new Skill("Program", MECHANICS);
-    public static final Skill DEMOLITIONS = new Skill("Demolitions", MECHANICS);
-
+    private String name;
     private Stat parentStat;
 
-    public Skill(String name, Stat parentStat) {
-        super(name);
+    Skill(String name, Stat parentStat) {
+        this.name = name;
         this.parentStat = parentStat;
     }
 
@@ -38,4 +34,8 @@ public class Skill extends ParanoiaModifier{
         return parentStat;
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
 }
