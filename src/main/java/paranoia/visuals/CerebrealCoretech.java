@@ -130,15 +130,10 @@ public class CerebrealCoretech extends JFrame {
                             layout.createSequentialGroup()
                                 .addComponent(cardStatPanel)
                                 .addContainerGap(500, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER,
-                                    false
-                                    )
-                                    .addComponent(
-                                        selfPanel,
-                                        GroupLayout.PREFERRED_SIZE,
-                                        GroupLayout.PREFERRED_SIZE,
-                                        Short.MAX_VALUE
-                                    )
+                                .addComponent(selfPanel,
+                                    GroupLayout.PREFERRED_SIZE,
+                                    GroupLayout.PREFERRED_SIZE,
+                                    Short.MAX_VALUE
                                 )
                         )
                 )
@@ -156,13 +151,14 @@ public class CerebrealCoretech extends JFrame {
                 .addComponent(missionPanel)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED, 300, Short.MAX_VALUE)
                 .addGroup(
-                    layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
                         .addComponent(cardStatPanel)
-                        .addComponent(
-                            selfPanel,
-                            GroupLayout.PREFERRED_SIZE,
-                            GroupLayout.PREFERRED_SIZE,
-                            Short.MAX_VALUE
+                        .addGroup(layout.createBaselineGroup(false, false)
+                                .addComponent(selfPanel,
+                                    GroupLayout.PREFERRED_SIZE,
+                                    GroupLayout.PREFERRED_SIZE,
+                                    Short.MAX_VALUE
+                                )
                         )
                 )
         );

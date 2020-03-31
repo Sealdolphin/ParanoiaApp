@@ -18,10 +18,12 @@ public class CardStatHolderPanel extends JTabbedPane {
         JPanel equipment = new CardPanel(equipmentCards);
         JPanel other = new CardPanel(otherCards);
 
-        addTab("Action cards", null, action);
-        addTab("Equipment cards", null, equipment);
-        addTab("Miscellaneous cards", null, other);
-        addTab("Skills and Stats", null, skillPanel);
+        addTab("Action cards", action);
+        addTab("Equipment cards", equipment);
+        addTab("Miscellaneous cards", other);
+        addTab("Skills and Stats", skillPanel);
+
+        setTabLayoutPolicy(SCROLL_TAB_LAYOUT);
     }
 
 }

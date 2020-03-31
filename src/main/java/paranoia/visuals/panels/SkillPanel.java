@@ -4,6 +4,7 @@ import paranoia.core.cpu.ParanoiaAttribute;
 import paranoia.core.cpu.Skill;
 import paranoia.core.cpu.Stat;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -43,9 +44,13 @@ public class SkillPanel extends JPanel {
 
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
+        add(Box.createGlue());
         add(lbStats);
+        add(Box.createGlue());
         add(statTable);
+        add(Box.createGlue());
         add(lbSkills);
+        add(Box.createGlue());
         add(skillTable);
     }
 
@@ -129,6 +134,7 @@ public class SkillPanel extends JPanel {
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             setText(value.toString());
             setFont(stringFont);
+            table.getColumnModel().getColumn(column).setPreferredWidth(120);
             return this;
         }
     }
@@ -142,13 +148,15 @@ public class SkillPanel extends JPanel {
             setText(value.toString());
             setFont(new Font("Segoe", Font.BOLD, 20));
             setOpaque(true);
+
+            table.getColumnModel().getColumn(column).setPreferredWidth(20);
             setHorizontalAlignment(CENTER);
             if(Integer.parseInt(value.toString()) >= 0){
-                setBackground(new Color(217, 119, 119));
-                setForeground(new Color(115, 29, 29));
-            } else {
                 setBackground(new Color(105, 191, 105));
                 setForeground(new Color(29, 115, 29));
+            } else {
+                setBackground(new Color(217, 119, 119));
+                setForeground(new Color(115, 29, 29));
             }
             return this;
         }
