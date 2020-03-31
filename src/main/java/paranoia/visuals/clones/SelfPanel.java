@@ -1,7 +1,6 @@
 package paranoia.visuals.clones;
 
 import paranoia.core.SecurityClearance;
-import paranoia.visuals.custom.ParanoiaButton;
 import paranoia.visuals.custom.ParanoiaImage;
 import paranoia.visuals.mechanics.Injury;
 import paranoia.visuals.mechanics.Moxie;
@@ -9,7 +8,6 @@ import paranoia.visuals.mechanics.TreasonStar;
 
 import javax.swing.GroupLayout;
 import javax.swing.JPanel;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.util.LinkedHashMap;
@@ -43,18 +41,12 @@ public class SelfPanel extends JPanel {
         JPanel injuryPanel = Injury.createInjuryPanel(injury);
         JPanel starPanel = TreasonStar.createTreasonStarPanel(treasonStars);
         CloneInfoPanel details = new CloneInfoPanel(infoPanel, clearance);
-        ParanoiaButton btnStats = new ParanoiaButton("Skills & Stats");
-        btnStats.setForeground(new Color(0,0,0));
-        btnStats.setBackground(new Color(255, 255, 255));
-        btnStats.setHoverBG(new Color(191, 191, 191));
-        btnStats.setPressedBG(new Color(128, 128, 128));
 
         //Horizontal Group
         layout.setHorizontalGroup(
             layout.createParallelGroup(GroupLayout.Alignment.CENTER)
                 .addGroup(layout.createSequentialGroup()
                     .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
-                        .addComponent(btnStats)
                         .addComponent(injuryPanel)
                         .addComponent(moxiePanel)
                         .addComponent(starPanel)
@@ -71,7 +63,6 @@ public class SelfPanel extends JPanel {
                     layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addGroup(
                             layout.createSequentialGroup()
-                                .addComponent(btnStats)
                                 .addComponent(injuryPanel)
                                 .addComponent(moxiePanel)
                                 .addComponent(starPanel)
