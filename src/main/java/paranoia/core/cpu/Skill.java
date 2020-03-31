@@ -15,7 +15,7 @@ public enum Skill {
     BLUFF("Bluff", Stat.CHUTZPAH),
     CHARM("Charm", Stat.CHUTZPAH),
     INTIMIDATE("Intimidate", Stat.CHUTZPAH),
-    STEALTH("Stalth", Stat.CHUTZPAH),
+    STEALTH("Stealth", Stat.CHUTZPAH),
 
     OPERATE("Operate", Stat.MECHANICS),
     ENGINEER("Engineer", Stat.MECHANICS),
