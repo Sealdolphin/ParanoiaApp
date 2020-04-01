@@ -29,6 +29,9 @@ public class RollMessage extends JDialog {
     private JComboBox<Stat> stats;
     private Clone clone;
 
+    private JLabel lbDiceValue;
+    private JTextPane lbText;
+
     public RollMessage(
             Clone clone,
             Stat defaultStat,
@@ -55,13 +58,13 @@ public class RollMessage extends JDialog {
         Font boldFont15 = new Font("Arial", Font.BOLD, 15).deriveFont(fontAttributes);
 
         //Properties
-        JTextPane lbText = new JTextPane();
+        lbText = new JTextPane();
         JLabel lbMessage = new JLabel(message);
         lbMessage.setFont(boldFont30);
         JLabel lbDice = new JLabel("NODE");
         lbDice.setFont(boldFont15);
         //Dice value
-        JLabel lbDiceValue = new JLabel();
+        lbDiceValue = new JLabel();
         lbDiceValue.setFont(boldFont20);
         //Button
         ParanoiaButton btnRoll = new ParanoiaButton("Roll");
@@ -74,29 +77,17 @@ public class RollMessage extends JDialog {
         //Selected Skill
         JLabel lbSkill = new JLabel();
         lbSkill.setFont(boldFont20);
-        skills = new JComboBox<>(clone.getSkills());
+        skills = new JComboBox<>(Skill.values());
         skills.setFont(boldFont20);
         skills.setEnabled(allowChangeSkill);
-        skills.addActionListener( event -> {
-            Skill selected = (Skill) skills.getSelectedItem();
-            assert selected != null;
-            lbSkill.setText(selected.getValue().toString());
-            lbText.setToolTipText(updateTooltipText());
-            lbDiceValue.setText(calculateDiceValue().toString());
-        });
+        skills.addActionListener( event -> updateStats(skills.getSelectedItem(), lbSkill));
         //Selected Stat
         JLabel lbStat = new JLabel();
         lbStat.setFont(boldFont20);
-        stats = new JComboBox<>(clone.getStats());
+        stats = new JComboBox<>(Stat.values());
         stats.setFont(boldFont20);
         stats.setEnabled(allowChangeStat);
-        stats.addActionListener( event -> {
-            Stat selected = (Stat) stats.getSelectedItem();
-            assert selected != null;
-            lbStat.setText(selected.getValue().toString());
-            lbText.setToolTipText(updateTooltipText());
-            lbDiceValue.setText(calculateDiceValue().toString());
-        });
+        stats.addActionListener( event -> updateStats(stats.getSelectedItem(), lbStat));
         //Set initial selection
         skills.setSelectedItem(defaultSkill);
         stats.setSelectedItem(defaultStat);
@@ -167,8 +158,13 @@ public class RollMessage extends JDialog {
     }
 
     private String updateTooltipText() {
-        int skillPoint = clone.getSkills()[skills.getSelectedIndex()].getValue();
-        int statPoint = clone.getStats()[stats.getSelectedIndex()].getValue();
+        if (
+            skills.getSelectedItem() == null ||
+                stats.getSelectedItem() == null
+        ) return "Select an item";
+
+        int skillPoint = clone.getAttribute(skills.getSelectedItem().toString());
+        int statPoint = clone.getAttribute(stats.getSelectedItem().toString());
 
         String positives = positive.entrySet().stream().map(entry ->
             entry.getKey() + ": " + getHTMLColoredValue(entry.getValue()))
@@ -210,10 +206,22 @@ public class RollMessage extends JDialog {
     }
 
     private Integer calculateDiceValue() {
-         int skillPoint = clone.getSkills()[skills.getSelectedIndex()].getValue();
-         int statPoint = clone.getStats()[stats.getSelectedIndex()].getValue();
-         int positiveModifiers = positive.values().stream().mapToInt(Integer::intValue).sum();
-         int negativeModifiers = negative.values().stream().mapToInt(Integer::intValue).sum();
-         return skillPoint + statPoint + positiveModifiers - negativeModifiers;
+        if (
+            skills.getSelectedItem() == null ||
+                stats.getSelectedItem() == null
+        ) return 0;
+
+        int skillPoint = clone.getAttribute(skills.getSelectedItem().toString());
+        int statPoint = clone.getAttribute(stats.getSelectedItem().toString());
+        int positiveModifiers = positive.values().stream().mapToInt(Integer::intValue).sum();
+        int negativeModifiers = negative.values().stream().mapToInt(Integer::intValue).sum();
+        return skillPoint + statPoint + positiveModifiers - negativeModifiers;
+    }
+
+    private void updateStats(Object selection, JLabel label) {
+        if( selection == null) return;
+        label.setText(clone.getAttribute(selection.toString()).toString());
+        lbText.setToolTipText(updateTooltipText());
+        lbDiceValue.setText(calculateDiceValue().toString());
     }
 }

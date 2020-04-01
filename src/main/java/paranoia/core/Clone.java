@@ -1,15 +1,17 @@
 package paranoia.core;
 
+import paranoia.core.cpu.ParanoiaAttribute;
 import paranoia.core.cpu.Skill;
 import paranoia.core.cpu.Stat;
 import paranoia.visuals.clones.ClonePanel;
 import paranoia.visuals.clones.SelfPanel;
+import paranoia.visuals.panels.SkillPanel;
 import paranoia.visuals.rnd.ParanoiaCard;
 
 import javax.swing.JPanel;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,8 +32,7 @@ public class Clone implements Cloneable, ICoreTechPart {
     private BufferedImage profilePicture;
 
     private Map<String, String> info = new LinkedHashMap<>();
-    private List<Skill> skills = Arrays.asList(Skill.values());
-    private List<Stat> stats = Arrays.asList(Stat.values());
+    private Map<String, ParanoiaAttribute> attributes = new HashMap<>();
     private List<ParanoiaCard> cards = new ArrayList<>();
 
     public Clone(
@@ -51,6 +52,14 @@ public class Clone implements Cloneable, ICoreTechPart {
         this.gender = "MALE";
         this.cloneID = 1;
         this.profilePicture = image;
+
+        //Create Skills and Stats
+        for (Stat stat : Stat.values())
+            attributes.put(stat.toString(), new ParanoiaAttribute(stat.toString(), 0));
+
+        for (Skill skill : Skill.values())
+            attributes.put(skill.toString(), new ParanoiaAttribute(skill.toString(), 0));
+
         //TODO: remove later
         setUpSkillsNStats();
 
@@ -60,37 +69,29 @@ public class Clone implements Cloneable, ICoreTechPart {
     }
 
     private void setUpSkillsNStats() {
-        setStat(Stat.VIOLENCE, 3);
-        setStat(Stat.BRAINS, 1);
-        setStat(Stat.CHUTZPAH, 1);
-        setStat(Stat.MECHANICS, 2);
+        setAttribute(Stat.VIOLENCE.toString(), 3);
+        setAttribute(Stat.BRAINS.toString(), 1);
+        setAttribute(Stat.CHUTZPAH.toString(), 1);
+        setAttribute(Stat.MECHANICS.toString(), 2);
 
-        setSkill(Skill.GUNS, 3);
-        setSkill(Skill.MELEE, 4);
-        setSkill(Skill.THROW, -2);
-        setSkill(Skill.ALPHA_COMPLEX, 1);
-        setSkill(Skill.BLUFF, 5);
-        setSkill(Skill.CHARM, -5);
-        setSkill(Skill.INTIMIDATE, -1);
-        setSkill(Skill.ENGINEER, -3);
-        setSkill(Skill.PROGRAM, 2);
-        setSkill(Skill.DEMOLITIONS, -4);
+        setAttribute(Skill.GUNS.toString(), 3);
+        setAttribute(Skill.MELEE.toString(), 4);
+        setAttribute(Skill.THROW.toString(), -2);
+        setAttribute(Skill.ALPHA_COMPLEX.toString(), 1);
+        setAttribute(Skill.BLUFF.toString(), 5);
+        setAttribute(Skill.CHARM.toString(), -5);
+        setAttribute(Skill.INTIMIDATE.toString(), -1);
+        setAttribute(Skill.ENGINEER.toString(), -3);
+        setAttribute(Skill.PROGRAM.toString(), 2);
+        setAttribute(Skill.DEMOLITIONS.toString(), -4);
     }
 
-    public void setSkill(Skill skill, int value) {
-        skills.get(skill.ordinal()).setValue(value);
+    public void setAttribute(String name, int value) {
+        attributes.get(name).setValue(value);
     }
 
-    public void setStat(Stat stat, int value) {
-        stats.get(stat.ordinal()).setValue(value);
-    }
-
-    public Skill[] getSkills() {
-        return skills.toArray(new Skill[0]);
-    }
-
-    public Stat[] getStats() {
-        return stats.toArray(new Stat[0]);
+    public Integer getAttribute(String name) {
+        return attributes.get(name).getValue();
     }
 
     public void addCard(ParanoiaCard card) {
@@ -141,5 +142,9 @@ public class Clone implements Cloneable, ICoreTechPart {
         return  cards.stream().filter( card -> card.getType().equals(ParanoiaCard.CardType.SECRET_SOCIETY) ||
             card.getType().equals(ParanoiaCard.CardType.MUTATION) ||
             card.getType().equals(ParanoiaCard.CardType.BONUS_DUTY)).collect(Collectors.toList());
+    }
+
+    public SkillPanel getSkillPanel() {
+        return new SkillPanel(attributes);
     }
 }

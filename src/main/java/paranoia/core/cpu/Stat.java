@@ -1,17 +1,19 @@
 package paranoia.core.cpu;
 
 public enum Stat {
-    VIOLENCE,
-    BRAINS,
-    CHUTZPAH,
-    MECHANICS;
 
-    private int value;
+    VIOLENCE("Violence"),
+    BRAINS("Brains"),
+    CHUTZPAH("Chutzpah"),
+    MECHANICS("Mechanics");
 
-    public Integer getValue() {
-        return value;
+    private String name;
+
+    Stat(String name) {
+        this.name = name;
     }
-    public void setValue(int value) {
-        this.value = value;
+
+    public String toString() {
+        return name;
     }
 }

@@ -1,5 +1,6 @@
 package paranoia.services.hpdmc;
 
+import paranoia.core.cpu.ParanoiaAttribute;
 import paranoia.core.cpu.Skill;
 import paranoia.core.cpu.Stat;
 import paranoia.visuals.rnd.ActionCard;
@@ -87,17 +88,20 @@ public class CardDecoder {
             int modifier = record.get(2);
             int level = record.get(3);
             int size = record.get(4);
+            String modifierName;
 
             EquipmentCard.EquipmentSize eqSize =
                 EquipmentCard.EquipmentSize.values()[size];
 
             if( modifier < Stat.values().length ) {
                 Stat statModifier = Stat.values()[modifier];
-                list.add(new EquipmentCard(id, order, statModifier, level, eqSize));
+                modifierName = statModifier.toString();
             } else {
                 Skill skillModifier = Skill.values()[modifier - 3];
-                list.add(new EquipmentCard(id, order, skillModifier, level, eqSize));
+                modifierName = skillModifier.toString();
             }
+
+            list.add(new EquipmentCard(id, order, new ParanoiaAttribute(modifierName), level, eqSize));
         }
         return list;
     }
