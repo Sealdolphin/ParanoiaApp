@@ -1,6 +1,7 @@
 package paranoia.visuals.mechanics;
 
 import paranoia.services.hpdmc.ResourceManager;
+import paranoia.visuals.ComponentName;
 
 import javax.swing.JPanel;
 import java.awt.GridLayout;
@@ -10,12 +11,13 @@ public class Moxie extends ParanoiaMechanic {
     public static final int MOXIE_COUNT = 8;
     private Boolean disabled = false;
 
-    public Moxie(Boolean active, Integer size) {
+    public Moxie(Boolean active, Integer size, Integer order) {
         super(
             active,
             ResourceManager.getResource(ResourceManager.ResourceIcon.MOXIE),
             ResourceManager.getResource(ResourceManager.ResourceIcon.MOXIE_OFF),
-            size
+            size,
+            ComponentName.MOXIE + order.toString()
         );
     }
 
@@ -28,6 +30,11 @@ public class Moxie extends ParanoiaMechanic {
     public void activate(Boolean active) {
         if(disabled) imgDisabled = ResourceManager.getResource(ResourceManager.ResourceIcon.MOXIE_CROSSED);
         super.activate(active && !disabled);
+    }
+
+    @Override
+    public ComponentName getPanelName() {
+        return ComponentName.MOXIE_PANEL;
     }
 
     public static JPanel createMoxiePanel(int active, int crossedOut) {

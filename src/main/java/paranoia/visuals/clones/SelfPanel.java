@@ -1,6 +1,7 @@
 package paranoia.visuals.clones;
 
 import paranoia.core.SecurityClearance;
+import paranoia.visuals.ComponentName;
 import paranoia.visuals.custom.ParanoiaImage;
 import paranoia.visuals.mechanics.Injury;
 import paranoia.visuals.mechanics.Moxie;
@@ -30,6 +31,7 @@ public class SelfPanel extends JPanel {
         GroupLayout layout = new GroupLayout(this);
         setLayout(layout);
         setBackground(PARANOIA_BACKGROUND);
+        setName(ComponentName.SELF_PANEL.name());
 
         Map<String, String> infoPanel = new LinkedHashMap<>();
         infoPanel.put("CITIZEN",fullName);
