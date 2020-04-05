@@ -23,6 +23,8 @@ import paranoia.visuals.mechanics.TreasonStar;
 import paranoia.visuals.panels.CardPanel;
 import paranoia.visuals.rnd.ParanoiaCard;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 
@@ -38,6 +40,9 @@ public class MainFrameTest extends AssertJSwingJUnitTestCase {
 
     private int[] actionCards;
     private int[] equipmentCards;
+    private int mutationCard;
+    private int secretSocietyCard;
+    private int bonusDutyCard;
 
     @BeforeClass
     public static void setupOnce() {
@@ -52,6 +57,9 @@ public class MainFrameTest extends AssertJSwingJUnitTestCase {
         testClone = new Clone(testCloneName, testCloneSector, testCloneClearance, testStars, null);
         actionCards = new int[testCards];
         equipmentCards = new int[testCards];
+        mutationCard = new Random().nextInt(ParanoiaCard.MUTATION_CARDS);
+        secretSocietyCard = new Random().nextInt(ParanoiaCard.SECRET_SOCIETY_CARDS);
+        bonusDutyCard = new Random().nextInt(ParanoiaCard.BONUS_DUTY_CARDS);
 
         for (int i = 0; i < testCards; i++) {
             actionCards[i] = new Random().nextInt(ParanoiaCard.ACTION_CARDS);
@@ -60,6 +68,9 @@ public class MainFrameTest extends AssertJSwingJUnitTestCase {
             testClone.addCard(Computer.getActionCard(actionCards[i]));
             testClone.addCard(Computer.getEquipmentCard(equipmentCards[i]));
         }
+        testClone.addCard(Computer.getMutationCard(mutationCard));
+        testClone.addCard(Computer.getSecretSocietyCard(secretSocietyCard));
+        testClone.addCard(Computer.getBonusDutyCard(bonusDutyCard));
 
         CerebrealCoretech frame = GuiActionRunner.execute(() -> new CerebrealCoretech(testClone));
         window = new FrameFixture(robot(), frame);
@@ -67,8 +78,8 @@ public class MainFrameTest extends AssertJSwingJUnitTestCase {
     }
 
     @Test
-    public void ActionCardsTest() {
-        JTabbedPaneFixture cardSkillPanel = window.tabbedPane().selectTab(0);
+    public void actionCardsTest() {
+        window.tabbedPane().selectTab(0);
         JPanelFixture cardPanel = window.panel(ComponentName.CARD_PANEL.name());
         int allCards = cardPanel.targetCastedTo(CardPanel.class).getCards();
         Assert.assertEquals(allCards, testCards);
@@ -83,8 +94,8 @@ public class MainFrameTest extends AssertJSwingJUnitTestCase {
     }
 
     @Test
-    public void EquipmentCardsTest() {
-        JTabbedPaneFixture cardSkillPanel = window.tabbedPane().selectTab(1);
+    public void equipmentCardsTest() {
+        window.tabbedPane().selectTab(1);
         JPanelFixture cardPanel = window.panel(ComponentName.CARD_PANEL.name());
         int allCards = cardPanel.targetCastedTo(CardPanel.class).getCards();
         Assert.assertEquals(allCards, testCards);
@@ -99,7 +110,27 @@ public class MainFrameTest extends AssertJSwingJUnitTestCase {
     }
 
     @Test
-    public void CardSkillPanelTest() {
+    public void miscCards() {
+        window.tabbedPane().selectTab(2);
+        JPanelFixture cardPanel = window.panel(ComponentName.CARD_PANEL.name());
+        int allCards = cardPanel.targetCastedTo(CardPanel.class).getCards();
+        Assert.assertEquals(allCards, 3);
+        Map<ParanoiaCard.CardType, Integer> cardMap = new HashMap<>();
+        cardMap.put(ParanoiaCard.CardType.SECRET_SOCIETY, secretSocietyCard);
+        cardMap.put(ParanoiaCard.CardType.BONUS_DUTY, bonusDutyCard);
+        cardMap.put(ParanoiaCard.CardType.MUTATION, mutationCard);
+
+        cardMap.forEach((key, value) -> {
+            JPanelFixture card = cardPanel.panel(key + value.toString());
+            ParanoiaCard trueCard = card.targetCastedTo(ParanoiaCard.class);
+            Assert.assertEquals(trueCard.getType(), key);
+            Assert.assertEquals(trueCard.getId(), value.intValue());
+        });
+
+    }
+
+    @Test
+    public void cardSkillPanelTest() {
         JTabbedPaneFixture cardSkillPanel = window.tabbedPane();
         cardSkillPanel.requireEnabled();
         cardSkillPanel.requireSelectedTab(Index.atIndex(0));
@@ -114,7 +145,7 @@ public class MainFrameTest extends AssertJSwingJUnitTestCase {
     }
 
     @Test
-    public void SelfPanelTest() {
+    public void selfPanelTest() {
         //Check for basic panels
         JPanelFixture selfPanel = window.panel(ComponentName.SELF_PANEL.name());
         JPanelFixture starPanel = selfPanel.panel(ComponentName.TREASON_STAR_PANEL.name());
