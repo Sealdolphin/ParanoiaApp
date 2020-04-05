@@ -6,7 +6,7 @@ import paranoia.core.SecurityClearance;
 import paranoia.core.cpu.Skill;
 import paranoia.core.cpu.Stat;
 import paranoia.services.hpdmc.ControlUnit;
-import paranoia.services.hpdmc.ResourceManager;
+import paranoia.services.plc.ResourceManager;
 import paranoia.visuals.RollMessage;
 import paranoia.visuals.rnd.ParanoiaCard;
 

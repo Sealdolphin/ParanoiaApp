@@ -1,6 +1,6 @@
 package paranoia.visuals.mechanics;
 
-import paranoia.services.hpdmc.ResourceManager;
+import paranoia.services.plc.ResourceManager;
 import paranoia.visuals.ComponentName;
 
 import javax.swing.JPanel;
