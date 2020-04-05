@@ -6,7 +6,10 @@ public enum ComponentName {
     INJURY_PANEL,
     MOXIE_PANEL,
     CLONE_PANEL,
+    INFO_PANEL,
     TREASON_STAR,
     MOXIE,
-    INJURY
+    INJURY,
+    CARD_PANEL,
+    CARD_SKILL_PANEL
 }

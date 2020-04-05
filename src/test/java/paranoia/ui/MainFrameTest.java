@@ -6,23 +6,38 @@ import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
 import org.assertj.swing.fixture.JPanelFixture;
 import org.assertj.swing.fixture.JTabbedPaneFixture;
+import org.assertj.swing.fixture.JTextComponentFixture;
 import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import paranoia.core.Clone;
+import paranoia.core.Computer;
 import paranoia.core.SecurityClearance;
 import paranoia.visuals.CerebrealCoretech;
 import paranoia.visuals.ComponentName;
 import paranoia.visuals.mechanics.Injury;
 import paranoia.visuals.mechanics.Moxie;
 import paranoia.visuals.mechanics.TreasonStar;
+import paranoia.visuals.panels.CardPanel;
+import paranoia.visuals.rnd.ParanoiaCard;
+
+import java.util.Random;
 
 
 public class MainFrameTest extends AssertJSwingJUnitTestCase {
 
     private FrameFixture window;
     private Clone testClone;
+    private static final String testCloneName = "test";
+    private static final String testCloneSector = "TST";
+    private static final SecurityClearance testCloneClearance = SecurityClearance.INFRARED;
+    private static final int testStars = 2;
+    private static final int testCards = 4;
+
+    private int[] actionCards;
+    private int[] equipmentCards;
 
     @BeforeClass
     public static void setupOnce() {
@@ -31,12 +46,56 @@ public class MainFrameTest extends AssertJSwingJUnitTestCase {
 
     @Before
     public void onSetUp(){
+        GuiActionRunner.execute(Computer::initDatabase);
+
         //create test clone
-        testClone = new Clone("Test", "TST", SecurityClearance.INFRARED, 0, null);
+        testClone = new Clone(testCloneName, testCloneSector, testCloneClearance, testStars, null);
+        actionCards = new int[testCards];
+        equipmentCards = new int[testCards];
+
+        for (int i = 0; i < testCards; i++) {
+            actionCards[i] = new Random().nextInt(ParanoiaCard.ACTION_CARDS);
+            equipmentCards[i] = new Random().nextInt(ParanoiaCard.EQUIPMENT_CARDS);
+
+            testClone.addCard(Computer.getActionCard(actionCards[i]));
+            testClone.addCard(Computer.getEquipmentCard(equipmentCards[i]));
+        }
 
         CerebrealCoretech frame = GuiActionRunner.execute(() -> new CerebrealCoretech(testClone));
         window = new FrameFixture(robot(), frame);
         window.show();
+    }
+
+    @Test
+    public void ActionCardsTest() {
+        JTabbedPaneFixture cardSkillPanel = window.tabbedPane().selectTab(0);
+        JPanelFixture cardPanel = window.panel(ComponentName.CARD_PANEL.name());
+        int allCards = cardPanel.targetCastedTo(CardPanel.class).getCards();
+        Assert.assertEquals(allCards, testCards);
+        //Action cards
+        for (int i = 0; i < allCards; i++) {
+            String panelName = ParanoiaCard.CardType.ACTION.name() + actionCards[i];
+            JPanelFixture card = cardPanel.panel(panelName);
+            ParanoiaCard trueCard = card.targetCastedTo(ParanoiaCard.class);
+            Assert.assertEquals(trueCard.getType(), ParanoiaCard.CardType.ACTION);
+            Assert.assertEquals(trueCard.getId(), actionCards[i]);
+        }
+    }
+
+    @Test
+    public void EquipmentCardsTest() {
+        JTabbedPaneFixture cardSkillPanel = window.tabbedPane().selectTab(1);
+        JPanelFixture cardPanel = window.panel(ComponentName.CARD_PANEL.name());
+        int allCards = cardPanel.targetCastedTo(CardPanel.class).getCards();
+        Assert.assertEquals(allCards, testCards);
+        //Equipment Cards
+        for (int i = 0; i < allCards; i++) {
+            String panelName = ParanoiaCard.CardType.EQUIPMENT.name() + equipmentCards[i];
+            JPanelFixture card = cardPanel.panel(panelName);
+            ParanoiaCard trueCard = card.targetCastedTo(ParanoiaCard.class);
+            Assert.assertEquals(trueCard.getType(), ParanoiaCard.CardType.EQUIPMENT);
+            Assert.assertEquals(trueCard.getId(), equipmentCards[i]);
+        }
     }
 
     @Test
@@ -50,15 +109,18 @@ public class MainFrameTest extends AssertJSwingJUnitTestCase {
             "Miscellaneous cards",
             "Skills and Stats"
         );
+
+        Assert.assertEquals(4, cardSkillPanel.target().getTabCount());
     }
 
     @Test
     public void SelfPanelTest() {
+        //Check for basic panels
         JPanelFixture selfPanel = window.panel(ComponentName.SELF_PANEL.name());
         JPanelFixture starPanel = selfPanel.panel(ComponentName.TREASON_STAR_PANEL.name());
         JPanelFixture injuryPanel = selfPanel.panel(ComponentName.INJURY_PANEL.name());
         JPanelFixture moxiePanel = selfPanel.panel(ComponentName.MOXIE_PANEL.name());
-
+        //Checking little panel details
         for (int i = 0; i < TreasonStar.TREASON_STAR_COUNT; i++) {
             starPanel.panel(ComponentName.TREASON_STAR + Integer.toString(i)).requireEnabled();
         }
@@ -68,5 +130,8 @@ public class MainFrameTest extends AssertJSwingJUnitTestCase {
         for (int i = 0; i < Injury.INJURY_COUNT; i++) {
             injuryPanel.panel(ComponentName.INJURY + Integer.toString(i)).requireEnabled();
         }
+        //Checking label
+        JTextComponentFixture infoPanel = selfPanel.textBox(ComponentName.INFO_PANEL.name());
+        infoPanel.requireText("///CITIZEN: test-I-TST-1" + System.lineSeparator() +"///XP POINTS: 0");
     }
 }

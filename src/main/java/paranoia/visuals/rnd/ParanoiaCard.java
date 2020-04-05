@@ -80,6 +80,7 @@ public abstract class ParanoiaCard extends ParanoiaImage {
         this.type = type;
         this.actionOrder = actionOrder;
         this.id = id;
+        setName(type.name() + id);
     }
 
     public abstract String toString();
@@ -93,24 +94,28 @@ public abstract class ParanoiaCard extends ParanoiaImage {
     }
 
     private static BufferedImage getCardImage(CardType type, int id) {
-        switch (type) {
-            case ACTION:
-                if (id >= ACTION_CARDS) return null;
-                return actionCards.get(id);
-            case MUTATION:
-                if (id >= MUTATION_CARDS) return null;
-                return mutationCards.get(id);
-            case EQUIPMENT:
-                if (id >= EQUIPMENT_CARDS) return null;
-                return equipmentCards.get(id);
-            case BONUS_DUTY:
-                if (id >= BONUS_DUTY_CARDS) return null;
-                return bonusDutyCards.get(id);
-            case SECRET_SOCIETY:
-                if (id >= SECRET_SOCIETY_CARDS) return null;
-                return secretSocietyCards.get(id);
-            default:
-                return null;
+        try {
+            switch (type) {
+                case ACTION:
+                    if (id >= ACTION_CARDS) return null;
+                    return actionCards.get(id);
+                case MUTATION:
+                    if (id >= MUTATION_CARDS) return null;
+                    return mutationCards.get(id);
+                case EQUIPMENT:
+                    if (id >= EQUIPMENT_CARDS) return null;
+                    return equipmentCards.get(id);
+                case BONUS_DUTY:
+                    if (id >= BONUS_DUTY_CARDS) return null;
+                    return bonusDutyCards.get(id);
+                case SECRET_SOCIETY:
+                    if (id >= SECRET_SOCIETY_CARDS) return null;
+                    return secretSocietyCards.get(id);
+                default:
+                    return null;
+            }
+        } catch (IndexOutOfBoundsException ignored) {
+            return null;
         }
     }
 }
