@@ -14,7 +14,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.LayoutStyle;
 import javax.swing.WindowConstants;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static paranoia.Paranoia.PARANOIA_BACKGROUND;
@@ -22,27 +22,27 @@ import static paranoia.Paranoia.PARANOIA_BACKGROUND;
 public class CerebrealCoretech extends JFrame {
 
     private List<Clone> troubleShooters;
-    private List<Mission> missionFeed = new ArrayList<>();
     private Clone self;
-    private GroupLayout layout;
 
+    private GroupLayout layout;
+    //Assets
     private JScrollPane troubleShooterPanel;
     private JScrollPane missionPanel;
     private JPanel selfPanel;
-    private JTabbedPane cardStatPanel;
 
     private Boolean isFullScreen = false;
 
     public CerebrealCoretech(Clone self) {
-        this(self, new ArrayList<>());
+        this(self, Collections.emptyList());
     }
 
-    public CerebrealCoretech(
+    private CerebrealCoretech(
         Clone self,
         List<Clone> troubleShooters
     ) {
         this.self = self;
         this.troubleShooters = troubleShooters;
+        missionPanel = new MissionPanel(Collections.emptyList()).getScrollPanel();
 
         layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -51,19 +51,6 @@ public class CerebrealCoretech extends JFrame {
         setTitle("Paranoia");
         //Setup visuals
         getContentPane().setBackground(PARANOIA_BACKGROUND);
-
-        //TODO: remove later
-        Mission m0 = new Mission("Secure the package", "Quest given by the Computer. Reward: 500 XP points");
-        Mission m1 = new Mission("Disable terrorist bomb", "Quest given by the Computer. Reward: 300 XP points");
-        Mission m2 = new Mission(
-            "Don't let the Commies take the package", "Quest for IntSec. Reward: Elevated security cake",
-            Mission.MissionPriority.OPTIONAL
-        );
-        m0.complete();
-        m2.fail();
-        missionFeed.add(m0);
-        missionFeed.add(m1);
-        missionFeed.add(m2);
 
         //Assets
         refreshLayout();
@@ -95,15 +82,19 @@ public class CerebrealCoretech extends JFrame {
         return new TroubleShooterPanel(troubleShooters).getScrollPane();
     }
 
-    private JScrollPane createMissionPanel() {
-        return new MissionPanel(missionFeed).getScrollPanel();
+    public void updateMissionPanel(
+        List<Mission> missionFeed
+    ) {
+        JScrollPane newMissionPanel =
+            new MissionPanel(missionFeed).getScrollPanel();
+        layout.replace(missionPanel, newMissionPanel);
+        missionPanel = newMissionPanel;
     }
 
     private void refreshLayout() {
         troubleShooterPanel = createTroubleShooterPanel();
-        missionPanel = createMissionPanel();
         selfPanel = self.getSelfVisual();
-        cardStatPanel = new CardStatHolderPanel(
+        JTabbedPane cardStatPanel = new CardStatHolderPanel(
             self.getCards(ParanoiaCard.CardType.ACTION),
             self.getCards(ParanoiaCard.CardType.EQUIPMENT),
             self.getMiscCards(),

@@ -1,6 +1,7 @@
 package paranoia.visuals.panels;
 
 import paranoia.core.cpu.Mission;
+import paranoia.visuals.ComponentName;
 
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
@@ -21,6 +22,7 @@ public class MissionPanel extends JPanel {
         lbTitle.setFont(new Font("Segoe", Font.BOLD, 25));
         lbTitle.setAlignmentX(Component.LEFT_ALIGNMENT);
         add(lbTitle);
+        setName(ComponentName.MISSION_PANEL.name());
 
         missionFeed.stream().filter(m -> m.getPriority().equals(Mission.MissionPriority.REQUIRED)).forEach(m  -> {
             JComponent v = m.getVisual();
@@ -40,7 +42,6 @@ public class MissionPanel extends JPanel {
 
         setOpaque(false);
     }
-
 
     public JScrollPane getScrollPanel() {
         JScrollPane pane = new JScrollPane(

@@ -11,5 +11,7 @@ public enum ComponentName {
     MOXIE,
     INJURY,
     CARD_PANEL,
-    CARD_SKILL_PANEL
+    CARD_SKILL_PANEL,
+    MISSION_PANEL,
+    MISSION
 }

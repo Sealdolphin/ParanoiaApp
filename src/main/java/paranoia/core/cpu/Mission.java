@@ -2,6 +2,7 @@ package paranoia.core.cpu;
 
 import paranoia.core.ICoreTechPart;
 import paranoia.services.hpdmc.ResourceManager;
+import paranoia.visuals.ComponentName;
 import paranoia.visuals.custom.ParanoiaImage;
 
 import javax.swing.JPanel;
@@ -29,21 +30,25 @@ public class Mission implements ICoreTechPart {
     private Boolean completed;
     private MissionPriority priority;
 
+    private int id;
     private String title;
     private String description;
 
     public Mission(
+        int id,
         String title,
         String description
     ) {
-        this(title, description, MissionPriority.REQUIRED);
+        this(id, title, description, MissionPriority.REQUIRED);
     }
 
     public Mission(
+        int id,
         String title,
         String description,
         MissionPriority priority
     ) {
+        this.id = id;
         this.title = title;
         this.description = description;
         this.priority = priority;
@@ -53,6 +58,20 @@ public class Mission implements ICoreTechPart {
 
     public Boolean isCompleted() {
         return completed && !failed;
+    }
+
+    public Boolean isFailed() { return failed; }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     public void complete() {
@@ -78,6 +97,7 @@ public class Mission implements ICoreTechPart {
     @Override
     public JPanel getVisual() {
         JTextArea missionText = new JTextArea(title);
+        missionText.setName(ComponentName.MISSION.name() + id);
         missionText.setToolTipText(description);
         missionText.setEditable(false);
         missionText.setForeground(

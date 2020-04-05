@@ -7,11 +7,11 @@ import paranoia.core.cpu.Skill;
 import paranoia.core.cpu.Stat;
 import paranoia.services.hpdmc.ControlUnit;
 import paranoia.services.hpdmc.ResourceManager;
-import paranoia.visuals.CerebrealCoretech;
 import paranoia.visuals.RollMessage;
 import paranoia.visuals.rnd.ParanoiaCard;
 
 import javax.imageio.ImageIO;
+import javax.swing.JFrame;
 import java.awt.Color;
 import java.awt.Frame;
 import java.awt.image.BufferedImage;
@@ -69,15 +69,15 @@ public class Paranoia {
         clone4.addCard(Computer.getSecretSocietyCard(3));
         clone4.addCard(Computer.getBonusDutyCard(3));
 
-        ControlUnit cpu = new ControlUnit();
-        CerebrealCoretech coreTech = new CerebrealCoretech(clone4);
+        ControlUnit cpu = new ControlUnit(clone4);
+        JFrame coreTech = cpu.getVisuals();
         coreTech.setExtendedState(Frame.MAXIMIZED_BOTH);
 
-        coreTech.addClone(clone0);
-        coreTech.addClone(clone1);
-        coreTech.addClone(clone2);
-        coreTech.addClone(clone3);
-        coreTech.setSelf(clone4);
+//        coreTech.addClone(clone0);
+//        coreTech.addClone(clone1);
+//        coreTech.addClone(clone2);
+//        coreTech.addClone(clone3);
+//        coreTech.setSelf(clone4);
         coreTech.setVisible(true);
 
         //TODO: remove later

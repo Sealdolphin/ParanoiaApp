@@ -15,7 +15,8 @@ import org.junit.Test;
 import paranoia.core.Clone;
 import paranoia.core.Computer;
 import paranoia.core.SecurityClearance;
-import paranoia.visuals.CerebrealCoretech;
+import paranoia.core.cpu.Mission;
+import paranoia.services.hpdmc.ControlUnit;
 import paranoia.visuals.ComponentName;
 import paranoia.visuals.mechanics.Injury;
 import paranoia.visuals.mechanics.Moxie;
@@ -23,6 +24,9 @@ import paranoia.visuals.mechanics.TreasonStar;
 import paranoia.visuals.panels.CardPanel;
 import paranoia.visuals.rnd.ParanoiaCard;
 
+import javax.swing.JFrame;
+import java.awt.Color;
+import java.awt.font.TextAttribute;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -32,17 +36,22 @@ public class MainFrameTest extends AssertJSwingJUnitTestCase {
 
     private FrameFixture window;
     private Clone testClone;
+    private ControlUnit controller;
     private static final String testCloneName = "test";
     private static final String testCloneSector = "TST";
     private static final SecurityClearance testCloneClearance = SecurityClearance.INFRARED;
     private static final int testStars = 2;
     private static final int testCards = 4;
 
+    //Cards
     private int[] actionCards;
     private int[] equipmentCards;
     private int mutationCard;
     private int secretSocietyCard;
     private int bonusDutyCard;
+
+    //Missions
+    private Mission[] testMissions;
 
     @BeforeClass
     public static void setupOnce() {
@@ -55,6 +64,9 @@ public class MainFrameTest extends AssertJSwingJUnitTestCase {
 
         //create test clone
         testClone = new Clone(testCloneName, testCloneSector, testCloneClearance, testStars, null);
+        controller = GuiActionRunner.execute(() -> new ControlUnit(testClone));
+
+        //Setup Cards
         actionCards = new int[testCards];
         equipmentCards = new int[testCards];
         mutationCard = new Random().nextInt(ParanoiaCard.MUTATION_CARDS);
@@ -64,7 +76,6 @@ public class MainFrameTest extends AssertJSwingJUnitTestCase {
         for (int i = 0; i < testCards; i++) {
             actionCards[i] = new Random().nextInt(ParanoiaCard.ACTION_CARDS);
             equipmentCards[i] = new Random().nextInt(ParanoiaCard.EQUIPMENT_CARDS);
-
             testClone.addCard(Computer.getActionCard(actionCards[i]));
             testClone.addCard(Computer.getEquipmentCard(equipmentCards[i]));
         }
@@ -72,8 +83,22 @@ public class MainFrameTest extends AssertJSwingJUnitTestCase {
         testClone.addCard(Computer.getSecretSocietyCard(secretSocietyCard));
         testClone.addCard(Computer.getBonusDutyCard(bonusDutyCard));
 
-        CerebrealCoretech frame = GuiActionRunner.execute(() -> new CerebrealCoretech(testClone));
-        window = new FrameFixture(robot(), frame);
+        //Missions
+        testMissions = new Mission[4];
+        for (int i = 0; i < testMissions.length; i++) {
+            int index = i;
+            Mission.MissionPriority priority = i == testMissions.length - 1 ?
+                    Mission.MissionPriority.REQUIRED : Mission.MissionPriority.OPTIONAL;
+            testMissions[i] = new Mission(
+                new Random().nextInt(), "Test Mission",
+                "This is a test", priority
+            );
+//            GuiActionRunner.execute(() -> coreTech.addMission(testMissions[index]));
+        }
+
+        //showing window
+        JFrame coreTech = controller.getVisuals();
+        window = new FrameFixture(robot(), coreTech);
         window.show();
     }
 
@@ -164,5 +189,33 @@ public class MainFrameTest extends AssertJSwingJUnitTestCase {
         //Checking label
         JTextComponentFixture infoPanel = selfPanel.textBox(ComponentName.INFO_PANEL.name());
         infoPanel.requireText("///CITIZEN: test-I-TST-1" + System.lineSeparator() +"///XP POINTS: 0");
+    }
+
+    @Test
+    public void missionPanelTest() {
+        //Locate mission panel
+        JPanelFixture missionPanel = window.panel(ComponentName.MISSION_PANEL.name());
+        //Locate mission labels
+
+        //Test for missions
+        for (Mission mission : testMissions) {
+            JTextComponentFixture missionBox =
+                missionPanel.textBox(ComponentName.MISSION.name() + mission.getId());
+
+            missionBox.requireNotEditable();
+            missionBox.requireText(mission.getTitle());
+            missionBox.requireToolTip(mission.getDescription());
+            missionBox.foreground().requireEqualTo(Color.BLACK);
+            mission.complete();
+            missionBox.foreground().requireEqualTo(Color.BLACK);
+            mission.fail();
+            missionBox.foreground().requireEqualTo(new Color(185, 0, 0));
+            Assert.assertEquals(
+                missionBox.font().target().getAttributes().get(TextAttribute.STRIKETHROUGH),
+                TextAttribute.STRIKETHROUGH_ON
+            );
+        }
+
+        //Test for secondary missions
     }
 }
