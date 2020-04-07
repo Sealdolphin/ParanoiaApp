@@ -2,6 +2,7 @@ package paranoia.services.hpdmc;
 
 import paranoia.core.Clone;
 import paranoia.core.ICoreTechPart;
+import paranoia.services.hpdmc.manager.CardManager;
 import paranoia.services.hpdmc.manager.MissionManager;
 import paranoia.services.hpdmc.manager.ParanoiaManager;
 import paranoia.visuals.CerebrealCoretech;
@@ -22,6 +23,9 @@ public class ControlUnit {
     public ControlUnit(Clone clone) {
         managerMap = new HashMap<>();
         managerMap.put(ComponentName.MISSION_PANEL, new MissionManager());
+        managerMap.put(ComponentName.ACTION_CARD_PANEL, new CardManager());
+        managerMap.put(ComponentName.EQUIPMENT_CARD_PANEL, new CardManager());
+        managerMap.put(ComponentName.MISC_CARD_PANEL, new CardManager());
         //Setup managers
 
         visuals = new CerebrealCoretech(clone, this);

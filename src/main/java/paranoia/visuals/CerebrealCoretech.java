@@ -2,8 +2,7 @@ package paranoia.visuals;
 
 import paranoia.core.Clone;
 import paranoia.services.hpdmc.ControlUnit;
-import paranoia.services.rnd.ParanoiaCard;
-import paranoia.visuals.panels.CardStatHolderPanel;
+import paranoia.visuals.panels.CardPanel;
 import paranoia.visuals.panels.MissionPanel;
 import paranoia.visuals.panels.TroubleShooterPanel;
 
@@ -29,6 +28,7 @@ public class CerebrealCoretech extends JFrame {
     private JScrollPane troubleShooterPanel;
     private JScrollPane missionPanel;
     private JPanel selfPanel;
+    private JTabbedPane cardStatPanel;
 
     private Boolean isFullScreen = false;
 
@@ -45,9 +45,8 @@ public class CerebrealCoretech extends JFrame {
         this.self = self;
         this.troubleShooters = troubleShooters;
         //noinspection unchecked
-        missionPanel = new MissionPanel(
-            Collections.emptyList(), controller.getManager(ComponentName.MISSION_PANEL))
-            .getScrollPanel();
+        missionPanel = new MissionPanel(controller.getManager(ComponentName.MISSION_PANEL)).getScrollPanel();
+        cardStatPanel = createCardSkillPanel(controller);
 
         layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -62,6 +61,29 @@ public class CerebrealCoretech extends JFrame {
         //Assemble
         pack();
         setLocationRelativeTo(null);
+    }
+
+    @SuppressWarnings("unchecked")
+    private JTabbedPane createCardSkillPanel(ControlUnit controller) {
+        JPanel action = new CardPanel(
+            controller.getManager(ComponentName.ACTION_CARD_PANEL),
+            ComponentName.ACTION_CARD_PANEL
+        );
+        JPanel equipment = new CardPanel(
+            controller.getManager(ComponentName.EQUIPMENT_CARD_PANEL),
+            ComponentName.EQUIPMENT_CARD_PANEL
+        );
+        JPanel other = new CardPanel(
+            controller.getManager(ComponentName.MISC_CARD_PANEL),
+            ComponentName.MISC_CARD_PANEL
+        );
+        JTabbedPane holderPanel = new JTabbedPane();
+        holderPanel.addTab("Action cards", action);
+        holderPanel.addTab("Equipment cards", equipment);
+        holderPanel.addTab("Miscellaneous cards", other);
+        holderPanel.addTab("Skills and Stats", null);
+        holderPanel.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+        return holderPanel;
     }
 
     public void setSelf(Clone clone) {
@@ -90,12 +112,6 @@ public class CerebrealCoretech extends JFrame {
     private void refreshLayout() {
         troubleShooterPanel = createTroubleShooterPanel();
         selfPanel = self.getSelfVisual();
-        JTabbedPane cardStatPanel = new CardStatHolderPanel(
-            self.getCards(ParanoiaCard.CardType.ACTION),
-            self.getCards(ParanoiaCard.CardType.EQUIPMENT),
-            self.getMiscCards(),
-            self.getSkillPanel()
-        );
 
         //set horizontal
         layout.setHorizontalGroup(

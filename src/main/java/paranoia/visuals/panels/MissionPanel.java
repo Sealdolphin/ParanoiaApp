@@ -15,6 +15,7 @@ import javax.swing.ScrollPaneConstants;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.util.Collection;
+import java.util.Collections;
 
 public class MissionPanel extends JPanel implements ParanoiaListener<Mission> {
 
@@ -22,8 +23,9 @@ public class MissionPanel extends JPanel implements ParanoiaListener<Mission> {
     private JLabel lbTitle = new JLabel("Mission:");
     private JLabel lbOpTitle = new JLabel("Secondary objectives:");
 
-    public MissionPanel(Collection<Mission> missionModel, ParanoiaManager<Mission> cpu) {
+    public MissionPanel(ParanoiaManager<Mission> cpu) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        missionModel = Collections.emptyList();
         updateVisualDataChange(missionModel);
         cpu.addListener(this);
         setName(ComponentName.MISSION_PANEL.name());
