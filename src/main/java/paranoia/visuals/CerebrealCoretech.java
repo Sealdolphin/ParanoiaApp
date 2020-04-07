@@ -1,7 +1,7 @@
 package paranoia.visuals;
 
 import paranoia.core.Clone;
-import paranoia.core.cpu.Mission;
+import paranoia.services.hpdmc.ControlUnit;
 import paranoia.visuals.panels.CardStatHolderPanel;
 import paranoia.visuals.panels.MissionPanel;
 import paranoia.visuals.panels.TroubleShooterPanel;
@@ -32,17 +32,22 @@ public class CerebrealCoretech extends JFrame {
 
     private Boolean isFullScreen = false;
 
-    public CerebrealCoretech(Clone self) {
-        this(self, Collections.emptyList());
+    public CerebrealCoretech(Clone self, ControlUnit controller) {
+        this(self, controller, Collections.emptyList());
     }
+
 
     private CerebrealCoretech(
         Clone self,
+        ControlUnit controller,
         List<Clone> troubleShooters
     ) {
         this.self = self;
         this.troubleShooters = troubleShooters;
-        missionPanel = new MissionPanel(Collections.emptyList()).getScrollPanel();
+        //noinspection unchecked
+        missionPanel = new MissionPanel(
+            Collections.emptyList(), controller.getManager(ComponentName.MISSION_PANEL))
+            .getScrollPanel();
 
         layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -80,15 +85,6 @@ public class CerebrealCoretech extends JFrame {
 
     private JScrollPane createTroubleShooterPanel() {
         return new TroubleShooterPanel(troubleShooters).getScrollPane();
-    }
-
-    public void updateMissionPanel(
-        List<Mission> missionFeed
-    ) {
-        JScrollPane newMissionPanel =
-            new MissionPanel(missionFeed).getScrollPanel();
-        layout.replace(missionPanel, newMissionPanel);
-        missionPanel = newMissionPanel;
     }
 
     private void refreshLayout() {
