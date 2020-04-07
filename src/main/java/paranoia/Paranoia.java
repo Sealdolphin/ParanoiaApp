@@ -3,11 +3,14 @@ package paranoia;
 import paranoia.core.Clone;
 import paranoia.core.Computer;
 import paranoia.core.SecurityClearance;
+import paranoia.core.cpu.Mission;
 import paranoia.core.cpu.Skill;
 import paranoia.core.cpu.Stat;
 import paranoia.services.hpdmc.ControlUnit;
+import paranoia.services.hpdmc.manager.MissionManager;
 import paranoia.services.plc.ResourceManager;
 import paranoia.services.rnd.ParanoiaCard;
+import paranoia.visuals.ComponentName;
 import paranoia.visuals.RollMessage;
 
 import javax.imageio.ImageIO;
@@ -57,21 +60,31 @@ public class Paranoia {
         Clone clone3 = new Clone("JOE", "RTE", SecurityClearance.BLUE, 1, img3);
         Clone clone4 = new Clone("CARA", "RLY", SecurityClearance.YELLOW, 3, img4);
 
-        clone4.addCard(Computer.getActionCard(3));
-        clone4.addCard(Computer.getActionCard(7));
-        clone4.addCard(Computer.getActionCard(11));
-        clone4.addCard(Computer.getActionCard(25));
-        clone4.addCard(Computer.getEquipmentCard(0));
-        clone4.addCard(Computer.getEquipmentCard(6));
-        clone4.addCard(Computer.getEquipmentCard(18));
-        clone4.addCard(Computer.getEquipmentCard(3));
-        clone4.addCard(Computer.getMutationCard(3));
-        clone4.addCard(Computer.getSecretSocietyCard(3));
-        clone4.addCard(Computer.getBonusDutyCard(3));
-
         ControlUnit cpu = new ControlUnit(clone4);
         JFrame coreTech = cpu.getVisuals();
         coreTech.setExtendedState(Frame.MAXIMIZED_BOTH);
+
+        //Action cards
+        cpu.updateAsset(Computer.getActionCard(3), ComponentName.ACTION_CARD_PANEL);
+        cpu.updateAsset(Computer.getActionCard(7), ComponentName.ACTION_CARD_PANEL);
+        cpu.updateAsset(Computer.getActionCard(11), ComponentName.ACTION_CARD_PANEL);
+        cpu.updateAsset(Computer.getActionCard(25), ComponentName.ACTION_CARD_PANEL);
+        //Equipment cards
+        cpu.updateAsset(Computer.getEquipmentCard(0), ComponentName.EQUIPMENT_CARD_PANEL);
+        cpu.updateAsset(Computer.getEquipmentCard(6), ComponentName.EQUIPMENT_CARD_PANEL);
+        cpu.updateAsset(Computer.getEquipmentCard(18), ComponentName.EQUIPMENT_CARD_PANEL);
+        cpu.updateAsset(Computer.getEquipmentCard(3), ComponentName.EQUIPMENT_CARD_PANEL);
+        //Misc cards
+        cpu.updateAsset(Computer.getMutationCard(3), ComponentName.MISC_CARD_PANEL);
+        cpu.updateAsset(Computer.getSecretSocietyCard(3), ComponentName.MISC_CARD_PANEL);
+        cpu.updateAsset(Computer.getBonusDutyCard(3), ComponentName.MISC_CARD_PANEL);
+        //Mission
+        cpu.updateAsset(new Mission(0, "Secure the package", ""), ComponentName.MISSION_PANEL);
+        cpu.updateAsset(new Mission(1, "Disable terrorist bomb", ""), ComponentName.MISSION_PANEL);
+        cpu.updateAsset(new Mission(2, "Don't let the Commies take the package", "", Mission.MissionPriority.OPTIONAL), ComponentName.MISSION_PANEL);
+        //Setup missions
+        ((MissionManager)cpu.getManager(ComponentName.MISSION_PANEL)).updateMissionStatus(0, Mission.MissionStatus.COMPLETED);
+        ((MissionManager)cpu.getManager(ComponentName.MISSION_PANEL)).updateMissionStatus(2, Mission.MissionStatus.FAILED);
 
 //        coreTech.addClone(clone0);
 //        coreTech.addClone(clone1);
