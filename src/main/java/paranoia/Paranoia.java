@@ -7,8 +7,8 @@ import paranoia.core.cpu.Skill;
 import paranoia.core.cpu.Stat;
 import paranoia.services.hpdmc.ControlUnit;
 import paranoia.services.plc.ResourceManager;
+import paranoia.services.rnd.ParanoiaCard;
 import paranoia.visuals.RollMessage;
-import paranoia.visuals.rnd.ParanoiaCard;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;

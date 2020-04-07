@@ -1,6 +1,6 @@
 package paranoia.visuals.panels;
 
-import paranoia.visuals.rnd.ParanoiaCard;
+import paranoia.services.rnd.ParanoiaCard;
 
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;

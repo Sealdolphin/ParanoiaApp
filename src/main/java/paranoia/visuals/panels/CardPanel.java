@@ -1,7 +1,7 @@
 package paranoia.visuals.panels;
 
+import paranoia.services.rnd.ParanoiaCard;
 import paranoia.visuals.ComponentName;
-import paranoia.visuals.rnd.ParanoiaCard;
 
 import javax.swing.JPanel;
 import java.awt.GridLayout;

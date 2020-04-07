@@ -3,10 +3,10 @@ package paranoia.services.hpdmc;
 import paranoia.core.cpu.ParanoiaAttribute;
 import paranoia.core.cpu.Skill;
 import paranoia.core.cpu.Stat;
-import paranoia.visuals.rnd.ActionCard;
-import paranoia.visuals.rnd.EquipmentCard;
-import paranoia.visuals.rnd.MutationCard;
-import paranoia.visuals.rnd.ParanoiaCard;
+import paranoia.services.rnd.ActionCard;
+import paranoia.services.rnd.EquipmentCard;
+import paranoia.services.rnd.MutationCard;
+import paranoia.services.rnd.ParanoiaCard;
 
 import java.io.BufferedReader;
 import java.io.File;

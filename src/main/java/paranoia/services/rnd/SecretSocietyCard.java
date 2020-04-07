@@ -1,4 +1,4 @@
-package paranoia.visuals.rnd;
+package paranoia.services.rnd;
 
 import paranoia.visuals.custom.ParanoiaImage;
 

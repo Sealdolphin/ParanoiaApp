@@ -1,4 +1,4 @@
-package paranoia.visuals.rnd;
+package paranoia.services.rnd;
 
 import paranoia.core.cpu.ParanoiaAttribute;
 public class EquipmentCard extends ParanoiaCard {

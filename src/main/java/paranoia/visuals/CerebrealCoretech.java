@@ -2,10 +2,10 @@ package paranoia.visuals;
 
 import paranoia.core.Clone;
 import paranoia.services.hpdmc.ControlUnit;
+import paranoia.services.rnd.ParanoiaCard;
 import paranoia.visuals.panels.CardStatHolderPanel;
 import paranoia.visuals.panels.MissionPanel;
 import paranoia.visuals.panels.TroubleShooterPanel;
-import paranoia.visuals.rnd.ParanoiaCard;
 
 import javax.swing.GroupLayout;
 import javax.swing.JFrame;

@@ -18,12 +18,12 @@ import paranoia.core.SecurityClearance;
 import paranoia.core.cpu.Mission;
 import paranoia.services.hpdmc.ControlUnit;
 import paranoia.services.hpdmc.manager.MissionManager;
+import paranoia.services.rnd.ParanoiaCard;
 import paranoia.visuals.ComponentName;
 import paranoia.visuals.mechanics.Injury;
 import paranoia.visuals.mechanics.Moxie;
 import paranoia.visuals.mechanics.TreasonStar;
 import paranoia.visuals.panels.CardPanel;
-import paranoia.visuals.rnd.ParanoiaCard;
 
 import javax.swing.JFrame;
 import java.awt.Color;
@@ -226,7 +226,5 @@ public class MainFrameTest extends AssertJSwingJUnitTestCase {
                 missionBox.font().target().getAttributes().get(TextAttribute.STRIKETHROUGH)
             );
         }
-
-        //Test for secondary missions
     }
 }

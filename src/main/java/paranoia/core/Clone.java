@@ -3,10 +3,10 @@ package paranoia.core;
 import paranoia.core.cpu.ParanoiaAttribute;
 import paranoia.core.cpu.Skill;
 import paranoia.core.cpu.Stat;
+import paranoia.services.rnd.ParanoiaCard;
 import paranoia.visuals.clones.ClonePanel;
 import paranoia.visuals.clones.SelfPanel;
 import paranoia.visuals.panels.SkillPanel;
-import paranoia.visuals.rnd.ParanoiaCard;
 
 import javax.swing.JPanel;
 import java.awt.image.BufferedImage;
