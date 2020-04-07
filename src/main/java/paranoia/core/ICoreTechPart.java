@@ -4,6 +4,6 @@ import javax.swing.JPanel;
 
 public interface ICoreTechPart {
 
-    public JPanel getVisual();
+    JPanel getVisual();
 
 }

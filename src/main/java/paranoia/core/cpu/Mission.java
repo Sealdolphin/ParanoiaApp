@@ -26,6 +26,12 @@ public class Mission implements ICoreTechPart {
         OPTIONAL
     }
 
+    public enum MissionStatus {
+        ACCEPTED,
+        COMPLETED,
+        FAILED
+    }
+
     private Boolean failed;
     private Boolean completed;
     private MissionPriority priority;
@@ -82,7 +88,7 @@ public class Mission implements ICoreTechPart {
         failed = true;
     }
 
-    public ResourceManager.ResourceIcon getMissionStatus() {
+    private ResourceManager.ResourceIcon getMissionStatus() {
         if (failed) {
             return MISSION_FAILED;
         } else if (completed) {
