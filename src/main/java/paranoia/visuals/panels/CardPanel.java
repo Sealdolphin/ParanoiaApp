@@ -1,13 +1,15 @@
 package paranoia.visuals.panels;
 
+import paranoia.services.hpdmc.ParanoiaListener;
 import paranoia.services.rnd.ParanoiaCard;
 import paranoia.visuals.ComponentName;
 
 import javax.swing.JPanel;
 import java.awt.GridLayout;
+import java.util.Collection;
 import java.util.List;
 
-public class CardPanel extends JPanel {
+public class CardPanel extends JPanel implements ParanoiaListener<ParanoiaCard> {
 
     private List<ParanoiaCard> cards;
 
@@ -26,4 +28,8 @@ public class CardPanel extends JPanel {
         return cards.size();
     }
 
+    @Override
+    public void updateVisualDataChange(Collection<ParanoiaCard> updatedModel) {
+
+    }
 }

@@ -1,5 +1,7 @@
 package paranoia.services.rnd;
 
+import javax.swing.JPanel;
+
 public class ActionCard extends ParanoiaCard {
 
     private Boolean reaction;
@@ -14,5 +16,10 @@ public class ActionCard extends ParanoiaCard {
     @Override
     public String toString() {
         return "ACTION: id: " + getId() + " | order: " + actionOrder + " | reaction: " + reaction;
+    }
+
+    @Override
+    public JPanel getVisual() {
+        return this;
     }
 }

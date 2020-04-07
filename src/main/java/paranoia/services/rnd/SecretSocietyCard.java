@@ -2,6 +2,8 @@ package paranoia.services.rnd;
 
 import paranoia.visuals.custom.ParanoiaImage;
 
+import javax.swing.JPanel;
+
 public class SecretSocietyCard extends ParanoiaCard {
 
     private ParanoiaImage icon;
@@ -14,5 +16,10 @@ public class SecretSocietyCard extends ParanoiaCard {
     @Override
     public String toString() {
         return null;
+    }
+
+    @Override
+    public JPanel getVisual() {
+        return this;
     }
 }

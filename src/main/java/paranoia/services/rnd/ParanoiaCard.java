@@ -1,5 +1,6 @@
 package paranoia.services.rnd;
 
+import paranoia.core.ICoreTechPart;
 import paranoia.visuals.custom.ParanoiaImage;
 
 import javax.imageio.ImageIO;
@@ -12,7 +13,8 @@ import java.util.List;
 
 import static paranoia.Paranoia.getParanoiaResource;
 
-public abstract class ParanoiaCard extends ParanoiaImage {
+//TODO: do not extend from Image, make it a private attribute instead!!
+public abstract class ParanoiaCard extends ParanoiaImage implements ICoreTechPart {
 
     public static final int ACTION_CARDS = 48;
     public static final int MUTATION_CARDS = 16;

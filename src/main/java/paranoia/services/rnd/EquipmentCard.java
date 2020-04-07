@@ -1,6 +1,9 @@
 package paranoia.services.rnd;
 
 import paranoia.core.cpu.ParanoiaAttribute;
+
+import javax.swing.JPanel;
+
 public class EquipmentCard extends ParanoiaCard {
 
     public enum EquipmentSize {
@@ -25,5 +28,10 @@ public class EquipmentCard extends ParanoiaCard {
     public String toString() {
         return "EQ: id: " + getId() + " | order: " + actionOrder + " | size: " +
             size + " | lvl: " + level + " | modifier " + modifier.getName() + " (" + modifier.getValue() + ")";
+    }
+
+    @Override
+    public JPanel getVisual() {
+        return this;
     }
 }
