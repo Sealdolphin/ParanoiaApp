@@ -1,27 +1,29 @@
 package paranoia.visuals.panels;
 
 import paranoia.services.hpdmc.ParanoiaListener;
+import paranoia.services.hpdmc.manager.ParanoiaManager;
 import paranoia.services.rnd.ParanoiaCard;
 import paranoia.visuals.ComponentName;
 
 import javax.swing.JPanel;
 import java.awt.GridLayout;
 import java.util.Collection;
-import java.util.List;
+import java.util.Collections;
 
 public class CardPanel extends JPanel implements ParanoiaListener<ParanoiaCard> {
 
-    private List<ParanoiaCard> cards;
+    private Collection<ParanoiaCard> cards;
 
-    public CardPanel(List<ParanoiaCard> cards) {
+    public CardPanel(ParanoiaManager<ParanoiaCard> cpu, ComponentName panelName) {
         GridLayout layout = new GridLayout(0,4);
         setLayout(layout);
+        cards = Collections.emptyList();
+
+        updateVisualDataChange(cards);
+        cpu.addListener(this);
 
         layout.setHgap(15);
-
-        cards.forEach(this::add);
-        setName(ComponentName.CARD_PANEL.name());
-        this.cards = cards;
+        setName(panelName.name());
     }
 
     public int getCards() {
@@ -30,6 +32,7 @@ public class CardPanel extends JPanel implements ParanoiaListener<ParanoiaCard> 
 
     @Override
     public void updateVisualDataChange(Collection<ParanoiaCard> updatedModel) {
-
+        cards = updatedModel;
+        updatedModel.forEach(this::add);
     }
 }

@@ -3,19 +3,15 @@ package paranoia.core;
 import paranoia.core.cpu.ParanoiaAttribute;
 import paranoia.core.cpu.Skill;
 import paranoia.core.cpu.Stat;
-import paranoia.services.rnd.ParanoiaCard;
 import paranoia.visuals.clones.ClonePanel;
 import paranoia.visuals.clones.SelfPanel;
 import paranoia.visuals.panels.SkillPanel;
 
 import javax.swing.JPanel;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class Clone implements Cloneable, ICoreTechPart {
     private static final String UNKNOWN = "UNKNOWN";
@@ -33,7 +29,6 @@ public class Clone implements Cloneable, ICoreTechPart {
 
     private Map<String, String> info = new LinkedHashMap<>();
     private Map<String, ParanoiaAttribute> attributes = new HashMap<>();
-    private List<ParanoiaCard> cards = new ArrayList<>();
 
     public Clone(
         String name,
@@ -94,10 +89,6 @@ public class Clone implements Cloneable, ICoreTechPart {
         return attributes.get(name).getValue();
     }
 
-    public void addCard(ParanoiaCard card) {
-        cards.add(card);
-    }
-
     @Override
     public JPanel getVisual() {
         return new ClonePanel(
@@ -132,16 +123,6 @@ public class Clone implements Cloneable, ICoreTechPart {
         Clone c = (Clone) super.clone();
         c.cloneID = c.cloneID + 1;
         return c;
-    }
-
-    public List<ParanoiaCard> getCards(ParanoiaCard.CardType cardType) {
-        return cards.stream().filter(card -> card.getType().equals(cardType)).collect(Collectors.toList());
-    }
-
-    public List<ParanoiaCard> getMiscCards() {
-        return  cards.stream().filter( card -> card.getType().equals(ParanoiaCard.CardType.SECRET_SOCIETY) ||
-            card.getType().equals(ParanoiaCard.CardType.MUTATION) ||
-            card.getType().equals(ParanoiaCard.CardType.BONUS_DUTY)).collect(Collectors.toList());
     }
 
     public SkillPanel getSkillPanel() {

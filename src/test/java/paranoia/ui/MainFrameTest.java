@@ -77,12 +77,22 @@ public class MainFrameTest extends AssertJSwingJUnitTestCase {
         for (int i = 0; i < testCards; i++) {
             actionCards[i] = new Random().nextInt(ParanoiaCard.ACTION_CARDS);
             equipmentCards[i] = new Random().nextInt(ParanoiaCard.EQUIPMENT_CARDS);
-            testClone.addCard(Computer.getActionCard(actionCards[i]));
-            testClone.addCard(Computer.getEquipmentCard(equipmentCards[i]));
+            int index = i;
+            GuiActionRunner.execute(() -> {
+                controller.updateAsset(Computer.getActionCard(actionCards[index]),
+                    ComponentName.ACTION_CARD_PANEL);
+                controller.updateAsset(Computer.getEquipmentCard(equipmentCards[index]),
+                    ComponentName.EQUIPMENT_CARD_PANEL);
+            });
         }
-        testClone.addCard(Computer.getMutationCard(mutationCard));
-        testClone.addCard(Computer.getSecretSocietyCard(secretSocietyCard));
-        testClone.addCard(Computer.getBonusDutyCard(bonusDutyCard));
+        GuiActionRunner.execute(() -> {
+            controller.updateAsset(Computer.getMutationCard(mutationCard),
+                ComponentName.MISC_CARD_PANEL);
+            controller.updateAsset(Computer.getSecretSocietyCard(secretSocietyCard),
+                ComponentName.MISC_CARD_PANEL);
+            controller.updateAsset(Computer.getBonusDutyCard(bonusDutyCard),
+                ComponentName.MISC_CARD_PANEL);
+        });
 
         //Missions
         testMissions = new Mission[4];
@@ -107,7 +117,7 @@ public class MainFrameTest extends AssertJSwingJUnitTestCase {
     @Test
     public void actionCardsTest() {
         window.tabbedPane().selectTab(0);
-        JPanelFixture cardPanel = window.panel(ComponentName.CARD_PANEL.name());
+        JPanelFixture cardPanel = window.panel(ComponentName.ACTION_CARD_PANEL.name());
         int allCards = cardPanel.targetCastedTo(CardPanel.class).getCards();
         Assert.assertEquals(testCards, allCards);
         //Action cards
@@ -123,7 +133,7 @@ public class MainFrameTest extends AssertJSwingJUnitTestCase {
     @Test
     public void equipmentCardsTest() {
         window.tabbedPane().selectTab(1);
-        JPanelFixture cardPanel = window.panel(ComponentName.CARD_PANEL.name());
+        JPanelFixture cardPanel = window.panel(ComponentName.EQUIPMENT_CARD_PANEL.name());
         int allCards = cardPanel.targetCastedTo(CardPanel.class).getCards();
         Assert.assertEquals(testCards, allCards);
         //Equipment Cards
@@ -139,7 +149,7 @@ public class MainFrameTest extends AssertJSwingJUnitTestCase {
     @Test
     public void miscCards() {
         window.tabbedPane().selectTab(2);
-        JPanelFixture cardPanel = window.panel(ComponentName.CARD_PANEL.name());
+        JPanelFixture cardPanel = window.panel(ComponentName.MISC_CARD_PANEL.name());
         int allCards = cardPanel.targetCastedTo(CardPanel.class).getCards();
         Assert.assertEquals(3, allCards);
         Map<ParanoiaCard.CardType, Integer> cardMap = new HashMap<>();
