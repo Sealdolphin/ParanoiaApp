@@ -17,6 +17,7 @@ import paranoia.core.Computer;
 import paranoia.core.SecurityClearance;
 import paranoia.core.cpu.Mission;
 import paranoia.services.hpdmc.ControlUnit;
+import paranoia.services.hpdmc.manager.MissionManager;
 import paranoia.visuals.ComponentName;
 import paranoia.visuals.mechanics.Injury;
 import paranoia.visuals.mechanics.Moxie;
@@ -93,7 +94,8 @@ public class MainFrameTest extends AssertJSwingJUnitTestCase {
                 new Random().nextInt(), "Test Mission",
                 "This is a test", priority
             );
-//            GuiActionRunner.execute(() -> coreTech.addMission(testMissions[index]));
+            GuiActionRunner.execute(() ->
+                controller.updateAsset(testMissions[index], ComponentName.MISSION_PANEL));
         }
 
         //showing window
@@ -107,14 +109,14 @@ public class MainFrameTest extends AssertJSwingJUnitTestCase {
         window.tabbedPane().selectTab(0);
         JPanelFixture cardPanel = window.panel(ComponentName.CARD_PANEL.name());
         int allCards = cardPanel.targetCastedTo(CardPanel.class).getCards();
-        Assert.assertEquals(allCards, testCards);
+        Assert.assertEquals(testCards, allCards);
         //Action cards
         for (int i = 0; i < allCards; i++) {
             String panelName = ParanoiaCard.CardType.ACTION.name() + actionCards[i];
             JPanelFixture card = cardPanel.panel(panelName);
             ParanoiaCard trueCard = card.targetCastedTo(ParanoiaCard.class);
-            Assert.assertEquals(trueCard.getType(), ParanoiaCard.CardType.ACTION);
-            Assert.assertEquals(trueCard.getId(), actionCards[i]);
+            Assert.assertEquals(ParanoiaCard.CardType.ACTION, trueCard.getType());
+            Assert.assertEquals(actionCards[i], trueCard.getId());
         }
     }
 
@@ -123,14 +125,14 @@ public class MainFrameTest extends AssertJSwingJUnitTestCase {
         window.tabbedPane().selectTab(1);
         JPanelFixture cardPanel = window.panel(ComponentName.CARD_PANEL.name());
         int allCards = cardPanel.targetCastedTo(CardPanel.class).getCards();
-        Assert.assertEquals(allCards, testCards);
+        Assert.assertEquals(testCards, allCards);
         //Equipment Cards
         for (int i = 0; i < allCards; i++) {
             String panelName = ParanoiaCard.CardType.EQUIPMENT.name() + equipmentCards[i];
             JPanelFixture card = cardPanel.panel(panelName);
             ParanoiaCard trueCard = card.targetCastedTo(ParanoiaCard.class);
-            Assert.assertEquals(trueCard.getType(), ParanoiaCard.CardType.EQUIPMENT);
-            Assert.assertEquals(trueCard.getId(), equipmentCards[i]);
+            Assert.assertEquals(ParanoiaCard.CardType.EQUIPMENT, trueCard.getType());
+            Assert.assertEquals(equipmentCards[i], trueCard.getId());
         }
     }
 
@@ -139,7 +141,7 @@ public class MainFrameTest extends AssertJSwingJUnitTestCase {
         window.tabbedPane().selectTab(2);
         JPanelFixture cardPanel = window.panel(ComponentName.CARD_PANEL.name());
         int allCards = cardPanel.targetCastedTo(CardPanel.class).getCards();
-        Assert.assertEquals(allCards, 3);
+        Assert.assertEquals(3, allCards);
         Map<ParanoiaCard.CardType, Integer> cardMap = new HashMap<>();
         cardMap.put(ParanoiaCard.CardType.SECRET_SOCIETY, secretSocietyCard);
         cardMap.put(ParanoiaCard.CardType.BONUS_DUTY, bonusDutyCard);
@@ -202,17 +204,26 @@ public class MainFrameTest extends AssertJSwingJUnitTestCase {
             JTextComponentFixture missionBox =
                 missionPanel.textBox(ComponentName.MISSION.name() + mission.getId());
 
+            int missionId = mission.getId();
+            MissionManager manager = (MissionManager) controller.getManager(ComponentName.MISSION_PANEL);
+
             missionBox.requireNotEditable();
             missionBox.requireText(mission.getTitle());
             missionBox.requireToolTip(mission.getDescription());
             missionBox.foreground().requireEqualTo(Color.BLACK);
-            mission.complete();
+            GuiActionRunner.execute(
+                () -> manager.updateMissionStatus(missionId, Mission.MissionStatus.COMPLETED));
+            missionBox =
+                missionPanel.textBox(ComponentName.MISSION.name() + mission.getId());
             missionBox.foreground().requireEqualTo(Color.BLACK);
-            mission.fail();
+            GuiActionRunner.execute(
+                () -> manager.updateMissionStatus(missionId, Mission.MissionStatus.FAILED));
+            missionBox =
+                missionPanel.textBox(ComponentName.MISSION.name() + mission.getId());
             missionBox.foreground().requireEqualTo(new Color(185, 0, 0));
             Assert.assertEquals(
-                missionBox.font().target().getAttributes().get(TextAttribute.STRIKETHROUGH),
-                TextAttribute.STRIKETHROUGH_ON
+                TextAttribute.STRIKETHROUGH_ON,
+                missionBox.font().target().getAttributes().get(TextAttribute.STRIKETHROUGH)
             );
         }
 
