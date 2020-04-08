@@ -9,13 +9,8 @@ import java.util.List;
 
 public class CardManager implements ParanoiaManager<ParanoiaCard> {
 
-    private List<ParanoiaCard> cards;
-    private List<ParanoiaListener<ParanoiaCard>> cardListeners;
-
-    public CardManager() {
-        cards = new ArrayList<>();
-        cardListeners = new ArrayList<>();
-    }
+    private List<ParanoiaCard> cards = new ArrayList<>();
+    private List<ParanoiaListener<ParanoiaCard>> cardListeners = new ArrayList<>();
 
     private void updateListeners() {
         cardListeners.forEach(listener -> listener.updateVisualDataChange(cards));
@@ -32,7 +27,7 @@ public class CardManager implements ParanoiaManager<ParanoiaCard> {
     }
 
     @Override
-    public void addAsset(ICoreTechPart asset) {
+    public void updateAsset(ICoreTechPart asset) {
         cards.add((ParanoiaCard) asset);
         updateListeners();
     }

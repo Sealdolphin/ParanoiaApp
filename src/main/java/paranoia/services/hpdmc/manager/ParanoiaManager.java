@@ -9,7 +9,7 @@ public interface ParanoiaManager<T extends ICoreTechPart> {
 
     void removeListener(ParanoiaListener<T> listener);
 
-    void addAsset(ICoreTechPart asset);
+    void updateAsset(ICoreTechPart asset);
 
     void removeAsset(ICoreTechPart asset);
 

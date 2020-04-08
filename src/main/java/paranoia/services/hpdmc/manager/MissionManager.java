@@ -9,13 +9,8 @@ import java.util.List;
 
 public class MissionManager implements ParanoiaManager<Mission> {
 
-    private List<Mission> missionFeed;
-    private List<ParanoiaListener<Mission>> missionListeners;
-
-    public MissionManager() {
-        missionFeed = new ArrayList<>();
-        missionListeners = new ArrayList<>();
-    }
+    private List<Mission> missionFeed = new ArrayList<>();
+    private List<ParanoiaListener<Mission>> missionListeners = new ArrayList<>();
 
     public void updateMissionStatus(int missionId, Mission.MissionStatus status) {
         Mission picked = getMissionById(missionId);
@@ -50,7 +45,7 @@ public class MissionManager implements ParanoiaManager<Mission> {
     }
 
     @Override
-    public void addAsset(ICoreTechPart mission) {
+    public void updateAsset(ICoreTechPart mission) {
         missionFeed.add((Mission) mission);
         updateListeners();
     }
