@@ -13,7 +13,7 @@ public enum ComponentName {
     ACTION_CARD_PANEL,
     EQUIPMENT_CARD_PANEL,
     MISC_CARD_PANEL,
-    CARD_SKILL_PANEL,
+    SKILL_PANEL,
     MISSION_PANEL,
     MISSION
 }

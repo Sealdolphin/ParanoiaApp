@@ -4,6 +4,7 @@ import paranoia.core.Clone;
 import paranoia.services.hpdmc.ControlUnit;
 import paranoia.visuals.panels.CardPanel;
 import paranoia.visuals.panels.MissionPanel;
+import paranoia.visuals.panels.SkillPanel;
 import paranoia.visuals.panels.TroubleShooterPanel;
 
 import javax.swing.GroupLayout;
@@ -77,11 +78,14 @@ public class CerebrealCoretech extends JFrame {
             controller.getManager(ComponentName.MISC_CARD_PANEL),
             ComponentName.MISC_CARD_PANEL
         );
+        JPanel skillPanel = new SkillPanel(
+            controller.getManager(ComponentName.SKILL_PANEL)
+        );
         JTabbedPane holderPanel = new JTabbedPane();
         holderPanel.addTab("Action cards", action);
         holderPanel.addTab("Equipment cards", equipment);
         holderPanel.addTab("Miscellaneous cards", other);
-        holderPanel.addTab("Skills and Stats", null);
+        holderPanel.addTab("Skills and Stats", skillPanel);
         holderPanel.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
         return holderPanel;
     }
