@@ -7,6 +7,7 @@ import paranoia.core.cpu.Mission;
 import paranoia.core.cpu.Skill;
 import paranoia.core.cpu.Stat;
 import paranoia.services.hpdmc.ControlUnit;
+import paranoia.services.hpdmc.manager.AttributeManager;
 import paranoia.services.hpdmc.manager.MissionManager;
 import paranoia.services.plc.ResourceManager;
 import paranoia.services.rnd.ParanoiaCard;
@@ -23,6 +24,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+
+import static paranoia.core.cpu.ParanoiaAttribute.getSkill;
+import static paranoia.core.cpu.ParanoiaAttribute.getStat;
 
 /**
  * The game itself
@@ -81,10 +85,15 @@ public class Paranoia {
         //Mission
         cpu.updateAsset(new Mission(0, "Secure the package", ""), ComponentName.MISSION_PANEL);
         cpu.updateAsset(new Mission(1, "Disable terrorist bomb", ""), ComponentName.MISSION_PANEL);
-        cpu.updateAsset(new Mission(2, "Don't let the Commies take the package", "", Mission.MissionPriority.OPTIONAL), ComponentName.MISSION_PANEL);
+        cpu.updateAsset(new Mission(2, "Don't let the Commies take the package",
+            "", Mission.MissionPriority.OPTIONAL), ComponentName.MISSION_PANEL);
         //Setup missions
-        ((MissionManager)cpu.getManager(ComponentName.MISSION_PANEL)).updateMissionStatus(0, Mission.MissionStatus.COMPLETED);
-        ((MissionManager)cpu.getManager(ComponentName.MISSION_PANEL)).updateMissionStatus(2, Mission.MissionStatus.FAILED);
+        ((MissionManager)cpu.getManager(ComponentName.MISSION_PANEL))
+            .updateMissionStatus(0, Mission.MissionStatus.COMPLETED);
+        ((MissionManager)cpu.getManager(ComponentName.MISSION_PANEL))
+            .updateMissionStatus(2, Mission.MissionStatus.FAILED);
+        //Set up attributes
+        setUpSkillsNStats(cpu);
 
 //        coreTech.addClone(clone0);
 //        coreTech.addClone(clone1);
@@ -103,6 +112,7 @@ public class Paranoia {
 
         RollMessage message = new RollMessage(
                 clone0,
+            (AttributeManager) cpu.getManager(ComponentName.SKILL_PANEL),
                 Stat.BRAINS, true,
                 Skill.ALPHA_COMPLEX, true,
                 positive, negative,
@@ -111,6 +121,24 @@ public class Paranoia {
 
 //        message.setVisible(true);
 
+    }
+
+    private static void setUpSkillsNStats(ControlUnit cpu) {
+        cpu.updateAsset(getStat(Stat.VIOLENCE, 3), ComponentName.SKILL_PANEL);
+        cpu.updateAsset(getStat(Stat.BRAINS, 1), ComponentName.SKILL_PANEL);
+        cpu.updateAsset(getStat(Stat.CHUTZPAH, 1), ComponentName.SKILL_PANEL);
+        cpu.updateAsset(getStat(Stat.MECHANICS, 2), ComponentName.SKILL_PANEL);
+
+        cpu.updateAsset(getSkill(Skill.GUNS, 3), ComponentName.SKILL_PANEL);
+        cpu.updateAsset(getSkill(Skill.MELEE, 4), ComponentName.SKILL_PANEL);
+        cpu.updateAsset(getSkill(Skill.THROW, -2), ComponentName.SKILL_PANEL);
+        cpu.updateAsset(getSkill(Skill.ALPHA_COMPLEX, 1), ComponentName.SKILL_PANEL);
+        cpu.updateAsset(getSkill(Skill.BLUFF, 5), ComponentName.SKILL_PANEL);
+        cpu.updateAsset(getSkill(Skill.CHARM, -5), ComponentName.SKILL_PANEL);
+        cpu.updateAsset(getSkill(Skill.INTIMIDATE, -1), ComponentName.SKILL_PANEL);
+        cpu.updateAsset(getSkill(Skill.ENGINEER, -3), ComponentName.SKILL_PANEL);
+        cpu.updateAsset(getSkill(Skill.PROGRAM, 2), ComponentName.SKILL_PANEL);
+        cpu.updateAsset(getSkill(Skill.DEMOLITIONS, -4), ComponentName.SKILL_PANEL);
     }
 
     public static String getParanoiaResource(String path) throws IOException {
