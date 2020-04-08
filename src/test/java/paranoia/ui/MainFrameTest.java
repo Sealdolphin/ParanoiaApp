@@ -16,6 +16,7 @@ import paranoia.core.Clone;
 import paranoia.core.Computer;
 import paranoia.core.SecurityClearance;
 import paranoia.core.cpu.Mission;
+import paranoia.helper.ParanoiaUtils;
 import paranoia.services.hpdmc.ControlUnit;
 import paranoia.services.hpdmc.manager.MissionManager;
 import paranoia.services.rnd.ParanoiaCard;
@@ -30,7 +31,9 @@ import java.awt.Color;
 import java.awt.font.TextAttribute;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
+
+import static paranoia.helper.ParanoiaUtils.testCards;
+import static paranoia.helper.ParanoiaUtils.testStars;
 
 
 public class MainFrameTest extends AssertJSwingJUnitTestCase {
@@ -41,18 +44,8 @@ public class MainFrameTest extends AssertJSwingJUnitTestCase {
     private static final String testCloneName = "test";
     private static final String testCloneSector = "TST";
     private static final SecurityClearance testCloneClearance = SecurityClearance.INFRARED;
-    private static final int testStars = 2;
-    private static final int testCards = 4;
 
-    //Cards
-    private int[] actionCards;
-    private int[] equipmentCards;
-    private int mutationCard;
-    private int secretSocietyCard;
-    private int bonusDutyCard;
-
-    //Missions
-    private Mission[] testMissions;
+    private ParanoiaUtils utils;
 
     @BeforeClass
     public static void setupOnce() {
@@ -62,51 +55,11 @@ public class MainFrameTest extends AssertJSwingJUnitTestCase {
     @Before
     public void onSetUp(){
         GuiActionRunner.execute(Computer::initDatabase);
-
         //create test clone
         testClone = new Clone(testCloneName, testCloneSector, testCloneClearance, testStars, null);
         controller = GuiActionRunner.execute(() -> new ControlUnit(testClone));
+        utils = GuiActionRunner.execute(() -> new ParanoiaUtils(controller));
 
-        //Setup Cards
-        actionCards = new int[testCards];
-        equipmentCards = new int[testCards];
-        mutationCard = new Random().nextInt(ParanoiaCard.MUTATION_CARDS);
-        secretSocietyCard = new Random().nextInt(ParanoiaCard.SECRET_SOCIETY_CARDS);
-        bonusDutyCard = new Random().nextInt(ParanoiaCard.BONUS_DUTY_CARDS);
-
-        for (int i = 0; i < testCards; i++) {
-            actionCards[i] = new Random().nextInt(ParanoiaCard.ACTION_CARDS);
-            equipmentCards[i] = new Random().nextInt(ParanoiaCard.EQUIPMENT_CARDS);
-            int index = i;
-            GuiActionRunner.execute(() -> {
-                controller.updateAsset(Computer.getActionCard(actionCards[index]),
-                    ComponentName.ACTION_CARD_PANEL);
-                controller.updateAsset(Computer.getEquipmentCard(equipmentCards[index]),
-                    ComponentName.EQUIPMENT_CARD_PANEL);
-            });
-        }
-        GuiActionRunner.execute(() -> {
-            controller.updateAsset(Computer.getMutationCard(mutationCard),
-                ComponentName.MISC_CARD_PANEL);
-            controller.updateAsset(Computer.getSecretSocietyCard(secretSocietyCard),
-                ComponentName.MISC_CARD_PANEL);
-            controller.updateAsset(Computer.getBonusDutyCard(bonusDutyCard),
-                ComponentName.MISC_CARD_PANEL);
-        });
-
-        //Missions
-        testMissions = new Mission[4];
-        for (int i = 0; i < testMissions.length; i++) {
-            int index = i;
-            Mission.MissionPriority priority = i == testMissions.length - 1 ?
-                    Mission.MissionPriority.REQUIRED : Mission.MissionPriority.OPTIONAL;
-            testMissions[i] = new Mission(
-                new Random().nextInt(), "Test Mission",
-                "This is a test", priority
-            );
-            GuiActionRunner.execute(() ->
-                controller.updateAsset(testMissions[index], ComponentName.MISSION_PANEL));
-        }
 
         //showing window
         JFrame coreTech = controller.getVisuals();
@@ -122,11 +75,11 @@ public class MainFrameTest extends AssertJSwingJUnitTestCase {
         Assert.assertEquals(testCards, allCards);
         //Action cards
         for (int i = 0; i < allCards; i++) {
-            String panelName = ParanoiaCard.CardType.ACTION.name() + actionCards[i];
+            String panelName = ParanoiaCard.CardType.ACTION.name() + utils.actionCards[i];
             JPanelFixture card = cardPanel.panel(panelName);
             ParanoiaCard trueCard = card.targetCastedTo(ParanoiaCard.class);
             Assert.assertEquals(ParanoiaCard.CardType.ACTION, trueCard.getType());
-            Assert.assertEquals(actionCards[i], trueCard.getId());
+            Assert.assertEquals(utils.actionCards[i], trueCard.getId());
         }
     }
 
@@ -138,11 +91,11 @@ public class MainFrameTest extends AssertJSwingJUnitTestCase {
         Assert.assertEquals(testCards, allCards);
         //Equipment Cards
         for (int i = 0; i < allCards; i++) {
-            String panelName = ParanoiaCard.CardType.EQUIPMENT.name() + equipmentCards[i];
+            String panelName = ParanoiaCard.CardType.EQUIPMENT.name() + utils.equipmentCards[i];
             JPanelFixture card = cardPanel.panel(panelName);
             ParanoiaCard trueCard = card.targetCastedTo(ParanoiaCard.class);
             Assert.assertEquals(ParanoiaCard.CardType.EQUIPMENT, trueCard.getType());
-            Assert.assertEquals(equipmentCards[i], trueCard.getId());
+            Assert.assertEquals(utils.equipmentCards[i], trueCard.getId());
         }
     }
 
@@ -153,9 +106,9 @@ public class MainFrameTest extends AssertJSwingJUnitTestCase {
         int allCards = cardPanel.targetCastedTo(CardPanel.class).getCards();
         Assert.assertEquals(3, allCards);
         Map<ParanoiaCard.CardType, Integer> cardMap = new HashMap<>();
-        cardMap.put(ParanoiaCard.CardType.SECRET_SOCIETY, secretSocietyCard);
-        cardMap.put(ParanoiaCard.CardType.BONUS_DUTY, bonusDutyCard);
-        cardMap.put(ParanoiaCard.CardType.MUTATION, mutationCard);
+        cardMap.put(ParanoiaCard.CardType.SECRET_SOCIETY, utils.secretSocietyCard);
+        cardMap.put(ParanoiaCard.CardType.BONUS_DUTY, utils.bonusDutyCard);
+        cardMap.put(ParanoiaCard.CardType.MUTATION, utils.mutationCard);
 
         cardMap.forEach((key, value) -> {
             JPanelFixture card = cardPanel.panel(key + value.toString());
@@ -210,7 +163,7 @@ public class MainFrameTest extends AssertJSwingJUnitTestCase {
         //Locate mission labels
 
         //Test for missions
-        for (Mission mission : testMissions) {
+        for (Mission mission : utils.testMissions) {
             JTextComponentFixture missionBox =
                 missionPanel.textBox(ComponentName.MISSION.name() + mission.getId());
 
