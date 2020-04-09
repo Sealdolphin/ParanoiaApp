@@ -10,17 +10,18 @@ import java.util.Map;
 
 public class Clone implements Cloneable, ICoreTechPart {
     private static final String UNKNOWN = "UNKNOWN";
-    private String name;
-    private int treasonStars;
-    private int moxie;
-    private int crossedOutMoxie;
-    private int injury;
-    private int xpPoints;
-    private String sectorName;
-    private String gender;
+    private final String name;
+    private int treasonStars = 0;
+    private int moxie = 8;
+    private int crossedOutMoxie = 0;
+    private int injury = 0;
+    private int xpPoints = 0;
+    private final String sectorName;
+    private final String gender;
     private SecurityClearance clearance;
-    private int cloneID;
-    private BufferedImage profilePicture;
+    private int cloneID = 1;
+    private final BufferedImage profilePicture;
+    private final int playerId;
 
     private Map<String, String> info = new LinkedHashMap<>();
 
@@ -28,19 +29,16 @@ public class Clone implements Cloneable, ICoreTechPart {
         String name,
         String sector,
         SecurityClearance clearance,
-        int treasonStars,
+        String gender,
+        int playerId,
         BufferedImage image
     ) {
         this.name = name;
         this.sectorName = sector;
         this.clearance = clearance;
-        this.treasonStars = treasonStars;
-        this.moxie = 7;
-        this.crossedOutMoxie = 0;
-        this.injury = 0;
-        this.gender = "MALE";
-        this.cloneID = 1;
+        this.gender = gender;
         this.profilePicture = image;
+        this.playerId = playerId;
 
         info.put("CIVIC ZEAL", UNKNOWN);
         info.put("MARKET VALUE", UNKNOWN);
@@ -49,6 +47,7 @@ public class Clone implements Cloneable, ICoreTechPart {
 
     @Override
     public JPanel getVisual() {
+        info.put("XP POINTS", Integer.toString(xpPoints));
         return new ClonePanel(
             profilePicture,
             getFullName(),
@@ -72,6 +71,30 @@ public class Clone implements Cloneable, ICoreTechPart {
         );
     }
 
+    public int getPlayerId() {
+        return playerId;
+    }
+
+    public void giveXpPoints(int xp) {
+        xpPoints += xp;
+    }
+
+    public void setMoxie(int amount) {
+        moxie = amount;
+    }
+
+    public void setTreasonStars(int amount) {
+        treasonStars = amount;
+    }
+
+    public void setClearance(SecurityClearance clearance) {
+        this.clearance = clearance;
+    }
+
+    public void setInjury(int injury) {
+        this.injury = injury;
+    }
+
     private String getFullName() {
         return name + "-" + clearance.getShort() + "-" + sectorName + "-" + cloneID;
     }
@@ -79,7 +102,11 @@ public class Clone implements Cloneable, ICoreTechPart {
     @Override
     public Object clone() throws CloneNotSupportedException {
         Clone c = (Clone) super.clone();
-        c.cloneID = c.cloneID + 1;
+        c.cloneID = cloneID + 1;
         return c;
+    }
+
+    public void crossOut() {
+        crossedOutMoxie++;
     }
 }
