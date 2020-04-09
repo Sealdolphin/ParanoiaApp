@@ -1,6 +1,7 @@
 package paranoia.helper;
 
 import paranoia.core.Computer;
+import paranoia.core.SecurityClearance;
 import paranoia.core.cpu.Mission;
 import paranoia.services.hpdmc.ControlUnit;
 import paranoia.services.rnd.ParanoiaCard;
@@ -12,6 +13,9 @@ public class ParanoiaUtils {
 
     public static final int testStars = 2;
     public static final int testCards = 4;
+    public static final String testCloneName = "test";
+    public static final String testCloneSector = "TST";
+    public static final SecurityClearance testCloneClearance = SecurityClearance.INFRARED;
 
     //Cards
     public int[] actionCards;
