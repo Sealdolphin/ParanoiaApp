@@ -16,6 +16,8 @@ public class CardManager implements ParanoiaManager<ParanoiaCard> {
         cardListeners.forEach(listener -> listener.updateVisualDataChange(cards));
     }
 
+    public int getCards() {return cards.size(); }
+
     @Override
     public void addListener(ParanoiaListener<ParanoiaCard> listener) {
         cardListeners.add(listener);

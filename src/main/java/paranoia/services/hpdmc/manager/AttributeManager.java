@@ -29,6 +29,7 @@ public class AttributeManager implements ParanoiaManager<ParanoiaAttribute> {
     @Override
     public void addListener(ParanoiaListener<ParanoiaAttribute> listener) {
         listeners.add(listener);
+        listener.updateVisualDataChange(attributes);    //Specific to this manager only
     }
 
     @Override

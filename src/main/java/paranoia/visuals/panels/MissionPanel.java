@@ -19,14 +19,12 @@ import java.util.Collections;
 
 public class MissionPanel extends JPanel implements ParanoiaListener<Mission> {
 
-    private Collection<Mission> missionModel;
     private final JLabel lbTitle = new JLabel("Mission:");
     private final JLabel lbOpTitle = new JLabel("Secondary objectives:");
 
     public MissionPanel(ParanoiaManager<Mission> cpu) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        missionModel = Collections.emptyList();
-        updateVisualDataChange(missionModel);
+        updateVisualDataChange(Collections.emptyList());
         cpu.addListener(this);
         setName(ComponentName.MISSION_PANEL.name());
         setOpaque(false);
@@ -42,8 +40,8 @@ public class MissionPanel extends JPanel implements ParanoiaListener<Mission> {
         return pane;
     }
 
-    private void getMissions(Mission.MissionPriority priority) {
-        missionModel.stream().filter(m -> m.getPriority()
+    private void getMissions(Collection<Mission> missions, Mission.MissionPriority priority) {
+        missions.stream().filter(m -> m.getPriority()
             .equals(priority)).forEach(m -> {
                 JComponent visual = m.getVisual();
                 visual.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -53,18 +51,17 @@ public class MissionPanel extends JPanel implements ParanoiaListener<Mission> {
 
     @Override
     public void updateVisualDataChange(Collection<Mission> updatedModel) {
-        missionModel = updatedModel;
         removeAll();
         lbTitle.setFont(AssetManager.getFont(25, true, false));
         lbTitle.setAlignmentX(Component.LEFT_ALIGNMENT);
         add(lbTitle);
 
-        getMissions(Mission.MissionPriority.REQUIRED);
+        getMissions(updatedModel, Mission.MissionPriority.REQUIRED);
 
         lbOpTitle.setFont(AssetManager.getFont(20, true, false));
         add(lbOpTitle);
 
-        getMissions(Mission.MissionPriority.OPTIONAL);
+        getMissions(updatedModel, Mission.MissionPriority.OPTIONAL);
         invalidate();
     }
 }

@@ -12,28 +12,20 @@ import java.util.Collections;
 
 public class CardPanel extends JPanel implements ParanoiaListener<ParanoiaCard> {
 
-    private Collection<ParanoiaCard> cards;
-
     public CardPanel(ParanoiaManager<ParanoiaCard> cpu, ComponentName panelName) {
         GridLayout layout = new GridLayout(0,4);
         setLayout(layout);
-        cards = Collections.emptyList();
 
-        updateVisualDataChange(cards);
+        updateVisualDataChange(Collections.emptyList());
         cpu.addListener(this);
 
         layout.setHgap(15);
         setName(panelName.name());
     }
 
-    public int getCards() {
-        return cards.size();
-    }
-
     @Override
     public void updateVisualDataChange(Collection<ParanoiaCard> updatedModel) {
         removeAll();
-        cards = updatedModel;
         updatedModel.forEach(this::add);
     }
 }

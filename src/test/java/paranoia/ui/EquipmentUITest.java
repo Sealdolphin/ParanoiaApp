@@ -4,9 +4,9 @@ import org.assertj.swing.fixture.JPanelFixture;
 import org.junit.Assert;
 import org.junit.Test;
 import paranoia.helper.BasicUITest;
+import paranoia.services.hpdmc.manager.CardManager;
 import paranoia.services.rnd.ParanoiaCard;
 import paranoia.visuals.ComponentName;
-import paranoia.visuals.panels.CardPanel;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,8 +18,10 @@ public class EquipmentUITest extends BasicUITest {
     @Test
     public void miscCards() {
         window.tabbedPane().selectTab(2);
-        JPanelFixture cardPanel = window.panel(ComponentName.MISC_CARD_PANEL.name());
-        int allCards = cardPanel.targetCastedTo(CardPanel.class).getCards();
+        ComponentName cardType = ComponentName.MISC_CARD_PANEL;
+        JPanelFixture cardPanel = window.panel(cardType.name());
+        int allCards =
+            ((CardManager) controller.getManager(cardType)).getCards();
         Assert.assertEquals(3, allCards);
         Map<ParanoiaCard.CardType, Integer> cardMap = new HashMap<>();
         cardMap.put(ParanoiaCard.CardType.SECRET_SOCIETY, utils.secretSocietyCard);
@@ -38,8 +40,10 @@ public class EquipmentUITest extends BasicUITest {
     @Test
     public void actionCardsTest() {
         window.tabbedPane().selectTab(0);
-        JPanelFixture cardPanel = window.panel(ComponentName.ACTION_CARD_PANEL.name());
-        int allCards = cardPanel.targetCastedTo(CardPanel.class).getCards();
+        ComponentName cardType = ComponentName.ACTION_CARD_PANEL;
+        JPanelFixture cardPanel = window.panel(cardType.name());
+        int allCards =
+            ((CardManager) controller.getManager(cardType)).getCards();
         Assert.assertEquals(testCards, allCards);
         //Action cards
         for (int i = 0; i < allCards; i++) {
@@ -54,8 +58,10 @@ public class EquipmentUITest extends BasicUITest {
     @Test
     public void equipmentCardsTest() {
         window.tabbedPane().selectTab(1);
-        JPanelFixture cardPanel = window.panel(ComponentName.EQUIPMENT_CARD_PANEL.name());
-        int allCards = cardPanel.targetCastedTo(CardPanel.class).getCards();
+        ComponentName cardType = ComponentName.EQUIPMENT_CARD_PANEL;
+        JPanelFixture cardPanel = window.panel(cardType.name());
+        int allCards =
+            ((CardManager) controller.getManager(cardType)).getCards();
         Assert.assertEquals(testCards, allCards);
         //Equipment Cards
         for (int i = 0; i < allCards; i++) {

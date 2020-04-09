@@ -6,6 +6,7 @@ import paranoia.core.cpu.Stat;
 import paranoia.services.hpdmc.ParanoiaListener;
 import paranoia.services.hpdmc.manager.ParanoiaManager;
 import paranoia.services.plc.AssetManager;
+import paranoia.visuals.ComponentName;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -31,6 +32,7 @@ public class SkillPanel extends JPanel implements ParanoiaListener<ParanoiaAttri
         lbSkills.setFont(stringFont);
         lbStats.setFont(stringFont);
         cpu.addListener(this);
+        setName(ComponentName.SKILL_PANEL.name());
     }
 
     private Map<String, ParanoiaAttribute> createAttributeMap(Collection<ParanoiaAttribute> model) {
@@ -45,16 +47,16 @@ public class SkillPanel extends JPanel implements ParanoiaListener<ParanoiaAttri
         Map<String, ParanoiaAttribute> attributeMap = createAttributeMap(updatedModel);
 
         JTable statTable = new JTable(new StatModel(attributeMap));
-        JTable skillTable = new JTable(new SkillModel(attributeMap));
-
         statTable.setRowHeight(35);
-        skillTable.setRowHeight(35);
-
         statTable.setDefaultRenderer(Integer.class, ParanoiaAttribute.createValueRenderer());
         statTable.setDefaultRenderer(String.class, ParanoiaAttribute.createNameRenderer());
+        statTable.setName(lbStats.getText());
 
+        JTable skillTable = new JTable(new SkillModel(attributeMap));
+        skillTable.setRowHeight(35);
         skillTable.setDefaultRenderer(Integer.class, ParanoiaAttribute.createValueRenderer());
         skillTable.setDefaultRenderer(String.class, ParanoiaAttribute.createNameRenderer());
+        skillTable.setName(lbSkills.getText());
 
         add(Box.createGlue());
         add(lbStats);
