@@ -1,5 +1,6 @@
-package paranoia.visuals.rnd;
+package paranoia.services.rnd;
 
+import paranoia.core.ICoreTechPart;
 import paranoia.visuals.custom.ParanoiaImage;
 
 import javax.imageio.ImageIO;
@@ -12,7 +13,8 @@ import java.util.List;
 
 import static paranoia.Paranoia.getParanoiaResource;
 
-public abstract class ParanoiaCard extends ParanoiaImage {
+//TODO: do not extend from Image, make it a private attribute instead!!
+public abstract class ParanoiaCard extends ParanoiaImage implements ICoreTechPart {
 
     public static final int ACTION_CARDS = 48;
     public static final int MUTATION_CARDS = 16;
@@ -20,11 +22,11 @@ public abstract class ParanoiaCard extends ParanoiaImage {
     public static final int SECRET_SOCIETY_CARDS = 14;
     public static final int BONUS_DUTY_CARDS = 6;
 
-    private static List<BufferedImage> actionCards = new ArrayList<>();
-    private static List<BufferedImage> equipmentCards = new ArrayList<>();
-    private static List<BufferedImage> secretSocietyCards = new ArrayList<>();
-    private static List<BufferedImage> mutationCards = new ArrayList<>();
-    private static List<BufferedImage> bonusDutyCards = new ArrayList<>();
+    private static final List<BufferedImage> actionCards = new ArrayList<>();
+    private static final List<BufferedImage> equipmentCards = new ArrayList<>();
+    private static final List<BufferedImage> secretSocietyCards = new ArrayList<>();
+    private static final List<BufferedImage> mutationCards = new ArrayList<>();
+    private static final List<BufferedImage> bonusDutyCards = new ArrayList<>();
 
     private static void loadActionCards() throws IOException {
         for (int i = 0; i < ACTION_CARDS; i++) {
@@ -80,6 +82,7 @@ public abstract class ParanoiaCard extends ParanoiaImage {
         this.type = type;
         this.actionOrder = actionOrder;
         this.id = id;
+        setName(type.name() + id);
     }
 
     public abstract String toString();
@@ -93,24 +96,28 @@ public abstract class ParanoiaCard extends ParanoiaImage {
     }
 
     private static BufferedImage getCardImage(CardType type, int id) {
-        switch (type) {
-            case ACTION:
-                if (id >= ACTION_CARDS) return null;
-                return actionCards.get(id);
-            case MUTATION:
-                if (id >= MUTATION_CARDS) return null;
-                return mutationCards.get(id);
-            case EQUIPMENT:
-                if (id >= EQUIPMENT_CARDS) return null;
-                return equipmentCards.get(id);
-            case BONUS_DUTY:
-                if (id >= BONUS_DUTY_CARDS) return null;
-                return bonusDutyCards.get(id);
-            case SECRET_SOCIETY:
-                if (id >= SECRET_SOCIETY_CARDS) return null;
-                return secretSocietyCards.get(id);
-            default:
-                return null;
+        try {
+            switch (type) {
+                case ACTION:
+                    if (id >= ACTION_CARDS) return null;
+                    return actionCards.get(id);
+                case MUTATION:
+                    if (id >= MUTATION_CARDS) return null;
+                    return mutationCards.get(id);
+                case EQUIPMENT:
+                    if (id >= EQUIPMENT_CARDS) return null;
+                    return equipmentCards.get(id);
+                case BONUS_DUTY:
+                    if (id >= BONUS_DUTY_CARDS) return null;
+                    return bonusDutyCards.get(id);
+                case SECRET_SOCIETY:
+                    if (id >= SECRET_SOCIETY_CARDS) return null;
+                    return secretSocietyCards.get(id);
+                default:
+                    return null;
+            }
+        } catch (IndexOutOfBoundsException ignored) {
+            return null;
         }
     }
 }

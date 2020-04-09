@@ -7,7 +7,7 @@ public enum Stat {
     CHUTZPAH("Chutzpah"),
     MECHANICS("Mechanics");
 
-    private String name;
+    private final String name;
 
     Stat(String name) {
         this.name = name;

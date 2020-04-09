@@ -1,0 +1,19 @@
+package paranoia.visuals;
+
+public enum ComponentName {
+    SELF_PANEL,
+    TREASON_STAR_PANEL,
+    INJURY_PANEL,
+    MOXIE_PANEL,
+    CLONE_PANEL,
+    INFO_PANEL,
+    TREASON_STAR,
+    MOXIE,
+    INJURY,
+    ACTION_CARD_PANEL,
+    EQUIPMENT_CARD_PANEL,
+    MISC_CARD_PANEL,
+    SKILL_PANEL,
+    MISSION_PANEL,
+    MISSION
+}

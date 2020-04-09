@@ -1,6 +1,7 @@
 package paranoia.visuals.clones;
 
 import paranoia.core.SecurityClearance;
+import paranoia.visuals.ComponentName;
 
 import javax.swing.BorderFactory;
 import javax.swing.JTextArea;
@@ -11,7 +12,7 @@ import java.util.Map;
 
 public class CloneInfoPanel extends JTextArea {
 
-    private Boolean detailsPanel;
+    private final Boolean detailsPanel;
 
     public CloneInfoPanel(Map<String, String> info, SecurityClearance clearance) {
         this(info, clearance, false);
@@ -29,6 +30,7 @@ public class CloneInfoPanel extends JTextArea {
         //Setting up some visuals
         setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
         detailsPanel = details;
+        setName(ComponentName.INFO_PANEL.name());
     }
 
     @Override

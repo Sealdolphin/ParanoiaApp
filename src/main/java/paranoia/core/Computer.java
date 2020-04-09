@@ -1,17 +1,17 @@
 package paranoia.core;
 
 import paranoia.services.hpdmc.CardDecoder;
-import paranoia.visuals.rnd.ActionCard;
-import paranoia.visuals.rnd.BonusDutyCard;
-import paranoia.visuals.rnd.EquipmentCard;
-import paranoia.visuals.rnd.MutationCard;
-import paranoia.visuals.rnd.SecretSocietyCard;
+import paranoia.services.rnd.ActionCard;
+import paranoia.services.rnd.BonusDutyCard;
+import paranoia.services.rnd.EquipmentCard;
+import paranoia.services.rnd.MutationCard;
+import paranoia.services.rnd.SecretSocietyCard;
 
 import java.io.IOException;
 import java.util.LinkedList;
 
-import static paranoia.visuals.rnd.ParanoiaCard.BONUS_DUTY_CARDS;
-import static paranoia.visuals.rnd.ParanoiaCard.SECRET_SOCIETY_CARDS;
+import static paranoia.services.rnd.ParanoiaCard.BONUS_DUTY_CARDS;
+import static paranoia.services.rnd.ParanoiaCard.SECRET_SOCIETY_CARDS;
 
 public abstract class Computer {
 

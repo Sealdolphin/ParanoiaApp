@@ -1,4 +1,4 @@
-package paranoia.services.hpdmc;
+package paranoia.services.plc;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -24,7 +24,7 @@ public abstract class ResourceManager {
         MISSION_COMPLETED
     }
 
-    private static Map<ResourceIcon, BufferedImage> images = new HashMap<>();
+    private static final Map<ResourceIcon, BufferedImage> images = new HashMap<>();
 
     public static void loadResources() throws IOException {
         images.put(ResourceIcon.INJURY, ImageIO.read(new File(getParanoiaResource("mechanics/injuryActive.png"))));

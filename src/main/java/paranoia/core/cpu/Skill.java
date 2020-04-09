@@ -22,8 +22,8 @@ public enum Skill {
     PROGRAM("Program", Stat.MECHANICS),
     DEMOLITIONS("Demolitions", Stat.MECHANICS);
 
-    private String name;
-    private Stat parentStat;
+    private final String name;
+    private final Stat parentStat;
 
     Skill(String name, Stat parentStat) {
         this.name = name;

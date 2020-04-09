@@ -4,6 +4,7 @@ package paranoia.visuals;
 import paranoia.core.Clone;
 import paranoia.core.cpu.Skill;
 import paranoia.core.cpu.Stat;
+import paranoia.services.hpdmc.manager.AttributeManager;
 import paranoia.visuals.custom.ParanoiaButton;
 
 import javax.swing.GroupLayout;
@@ -23,6 +24,7 @@ import static javax.swing.GroupLayout.Alignment.LEADING;
 
 public class RollMessage extends JDialog {
 
+    private AttributeManager manager;
     private Map<String, Integer> positive;
     private Map<String, Integer> negative;
     private JComboBox<Skill> skills;
@@ -34,6 +36,7 @@ public class RollMessage extends JDialog {
 
     public RollMessage(
             Clone clone,
+            AttributeManager manager,
             Stat defaultStat,
             Boolean allowChangeSkill,
             Skill defaultSkill,
@@ -49,6 +52,7 @@ public class RollMessage extends JDialog {
         this.positive = positiveModifiers;
         this.negative = negativeModifiers;
         this.clone = clone;
+        this.manager = manager;
 
         Map<TextAttribute, Integer> fontAttributes = new HashMap<>();
         fontAttributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
@@ -163,8 +167,8 @@ public class RollMessage extends JDialog {
                 stats.getSelectedItem() == null
         ) return "Select an item";
 
-        int skillPoint = clone.getAttribute(skills.getSelectedItem().toString());
-        int statPoint = clone.getAttribute(stats.getSelectedItem().toString());
+        int skillPoint = manager.getAttribute(skills.getSelectedItem().toString());
+        int statPoint = manager.getAttribute(stats.getSelectedItem().toString());
 
         String positives = positive.entrySet().stream().map(entry ->
             entry.getKey() + ": " + getHTMLColoredValue(entry.getValue()))
@@ -211,8 +215,8 @@ public class RollMessage extends JDialog {
                 stats.getSelectedItem() == null
         ) return 0;
 
-        int skillPoint = clone.getAttribute(skills.getSelectedItem().toString());
-        int statPoint = clone.getAttribute(stats.getSelectedItem().toString());
+        int skillPoint = manager.getAttribute(skills.getSelectedItem().toString());
+        int statPoint = manager.getAttribute(stats.getSelectedItem().toString());
         int positiveModifiers = positive.values().stream().mapToInt(Integer::intValue).sum();
         int negativeModifiers = negative.values().stream().mapToInt(Integer::intValue).sum();
         return skillPoint + statPoint + positiveModifiers - negativeModifiers;
@@ -220,7 +224,7 @@ public class RollMessage extends JDialog {
 
     private void updateStats(Object selection, JLabel label) {
         if( selection == null) return;
-        label.setText(clone.getAttribute(selection.toString()).toString());
+        label.setText(manager.getAttribute(selection.toString()).toString());
         lbText.setToolTipText(updateTooltipText());
         lbDiceValue.setText(calculateDiceValue().toString());
     }

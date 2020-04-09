@@ -1,6 +1,7 @@
 package paranoia.visuals.mechanics;
 
-import paranoia.services.hpdmc.ResourceManager;
+import paranoia.services.plc.ResourceManager;
+import paranoia.visuals.ComponentName;
 
 import javax.swing.JPanel;
 
@@ -8,12 +9,13 @@ public class TreasonStar extends ParanoiaMechanic {
 
     public static final int TREASON_STAR_COUNT = 5;
 
-    public TreasonStar(Boolean active, Integer size) {
+    public TreasonStar(Boolean active, Integer size, Integer order) {
         super(
             active,
             ResourceManager.getResource(ResourceManager.ResourceIcon.TREASON_STAR),
             ResourceManager.getResource(ResourceManager.ResourceIcon.TREASON_STAR_OFF),
-            size
+            size,
+            ComponentName.TREASON_STAR + order.toString()
         );
     }
 
@@ -26,4 +28,8 @@ public class TreasonStar extends ParanoiaMechanic {
         return createMechanicPanel(active, TreasonStar.class, TREASON_STAR_COUNT, size);
     }
 
+    @Override
+    public ComponentName getPanelName() {
+        return ComponentName.TREASON_STAR_PANEL;
+    }
 }

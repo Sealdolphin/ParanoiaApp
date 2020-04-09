@@ -3,6 +3,10 @@ package paranoia.visuals.panels;
 import paranoia.core.cpu.ParanoiaAttribute;
 import paranoia.core.cpu.Skill;
 import paranoia.core.cpu.Stat;
+import paranoia.services.hpdmc.ParanoiaListener;
+import paranoia.services.hpdmc.manager.ParanoiaManager;
+import paranoia.services.plc.AssetManager;
+import paranoia.visuals.ComponentName;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -10,39 +14,49 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableCellRenderer;
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.Font;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
-public class SkillPanel extends JPanel {
+public class SkillPanel extends JPanel implements ParanoiaListener<ParanoiaAttribute> {
 
-    private static final Font stringFont = new Font("Segoe", Font.ITALIC, 20);
+    private final JLabel lbSkills = new JLabel("Skills");
+    private final JLabel lbStats = new JLabel("Stats");
 
-    public SkillPanel(
-        Map<String, ParanoiaAttribute> attributeMap
-    ) {
+    public SkillPanel(ParanoiaManager<ParanoiaAttribute> cpu) {
+        Font stringFont = AssetManager.getFont(20, false, true);
         //Set UI
-        JLabel lbSkills = new JLabel("Skills");
+        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         lbSkills.setFont(stringFont);
-        JLabel lbStats = new JLabel("Stats");
         lbStats.setFont(stringFont);
+        cpu.addListener(this);
+        setName(ComponentName.SKILL_PANEL.name());
+    }
+
+    private Map<String, ParanoiaAttribute> createAttributeMap(Collection<ParanoiaAttribute> model) {
+        HashMap<String, ParanoiaAttribute> map = new HashMap<>();
+        model.forEach( attr -> map.put(attr.getName(), attr));
+        return map;
+    }
+
+    @Override
+    public void updateVisualDataChange(Collection<ParanoiaAttribute> updatedModel) {
+        removeAll();
+        Map<String, ParanoiaAttribute> attributeMap = createAttributeMap(updatedModel);
 
         JTable statTable = new JTable(new StatModel(attributeMap));
-        JTable skillTable = new JTable(new SkillModel(attributeMap));
-
         statTable.setRowHeight(35);
+        statTable.setDefaultRenderer(Integer.class, ParanoiaAttribute.createValueRenderer());
+        statTable.setDefaultRenderer(String.class, ParanoiaAttribute.createNameRenderer());
+        statTable.setName(lbStats.getText());
+
+        JTable skillTable = new JTable(new SkillModel(attributeMap));
         skillTable.setRowHeight(35);
-
-        statTable.setDefaultRenderer(Integer.class, new ParanoiaAttributeRenderer());
-        statTable.setDefaultRenderer(String.class, new ParanoiaNameRenderer());
-
-        skillTable.setDefaultRenderer(Integer.class, new ParanoiaAttributeRenderer());
-        skillTable.setDefaultRenderer(String.class, new ParanoiaNameRenderer());
-
-        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        skillTable.setDefaultRenderer(Integer.class, ParanoiaAttribute.createValueRenderer());
+        skillTable.setDefaultRenderer(String.class, ParanoiaAttribute.createNameRenderer());
+        skillTable.setName(lbSkills.getText());
 
         add(Box.createGlue());
         add(lbStats);
@@ -56,7 +70,7 @@ public class SkillPanel extends JPanel {
 
     private static class StatModel extends AbstractTableModel {
 
-        private Map<String, ParanoiaAttribute> attributeMap;
+        private final Map<String, ParanoiaAttribute> attributeMap;
 
         StatModel(Map<String, ParanoiaAttribute> attributeMap) {
             this.attributeMap = attributeMap;
@@ -90,7 +104,7 @@ public class SkillPanel extends JPanel {
 
     private static class SkillModel extends AbstractTableModel {
 
-        private Map<String, ParanoiaAttribute> attributeMap;
+        private final Map<String, ParanoiaAttribute> attributeMap;
 
         SkillModel(Map<String, ParanoiaAttribute> attributeMap) {
             this.attributeMap = attributeMap;
@@ -123,44 +137,8 @@ public class SkillPanel extends JPanel {
 
         @Override
         public Class<?> getColumnClass(int columnIndex) {
-            if( columnIndex % 2 == 0) return String.class;
+            if(columnIndex % 2 == 0) return String.class;
             else return Integer.class;
         }
-    }
-
-    private static class ParanoiaNameRenderer extends JLabel implements TableCellRenderer {
-
-        @Override
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            setText(value.toString());
-            setFont(stringFont);
-            table.getColumnModel().getColumn(column).setPreferredWidth(120);
-            return this;
-        }
-    }
-
-    private static class ParanoiaAttributeRenderer extends JLabel implements TableCellRenderer {
-
-        @Override
-        public Component getTableCellRendererComponent(
-            JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column
-        ) {
-            setText(value.toString());
-            setFont(new Font("Segoe", Font.BOLD, 20));
-            setOpaque(true);
-
-            table.getColumnModel().getColumn(column).setPreferredWidth(20);
-            setHorizontalAlignment(CENTER);
-            if(Integer.parseInt(value.toString()) >= 0){
-                setBackground(new Color(105, 191, 105));
-                setForeground(new Color(29, 115, 29));
-            } else {
-                setBackground(new Color(217, 119, 119));
-                setForeground(new Color(115, 29, 29));
-            }
-            return this;
-        }
-
-
     }
 }
