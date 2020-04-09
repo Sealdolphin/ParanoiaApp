@@ -14,7 +14,7 @@ import static paranoia.Paranoia.PARANOIA_BACKGROUND;
 public abstract class ParanoiaMechanic extends ParanoiaImage {
 
     private Boolean active;
-    private BufferedImage imgActive;
+    private final BufferedImage imgActive;
     BufferedImage imgDisabled;
     static final int DEFAULT_SIZE = 32;
 

@@ -1,10 +1,12 @@
 package paranoia.ui;
 
 import org.assertj.swing.data.Index;
+import org.assertj.swing.fixture.JPanelFixture;
 import org.assertj.swing.fixture.JTabbedPaneFixture;
 import org.junit.Assert;
 import org.junit.Test;
 import paranoia.helper.BasicUITest;
+import paranoia.visuals.ComponentName;
 
 public class SkillUITest extends BasicUITest {
 
@@ -21,5 +23,11 @@ public class SkillUITest extends BasicUITest {
         );
 
         Assert.assertEquals(4, cardSkillPanel.target().getTabCount());
+    }
+
+    @Test
+    public void checkOnDefaultSkills() {
+        JPanelFixture skillPanel = window.panel(ComponentName.SKILL_PANEL.name());
+
     }
 }

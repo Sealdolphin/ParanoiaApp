@@ -12,7 +12,7 @@ import java.awt.Component;
 
 public class ParanoiaAttribute implements ICoreTechPart {
 
-    private String name;
+    private final String name;
     private int value;
 
     public ParanoiaAttribute(String name) {

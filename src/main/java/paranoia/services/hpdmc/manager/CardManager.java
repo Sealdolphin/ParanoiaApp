@@ -9,8 +9,8 @@ import java.util.List;
 
 public class CardManager implements ParanoiaManager<ParanoiaCard> {
 
-    private List<ParanoiaCard> cards = new ArrayList<>();
-    private List<ParanoiaListener<ParanoiaCard>> cardListeners = new ArrayList<>();
+    private final List<ParanoiaCard> cards = new ArrayList<>();
+    private final List<ParanoiaListener<ParanoiaCard>> cardListeners = new ArrayList<>();
 
     private void updateListeners() {
         cardListeners.forEach(listener -> listener.updateVisualDataChange(cards));

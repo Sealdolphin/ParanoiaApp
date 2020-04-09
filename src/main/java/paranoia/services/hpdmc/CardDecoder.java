@@ -20,7 +20,7 @@ import static paranoia.Paranoia.getParanoiaResource;
 
 public class CardDecoder {
 
-    private String filePath;
+    private final String filePath;
     private ParanoiaMap<Integer> data;
 
     public CardDecoder(String filePath){
@@ -133,8 +133,8 @@ public class CardDecoder {
         return list;
     }
 
-    private class ParanoiaMap<T> {
-        private LinkedList<ParanoiaRow<T>> records;
+    private static class ParanoiaMap<T> {
+        private final LinkedList<ParanoiaRow<T>> records;
 
         public ParanoiaMap() {
             records = new LinkedList<>();
@@ -143,14 +143,10 @@ public class CardDecoder {
         public void addRow(T[] items) {
             records.add(new ParanoiaRow<>(items));
         }
-
-        public T getItem(int row, int index) {
-            return records.get(row).get(index);
-        }
     }
 
-    private class ParanoiaRow<T> {
-        private LinkedList<T> items;
+    private static class ParanoiaRow<T> {
+        private final LinkedList<T> items;
 
         private ParanoiaRow(T[] items){
             this();
@@ -170,7 +166,6 @@ public class CardDecoder {
         private T get(int index) {
             return items.get(index);
         }
-
     }
 
 }

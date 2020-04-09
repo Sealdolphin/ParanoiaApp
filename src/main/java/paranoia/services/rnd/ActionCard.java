@@ -4,8 +4,8 @@ import javax.swing.JPanel;
 
 public class ActionCard extends ParanoiaCard {
 
-    private Boolean reaction;
-    private Boolean action;
+    private final Boolean reaction;
+    private final Boolean action;
 
     public ActionCard(int id, Boolean action, Boolean reaction, int actionOrder) {
         super(CardType.ACTION, id, actionOrder);

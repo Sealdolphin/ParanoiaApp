@@ -22,11 +22,11 @@ public abstract class ParanoiaCard extends ParanoiaImage implements ICoreTechPar
     public static final int SECRET_SOCIETY_CARDS = 14;
     public static final int BONUS_DUTY_CARDS = 6;
 
-    private static List<BufferedImage> actionCards = new ArrayList<>();
-    private static List<BufferedImage> equipmentCards = new ArrayList<>();
-    private static List<BufferedImage> secretSocietyCards = new ArrayList<>();
-    private static List<BufferedImage> mutationCards = new ArrayList<>();
-    private static List<BufferedImage> bonusDutyCards = new ArrayList<>();
+    private static final List<BufferedImage> actionCards = new ArrayList<>();
+    private static final List<BufferedImage> equipmentCards = new ArrayList<>();
+    private static final List<BufferedImage> secretSocietyCards = new ArrayList<>();
+    private static final List<BufferedImage> mutationCards = new ArrayList<>();
+    private static final List<BufferedImage> bonusDutyCards = new ArrayList<>();
 
     private static void loadActionCards() throws IOException {
         for (int i = 0; i < ACTION_CARDS; i++) {

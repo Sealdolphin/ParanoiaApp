@@ -34,11 +34,11 @@ public class Mission implements ICoreTechPart {
 
     private Boolean failed;
     private Boolean completed;
-    private MissionPriority priority;
+    private final MissionPriority priority;
 
-    private int id;
-    private String title;
-    private String description;
+    private final int id;
+    private final String title;
+    private final String description;
 
     public Mission(
         int id,
@@ -61,12 +61,6 @@ public class Mission implements ICoreTechPart {
         completed = false;
         failed = false;
     }
-
-    public Boolean isCompleted() {
-        return completed && !failed;
-    }
-
-    public Boolean isFailed() { return failed; }
 
     public String getDescription() {
         return description;

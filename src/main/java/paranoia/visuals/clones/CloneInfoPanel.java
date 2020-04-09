@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class CloneInfoPanel extends JTextArea {
 
-    private Boolean detailsPanel;
+    private final Boolean detailsPanel;
 
     public CloneInfoPanel(Map<String, String> info, SecurityClearance clearance) {
         this(info, clearance, false);

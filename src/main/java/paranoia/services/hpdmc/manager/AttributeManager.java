@@ -13,8 +13,8 @@ import java.util.List;
 
 public class AttributeManager implements ParanoiaManager<ParanoiaAttribute> {
 
-    private Collection<ParanoiaAttribute> attributes = new ArrayList<>();
-    private List<ParanoiaListener<ParanoiaAttribute>> listeners = new ArrayList<>();
+    private final Collection<ParanoiaAttribute> attributes = new ArrayList<>();
+    private final List<ParanoiaListener<ParanoiaAttribute>> listeners = new ArrayList<>();
 
     public AttributeManager(){
         //Set up default skills and stats

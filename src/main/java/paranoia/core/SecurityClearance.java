@@ -13,9 +13,9 @@ public enum SecurityClearance {
     VIOLET(new Color(217,0,217), new Color(255,128,255), new Color(255,255,255)),
     ULTRAVIOLET(new Color(255,255,255), new Color(191,191,191), new Color(0,0,0));
 
-    private Color color;
-    private Color backgroundColor;
-    private Color fontColor;
+    private final Color color;
+    private final Color backgroundColor;
+    private final Color fontColor;
 
     SecurityClearance(Color color, Color bgColor, Color fontColor) {
         this.color = color;

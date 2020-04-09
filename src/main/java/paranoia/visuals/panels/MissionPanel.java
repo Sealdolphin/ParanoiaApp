@@ -20,8 +20,8 @@ import java.util.Collections;
 public class MissionPanel extends JPanel implements ParanoiaListener<Mission> {
 
     private Collection<Mission> missionModel;
-    private JLabel lbTitle = new JLabel("Mission:");
-    private JLabel lbOpTitle = new JLabel("Secondary objectives:");
+    private final JLabel lbTitle = new JLabel("Mission:");
+    private final JLabel lbOpTitle = new JLabel("Secondary objectives:");
 
     public MissionPanel(ParanoiaManager<Mission> cpu) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));

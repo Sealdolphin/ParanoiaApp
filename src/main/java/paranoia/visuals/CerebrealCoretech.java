@@ -24,12 +24,12 @@ public class CerebrealCoretech extends JFrame {
     private List<Clone> troubleShooters;
     private Clone self;
 
-    private GroupLayout layout;
+    private final GroupLayout layout;
     //Assets
     private JScrollPane troubleShooterPanel;
-    private JScrollPane missionPanel;
+    private final JScrollPane missionPanel;
     private JPanel selfPanel;
-    private JTabbedPane cardStatPanel;
+    private final JTabbedPane cardStatPanel;
 
     private Boolean isFullScreen = false;
 

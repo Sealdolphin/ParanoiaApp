@@ -9,8 +9,8 @@ import java.util.List;
 
 public class MissionManager implements ParanoiaManager<Mission> {
 
-    private List<Mission> missionFeed = new ArrayList<>();
-    private List<ParanoiaListener<Mission>> missionListeners = new ArrayList<>();
+    private final List<Mission> missionFeed = new ArrayList<>();
+    private final List<ParanoiaListener<Mission>> missionListeners = new ArrayList<>();
 
     public void updateMissionStatus(int missionId, Mission.MissionStatus status) {
         Mission picked = getMissionById(missionId);

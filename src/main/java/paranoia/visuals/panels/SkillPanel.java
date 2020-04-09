@@ -21,8 +21,8 @@ import java.util.Map;
 
 public class SkillPanel extends JPanel implements ParanoiaListener<ParanoiaAttribute> {
 
-    private JLabel lbSkills = new JLabel("Skills");
-    private JLabel lbStats = new JLabel("Stats");
+    private final JLabel lbSkills = new JLabel("Skills");
+    private final JLabel lbStats = new JLabel("Stats");
 
     public SkillPanel(ParanoiaManager<ParanoiaAttribute> cpu) {
         Font stringFont = AssetManager.getFont(20, false, true);
@@ -68,7 +68,7 @@ public class SkillPanel extends JPanel implements ParanoiaListener<ParanoiaAttri
 
     private static class StatModel extends AbstractTableModel {
 
-        private Map<String, ParanoiaAttribute> attributeMap;
+        private final Map<String, ParanoiaAttribute> attributeMap;
 
         StatModel(Map<String, ParanoiaAttribute> attributeMap) {
             this.attributeMap = attributeMap;
@@ -102,7 +102,7 @@ public class SkillPanel extends JPanel implements ParanoiaListener<ParanoiaAttri
 
     private static class SkillModel extends AbstractTableModel {
 
-        private Map<String, ParanoiaAttribute> attributeMap;
+        private final Map<String, ParanoiaAttribute> attributeMap;
 
         SkillModel(Map<String, ParanoiaAttribute> attributeMap) {
             this.attributeMap = attributeMap;
