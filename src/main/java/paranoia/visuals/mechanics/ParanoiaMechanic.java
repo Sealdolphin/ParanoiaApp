@@ -54,7 +54,8 @@ public abstract class ParanoiaMechanic extends ParanoiaImage {
         int activated,
         Class<M> mechanic,
         int count,
-        int size
+        int size,
+        int playerId
     ) {
         JPanel staticPanel = new JPanel();
         staticPanel.setBackground(PARANOIA_BACKGROUND);
@@ -63,18 +64,20 @@ public abstract class ParanoiaMechanic extends ParanoiaImage {
         try {
             int order = 0;
             staticPanel.setName(mechanic
-                .getConstructor(Boolean.class, Integer.class, Integer.class)
-                .newInstance(true, size, 0).getPanelName().name());
+                .getConstructor(Boolean.class, Integer.class, String.class)
+                .newInstance(true, size, "").getPanelName().name() + playerId);
             for (int i = 0; i < activated; i++) {
+                String name = Integer.toString(playerId) + order++;
                 staticPanel.add(mechanic
-                    .getConstructor(Boolean.class, Integer.class, Integer.class)
-                    .newInstance(true, size, order++)
+                    .getConstructor(Boolean.class, Integer.class, String.class)
+                    .newInstance(true, size, name)
                 );
             }
             for (int i = 0; i < count - activated; i++) {
+                String name = Integer.toString(playerId) + order++;
                 staticPanel.add(mechanic
-                    .getConstructor(Boolean.class, Integer.class, Integer.class)
-                    .newInstance(false, size, order++)
+                    .getConstructor(Boolean.class, Integer.class, String.class)
+                    .newInstance(false, size, name)
                 );
             }
         } catch (IllegalAccessException | InstantiationException |

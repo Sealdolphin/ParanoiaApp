@@ -9,6 +9,7 @@ import paranoia.core.cpu.Stat;
 import paranoia.services.hpdmc.ControlUnit;
 import paranoia.services.hpdmc.manager.AttributeManager;
 import paranoia.services.hpdmc.manager.MissionManager;
+import paranoia.services.hpdmc.manager.TroubleShooterManager;
 import paranoia.services.plc.ResourceManager;
 import paranoia.services.rnd.ParanoiaCard;
 import paranoia.visuals.ComponentName;
@@ -58,15 +59,35 @@ public class Paranoia {
             e.printStackTrace();
         }
 
-        Clone clone0 = new Clone("SYD", "ULS", SecurityClearance.INFRARED, 4, img0);
-        Clone clone1 = new Clone("CHRIS", "AFG", SecurityClearance.ORANGE, 2, img1);
-        Clone clone2 = new Clone("ROZ", "HYT", SecurityClearance.RED, 0, img2);
-        Clone clone3 = new Clone("JOE", "RTE", SecurityClearance.BLUE, 1, img3);
-        Clone clone4 = new Clone("CARA", "RLY", SecurityClearance.YELLOW, 3, img4);
+        Clone clone0 = new Clone("SYD", "ULS", SecurityClearance.INFRARED, "MALE", 0, img0);
+        Clone clone1 = new Clone("CHRIS", "AFG", SecurityClearance.ORANGE, "MALE" ,1, img1);
+        Clone clone2 = new Clone("ROZ", "HYT", SecurityClearance.RED, "MALE", 2, img2);
+        Clone clone3 = new Clone("JOE", "RTE", SecurityClearance.BLUE, "MALE", 3, img3);
+        Clone clone4 = new Clone("CARA", "RLY", SecurityClearance.YELLOW, "MALE", 4, img4);
 
         ControlUnit cpu = new ControlUnit(clone4);
         JFrame coreTech = cpu.getVisuals();
         coreTech.setExtendedState(Frame.MAXIMIZED_BOTH);
+
+        //TroubleShooters
+        cpu.updateAsset(clone0, ComponentName.TROUBLESHOOTER_PANEL);
+        cpu.updateAsset(clone1, ComponentName.TROUBLESHOOTER_PANEL);
+        cpu.updateAsset(clone2, ComponentName.TROUBLESHOOTER_PANEL);
+        cpu.updateAsset(clone3, ComponentName.TROUBLESHOOTER_PANEL);
+        //TroubleShooter actions
+        TroubleShooterManager manager =
+            (TroubleShooterManager) cpu.getManager(ComponentName.TROUBLESHOOTER_PANEL);
+        manager.setInjury(0, 2);
+        manager.setTreasonStars(0,3);
+        manager.giveXPPoints(0,320);
+
+        manager.setInjury(1, 1);
+        manager.setTreasonStars(1,2);
+        manager.giveXPPoints(1, 430);
+
+        manager.setInjury(2, 3);
+        manager.setTreasonStars(2,1);
+        manager.giveXPPoints(2,153);
 
         //Action cards
         cpu.updateAsset(Computer.getActionCard(3), ComponentName.ACTION_CARD_PANEL);
@@ -95,11 +116,6 @@ public class Paranoia {
         //Set up attributes
         setUpSkillsNStats(cpu);
 
-//        coreTech.addClone(clone0);
-//        coreTech.addClone(clone1);
-//        coreTech.addClone(clone2);
-//        coreTech.addClone(clone3);
-//        coreTech.setSelf(clone4);
         coreTech.setVisible(true);
 
         //TODO: remove later

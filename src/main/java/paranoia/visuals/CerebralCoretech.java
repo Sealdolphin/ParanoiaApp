@@ -1,6 +1,5 @@
 package paranoia.visuals;
 
-import paranoia.core.Clone;
 import paranoia.services.hpdmc.ControlUnit;
 import paranoia.visuals.panels.CardPanel;
 import paranoia.visuals.panels.MissionPanel;
@@ -14,40 +13,26 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.LayoutStyle;
 import javax.swing.WindowConstants;
-import java.util.Collections;
-import java.util.List;
 
 import static paranoia.Paranoia.PARANOIA_BACKGROUND;
 
-public class CerebrealCoretech extends JFrame {
-
-    private List<Clone> troubleShooters;
-    private Clone self;
+public class CerebralCoretech extends JFrame {
 
     private final GroupLayout layout;
     //Assets
-    private JScrollPane troubleShooterPanel;
+    private final JScrollPane troubleShooterPanel;
     private final JScrollPane missionPanel;
-    private JPanel selfPanel;
+    private final JPanel selfPanel;
     private final JTabbedPane cardStatPanel;
 
     private Boolean isFullScreen = false;
 
-    public CerebrealCoretech(Clone self, ControlUnit controller) {
-        this(self, controller, Collections.emptyList());
-    }
-
-
-    private CerebrealCoretech(
-        Clone self,
-        ControlUnit controller,
-        List<Clone> troubleShooters
-    ) {
-        this.self = self;
-        this.troubleShooters = troubleShooters;
+    public CerebralCoretech(ControlUnit controller, int playerId) {
         //noinspection unchecked
         missionPanel = new MissionPanel(controller.getManager(ComponentName.MISSION_PANEL)).getScrollPanel();
         cardStatPanel = createCardSkillPanel(controller);
+        troubleShooterPanel = createTroubleShooterPanel(controller);
+        selfPanel = new JPanel();
 
         layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -90,33 +75,18 @@ public class CerebrealCoretech extends JFrame {
         return holderPanel;
     }
 
-    public void setSelf(Clone clone) {
-        self = clone;
-        JPanel newSelfPanel = clone.getSelfVisual();
-        layout.replace(selfPanel, newSelfPanel);
-        selfPanel = newSelfPanel;
-    }
-
-    public void addClone(Clone clone) {
-        troubleShooters.add(clone);
-        JScrollPane newScrollPane = createTroubleShooterPanel();
-        layout.replace(troubleShooterPanel, newScrollPane);
-        troubleShooterPanel = newScrollPane;
-    }
-
     public void setIsFullScreen(Boolean fullScreen){
         this.isFullScreen = fullScreen;
         setUndecorated(isFullScreen);
     }
 
-    private JScrollPane createTroubleShooterPanel() {
-        return new TroubleShooterPanel(troubleShooters).getScrollPane();
+    @SuppressWarnings("unchecked")
+    private JScrollPane createTroubleShooterPanel(ControlUnit controller) {
+        return new TroubleShooterPanel(controller.getManager(
+            ComponentName.TROUBLESHOOTER_PANEL)).getScrollPane();
     }
 
     private void refreshLayout() {
-        troubleShooterPanel = createTroubleShooterPanel();
-        selfPanel = self.getSelfVisual();
-
         //set horizontal
         layout.setHorizontalGroup(
             layout.createSequentialGroup()

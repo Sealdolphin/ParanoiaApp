@@ -39,9 +39,9 @@ public class SelfPanel extends JPanel {
         //Elements
         ParanoiaImage profile = new ParanoiaImage(profilePicture, true);
         profile.setPreferredSize(new Dimension(196,196));
-        JPanel moxiePanel = Moxie.createMoxiePanel(moxie, crossedOutMoxie);
-        JPanel injuryPanel = Injury.createInjuryPanel(injury);
-        JPanel starPanel = TreasonStar.createTreasonStarPanel(treasonStars);
+        JPanel moxiePanel = Moxie.createMoxiePanel(moxie,0, crossedOutMoxie);
+        JPanel injuryPanel = Injury.createInjuryPanel(injury,0);
+        JPanel starPanel = TreasonStar.createTreasonStarPanel(treasonStars,0);
         CloneInfoPanel details = new CloneInfoPanel(infoPanel, clearance);
 
         //Horizontal Group
