@@ -9,23 +9,23 @@ public class Injury extends ParanoiaMechanic {
 
     public static final int INJURY_COUNT = 3;
 
-    public Injury(Boolean active, Integer size, Integer order) {
+    public Injury(Boolean active, Integer size, String order) {
         super(
             active,
             ResourceManager.getResource(ResourceManager.ResourceIcon.INJURY),
             ResourceManager.getResource(ResourceManager.ResourceIcon.INJURY_OFF),
             size,
-            ComponentName.INJURY  + order.toString()
+            ComponentName.INJURY + order
         );
     }
 
-    public static JPanel createInjuryPanel(int active) {
-        return createInjuryPanel(active, DEFAULT_SIZE);
+    public static JPanel createInjuryPanel(int active, int id) {
+        return createInjuryPanel(active, id, DEFAULT_SIZE);
     }
 
-    public static JPanel createInjuryPanel(int active, int size) {
+    public static JPanel createInjuryPanel(int active, int id, int size) {
         if( active > INJURY_COUNT) return null;
-        return createMechanicPanel(active, Injury.class, INJURY_COUNT, size);
+        return createMechanicPanel(active, Injury.class, INJURY_COUNT, size, id);
     }
 
     @Override
