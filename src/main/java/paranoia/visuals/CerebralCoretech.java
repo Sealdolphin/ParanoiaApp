@@ -16,7 +16,7 @@ import javax.swing.WindowConstants;
 
 import static paranoia.Paranoia.PARANOIA_BACKGROUND;
 
-public class CerebrealCoretech extends JFrame {
+public class CerebralCoretech extends JFrame {
 
     private final GroupLayout layout;
     //Assets
@@ -27,7 +27,7 @@ public class CerebrealCoretech extends JFrame {
 
     private Boolean isFullScreen = false;
 
-    public CerebrealCoretech(ControlUnit controller, int playerId) {
+    public CerebralCoretech(ControlUnit controller, int playerId) {
         //noinspection unchecked
         missionPanel = new MissionPanel(controller.getManager(ComponentName.MISSION_PANEL)).getScrollPanel();
         cardStatPanel = createCardSkillPanel(controller);

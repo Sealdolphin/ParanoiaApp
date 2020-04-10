@@ -7,7 +7,7 @@ import paranoia.services.hpdmc.manager.CardManager;
 import paranoia.services.hpdmc.manager.MissionManager;
 import paranoia.services.hpdmc.manager.ParanoiaManager;
 import paranoia.services.hpdmc.manager.TroubleShooterManager;
-import paranoia.visuals.CerebrealCoretech;
+import paranoia.visuals.CerebralCoretech;
 import paranoia.visuals.ComponentName;
 
 import javax.swing.JFrame;
@@ -19,7 +19,7 @@ import java.util.Map;
  */
 public class ControlUnit {
 
-    CerebrealCoretech visuals;
+    CerebralCoretech visuals;
     private final Map<ComponentName, ParanoiaManager<? extends ICoreTechPart>> managerMap;
 
     public ControlUnit(Clone clone) {
@@ -32,7 +32,7 @@ public class ControlUnit {
         managerMap.put(ComponentName.TROUBLESHOOTER_PANEL, new TroubleShooterManager());
         //Setup managers
 
-        visuals = new CerebrealCoretech(this, clone.getPlayerId());
+        visuals = new CerebralCoretech(this, clone.getPlayerId());
     }
 
     @SuppressWarnings("rawtypes")
