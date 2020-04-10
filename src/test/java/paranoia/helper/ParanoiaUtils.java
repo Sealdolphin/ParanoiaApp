@@ -1,5 +1,6 @@
 package paranoia.helper;
 
+import paranoia.core.Clone;
 import paranoia.core.Computer;
 import paranoia.core.SecurityClearance;
 import paranoia.core.cpu.Mission;
@@ -11,7 +12,7 @@ import java.util.Random;
 
 public class ParanoiaUtils {
 
-    public static final int testStars = 2;
+    public static final String testGender = "MALE";
     public static final int testCards = 4;
     public static final String testCloneName = "test";
     public static final String testCloneSector = "TST";
@@ -25,6 +26,8 @@ public class ParanoiaUtils {
     public int bonusDutyCard;
     //Missions
     public Mission[] testMissions;
+    //Troubleshooters
+    public Clone[] troubleshooters;
 
     public ParanoiaUtils(ControlUnit cpu) {
 
@@ -62,6 +65,17 @@ public class ParanoiaUtils {
             );
             cpu.updateAsset(testMissions[i], ComponentName.MISSION_PANEL);
         }
+
+        //Troubleshooters
+        troubleshooters = new Clone[5];
+        for (int i = 0; i < troubleshooters.length; i++) {
+            cpu.updateAsset(new Clone(
+                testCloneName, testCloneSector,
+                testCloneClearance, testGender,
+                i, null
+            ), ComponentName.TROUBLESHOOTER_PANEL);
+        }
+
     }
 
 }
