@@ -3,6 +3,7 @@ package paranoia.visuals.panels;
 import paranoia.core.Clone;
 import paranoia.services.hpdmc.ParanoiaListener;
 import paranoia.services.hpdmc.manager.ParanoiaManager;
+import paranoia.visuals.ComponentName;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -20,6 +21,7 @@ public class TroubleShooterPanel extends JPanel implements ParanoiaListener<Clon
         setOpaque(false);
         setLayout(panelLayout);
         cpu.addListener(this);
+        setName(ComponentName.TROUBLESHOOTER_PANEL.name());
         updateVisualDataChange(Collections.emptyList());
     }
 
