@@ -1,6 +1,7 @@
 package paranoia.ui;
 
 import org.assertj.swing.fixture.JPanelFixture;
+import org.junit.Assert;
 import org.junit.Test;
 import paranoia.helper.BasicUITest;
 import paranoia.visuals.ComponentName;
@@ -26,17 +27,19 @@ public class CloneUITest extends BasicUITest {
 
     private void testTreasonStarPanel(JPanelFixture starPanel, int playerId) {
         for (int i = 0; i < TreasonStar.TREASON_STAR_COUNT; i++) {
-            starPanel.panel(ComponentName.TREASON_STAR + Integer.toString(playerId) + i).requireEnabled();
+            TreasonStar star = starPanel.panel(
+                ComponentName.TREASON_STAR + Integer.toString(playerId) + i
+            ).requireEnabled().targetCastedTo(TreasonStar.class);
+            Assert.assertEquals(i < utils.treasonStars[playerId] , star.isActive());
         }
     }
 
     private void testInjuredPanel(JPanelFixture injuryPanel, int playerId) {
         for (int i = 0; i < Injury.INJURY_COUNT; i++) {
-            injuryPanel.panel(ComponentName.INJURY + Integer.toString(playerId) + i).requireEnabled();
+            Injury injury = injuryPanel.panel(
+                ComponentName.INJURY + Integer.toString(playerId) + i
+            ).requireEnabled().targetCastedTo(Injury.class);
+            Assert.assertEquals(i < utils.injuries[playerId] , injury.isActive());
         }
-    }
-
-    private void testInfoPanel(JPanelFixture infoPanel) {
-
     }
 }
