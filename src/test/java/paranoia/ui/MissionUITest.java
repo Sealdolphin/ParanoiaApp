@@ -9,9 +9,6 @@ import paranoia.core.cpu.Mission;
 import paranoia.helper.BasicUITest;
 import paranoia.services.hpdmc.manager.MissionManager;
 import paranoia.visuals.ComponentName;
-import paranoia.visuals.mechanics.Injury;
-import paranoia.visuals.mechanics.Moxie;
-import paranoia.visuals.mechanics.TreasonStar;
 
 import java.awt.Color;
 import java.awt.font.TextAttribute;
@@ -19,27 +16,19 @@ import java.awt.font.TextAttribute;
 
 public class MissionUITest extends BasicUITest {
 
-    @Test
-    public void selfPanelTest() {
-        //Check for basic panels
-        JPanelFixture selfPanel = window.panel(ComponentName.SELF_PANEL.name());
-        JPanelFixture starPanel = selfPanel.panel(ComponentName.TREASON_STAR_PANEL.name());
-        JPanelFixture injuryPanel = selfPanel.panel(ComponentName.INJURY_PANEL.name());
-        JPanelFixture moxiePanel = selfPanel.panel(ComponentName.MOXIE_PANEL.name());
-        //Checking little panel details
-        for (int i = 0; i < TreasonStar.TREASON_STAR_COUNT; i++) {
-            starPanel.panel(ComponentName.TREASON_STAR + Integer.toString(i)).requireEnabled();
-        }
-        for (int i = 0; i < Moxie.MOXIE_COUNT; i++) {
-            moxiePanel.panel(ComponentName.MOXIE + Integer.toString(i)).requireEnabled();
-        }
-        for (int i = 0; i < Injury.INJURY_COUNT; i++) {
-            injuryPanel.panel(ComponentName.INJURY + Integer.toString(i)).requireEnabled();
-        }
-        //Checking label
-        JTextComponentFixture infoPanel = selfPanel.textBox(ComponentName.INFO_PANEL.name());
-        infoPanel.requireText("///CITIZEN: test-I-TST-1" + System.lineSeparator() +"///XP POINTS: 0");
-    }
+//    @Test
+//    public void selfPanelTest() {
+
+//        //Checking little panel details
+
+//        for (int i = 0; i < Moxie.MOXIE_COUNT; i++) {
+//            moxiePanel.panel(ComponentName.MOXIE + Integer.toString(i)).requireEnabled();
+//        }
+
+//        //Checking label
+//        JTextComponentFixture infoPanel = selfPanel.textBox(ComponentName.INFO_PANEL.name());
+//        infoPanel.requireText("///CITIZEN: test-I-TST-1" + System.lineSeparator() +"///XP POINTS: 0");
+//    }
 
     @Test
     public void missionPanelTest() {
