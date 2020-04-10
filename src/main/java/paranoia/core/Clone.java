@@ -54,7 +54,8 @@ public class Clone implements Cloneable, ICoreTechPart {
             info,
             clearance,
             treasonStars,
-            injury
+            injury,
+            playerId
         );
     }
 

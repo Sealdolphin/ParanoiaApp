@@ -1,6 +1,7 @@
 package paranoia.visuals.clones;
 
 import paranoia.core.SecurityClearance;
+import paranoia.visuals.ComponentName;
 import paranoia.visuals.custom.ParanoiaImage;
 import paranoia.visuals.mechanics.Injury;
 import paranoia.visuals.mechanics.TreasonStar;
@@ -9,7 +10,6 @@ import javax.swing.GroupLayout;
 import javax.swing.JPanel;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,30 +17,21 @@ import static paranoia.Paranoia.PARANOIA_BACKGROUND;
 
 public class ClonePanel extends JPanel {
 
-    public ClonePanel(BufferedImage image) {
-        this(
-            image,
-            "SYD-R-ULS-7",
-            Collections.emptyMap(),
-            SecurityClearance.RED,
-            1,
-            3
-        );
-    }
-
     public ClonePanel(
         BufferedImage image,
         String name,
         Map<String, String> details,
         SecurityClearance clearance,
         int treasonStars,
-        int injury
+        int injury,
+        int playerId
     ) {
         //Setup assets
         GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);
 
         setBackground(PARANOIA_BACKGROUND);
+        setName(ComponentName.CLONE_PANEL.name() + playerId);
 
         //Info
         Map<String, String> nameMap = new HashMap<>();
