@@ -89,6 +89,16 @@ public class Paranoia {
         manager.setTreasonStars(2,1);
         manager.giveXPPoints(2,153);
 
+        //Self actions
+        TroubleShooterManager selfManager =
+            (TroubleShooterManager) cpu.getManager(ComponentName.SELF_PANEL);
+        selfManager.setInjury(1);
+        selfManager.setTreasonStars(2);
+        selfManager.giveXPPoints(4321);
+        selfManager.setMoxie(6);
+        selfManager.crossOutMoxie();
+        selfManager.setSecurityClearance(SecurityClearance.VIOLET);
+
         //Action cards
         cpu.updateAsset(Computer.getActionCard(3), ComponentName.ACTION_CARD_PANEL);
         cpu.updateAsset(Computer.getActionCard(7), ComponentName.ACTION_CARD_PANEL);

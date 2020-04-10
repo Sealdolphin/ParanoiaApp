@@ -68,7 +68,8 @@ public class Clone implements Cloneable, ICoreTechPart {
             treasonStars,
             injury,
             moxie,
-            crossedOutMoxie
+            crossedOutMoxie,
+            playerId
         );
     }
 

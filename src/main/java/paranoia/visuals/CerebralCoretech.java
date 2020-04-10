@@ -1,5 +1,6 @@
 package paranoia.visuals;
 
+import paranoia.core.Clone;
 import paranoia.services.hpdmc.ControlUnit;
 import paranoia.visuals.panels.CardPanel;
 import paranoia.visuals.panels.MissionPanel;
@@ -27,12 +28,12 @@ public class CerebralCoretech extends JFrame {
 
     private Boolean isFullScreen = false;
 
-    public CerebralCoretech(ControlUnit controller, int playerId) {
+    public CerebralCoretech(ControlUnit controller, Clone self) {
         //noinspection unchecked
         missionPanel = new MissionPanel(controller.getManager(ComponentName.MISSION_PANEL)).getScrollPanel();
         cardStatPanel = createCardSkillPanel(controller);
         troubleShooterPanel = createTroubleShooterPanel(controller);
-        selfPanel = new JPanel();
+        selfPanel = createSelfPanel(controller, self);
 
         layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -86,6 +87,12 @@ public class CerebralCoretech extends JFrame {
             ComponentName.TROUBLESHOOTER_PANEL)).getScrollPane();
     }
 
+    @SuppressWarnings("unchecked")
+    private JPanel createSelfPanel(ControlUnit controller, Clone c) {
+        return new TroubleShooterPanel(controller.getManager(ComponentName.SELF_PANEL), true, c);
+    }
+
+
     private void refreshLayout() {
         //set horizontal
         layout.setHorizontalGroup(
@@ -107,7 +114,8 @@ public class CerebralCoretech extends JFrame {
                             layout.createSequentialGroup()
                                 .addComponent(cardStatPanel)
                                 .addContainerGap(500, Short.MAX_VALUE)
-                                .addComponent(selfPanel,
+                                .addComponent(
+                                    selfPanel,
                                     GroupLayout.PREFERRED_SIZE,
                                     GroupLayout.PREFERRED_SIZE,
                                     Short.MAX_VALUE
@@ -131,7 +139,8 @@ public class CerebralCoretech extends JFrame {
                     layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
                         .addComponent(cardStatPanel)
                         .addGroup(layout.createBaselineGroup(false, false)
-                                .addComponent(selfPanel,
+                                .addComponent(
+                                    selfPanel,
                                     GroupLayout.PREFERRED_SIZE,
                                     GroupLayout.PREFERRED_SIZE,
                                     Short.MAX_VALUE

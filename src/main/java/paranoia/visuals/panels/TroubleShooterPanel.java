@@ -14,15 +14,27 @@ import java.util.Collections;
 
 public class TroubleShooterPanel extends JPanel implements ParanoiaListener<Clone> {
 
+    private final boolean self;
+
     public TroubleShooterPanel(ParanoiaManager<Clone> cpu) {
+        this(cpu, false, null);
+    }
+
+    public TroubleShooterPanel(ParanoiaManager<Clone> cpu, boolean selfPanel, Clone clone) {
         FlowLayout panelLayout = new FlowLayout();
-        panelLayout.setHgap(25);
-        panelLayout.setVgap(15);
-        setOpaque(false);
         setLayout(panelLayout);
+        setOpaque(false);
         cpu.addListener(this);
-        setName(ComponentName.TROUBLESHOOTER_PANEL.name());
-        updateVisualDataChange(Collections.emptyList());
+        self = selfPanel;
+        if(!selfPanel) {
+            panelLayout.setHgap(25);
+            panelLayout.setVgap(15);
+            setName(ComponentName.TROUBLESHOOTER_PANEL.name());
+            updateVisualDataChange(Collections.emptyList());
+        } else {
+            cpu.updateAsset(clone);
+            updateVisualDataChange(Collections.singletonList(clone));
+        }
     }
 
     public JScrollPane getScrollPane() {
@@ -36,6 +48,9 @@ public class TroubleShooterPanel extends JPanel implements ParanoiaListener<Clon
     @Override
     public void updateVisualDataChange(Collection<Clone> updatedModel) {
         removeAll();
-        updatedModel.forEach( clone -> add(clone.getVisual()));
+        if(self)
+            updatedModel.forEach(clone -> add(clone.getSelfVisual()));
+        else
+            updatedModel.forEach(clone -> add(clone.getVisual()));
     }
 }
