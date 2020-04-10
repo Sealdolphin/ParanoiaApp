@@ -2,6 +2,7 @@ package paranoia.core;
 
 import paranoia.visuals.clones.ClonePanel;
 import paranoia.visuals.clones.SelfPanel;
+import paranoia.visuals.mechanics.Moxie;
 
 import javax.swing.JPanel;
 import java.awt.image.BufferedImage;
@@ -12,7 +13,7 @@ public class Clone implements Cloneable, ICoreTechPart {
     private static final String UNKNOWN = "UNKNOWN";
     private final String name;
     private int treasonStars = 0;
-    private int moxie = 8;
+    private int moxie = Moxie.MOXIE_COUNT;
     private int crossedOutMoxie = 0;
     private int injury = 0;
     private int xpPoints = 0;

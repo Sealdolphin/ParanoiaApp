@@ -16,20 +16,6 @@ import java.awt.font.TextAttribute;
 
 public class MissionUITest extends BasicUITest {
 
-//    @Test
-//    public void selfPanelTest() {
-
-//        //Checking little panel details
-
-//        for (int i = 0; i < Moxie.MOXIE_COUNT; i++) {
-//            moxiePanel.panel(ComponentName.MOXIE + Integer.toString(i)).requireEnabled();
-//        }
-
-//        //Checking label
-//        JTextComponentFixture infoPanel = selfPanel.textBox(ComponentName.INFO_PANEL.name());
-//        infoPanel.requireText("///CITIZEN: test-I-TST-1" + System.lineSeparator() +"///XP POINTS: 0");
-//    }
-
     @Test
     public void missionPanelTest() {
         //Locate mission panel
