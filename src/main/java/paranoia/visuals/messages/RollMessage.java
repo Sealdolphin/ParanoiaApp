@@ -1,4 +1,4 @@
-package paranoia.visuals;
+package paranoia.visuals.messages;
 
 
 import paranoia.core.Clone;
