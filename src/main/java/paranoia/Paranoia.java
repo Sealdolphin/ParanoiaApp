@@ -13,7 +13,7 @@ import paranoia.services.hpdmc.manager.TroubleShooterManager;
 import paranoia.services.plc.ResourceManager;
 import paranoia.services.rnd.ParanoiaCard;
 import paranoia.visuals.ComponentName;
-import paranoia.visuals.RollMessage;
+import paranoia.visuals.messages.RollMessage;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
