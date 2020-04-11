@@ -62,6 +62,6 @@ public class MissionPanel extends JPanel implements ParanoiaListener<Mission> {
         add(lbOpTitle);
 
         getMissions(updatedModel, Mission.MissionPriority.OPTIONAL);
-        invalidate();
+        updateUI();
     }
 }

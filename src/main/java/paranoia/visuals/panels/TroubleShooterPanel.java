@@ -52,5 +52,6 @@ public class TroubleShooterPanel extends JPanel implements ParanoiaListener<Clon
             updatedModel.forEach(clone -> add(clone.getSelfVisual()));
         else
             updatedModel.forEach(clone -> add(clone.getVisual()));
+        updateUI();
     }
 }

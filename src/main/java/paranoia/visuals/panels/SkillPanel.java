@@ -66,6 +66,7 @@ public class SkillPanel extends JPanel implements ParanoiaListener<ParanoiaAttri
         add(lbSkills);
         add(Box.createGlue());
         add(skillTable);
+        updateUI();
     }
 
     private static class StatModel extends AbstractTableModel {
