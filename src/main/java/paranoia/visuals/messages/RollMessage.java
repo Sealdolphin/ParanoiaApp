@@ -1,16 +1,21 @@
 package paranoia.visuals.messages;
 
 
-import paranoia.core.Clone;
+import paranoia.core.SecurityClearance;
 import paranoia.core.cpu.Skill;
 import paranoia.core.cpu.Stat;
+import paranoia.services.hpdmc.ControlUnit;
 import paranoia.services.hpdmc.manager.AttributeManager;
+import paranoia.services.hpdmc.manager.DiceManager;
+import paranoia.services.hpdmc.manager.TroubleShooterManager;
+import paranoia.visuals.ComponentName;
 import paranoia.visuals.custom.ParanoiaButton;
 
 import javax.swing.GroupLayout;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextPane;
 import java.awt.Color;
 import java.awt.Font;
@@ -24,23 +29,21 @@ import static javax.swing.GroupLayout.Alignment.LEADING;
 
 public class RollMessage extends JDialog {
 
-    private AttributeManager manager;
-    private Map<String, Integer> positive;
-    private Map<String, Integer> negative;
-    private JComboBox<Skill> skills;
-    private JComboBox<Stat> stats;
-    private Clone clone;
+    private final AttributeManager manager;
+    private final Map<String, Integer> positive;
+    private final Map<String, Integer> negative;
+    private final JComboBox<Skill> skills;
+    private final JComboBox<Stat> stats;
 
-    private JLabel lbDiceValue;
-    private JTextPane lbText;
+    private final JLabel lbDiceValue;
+    private final JTextPane lbText;
 
     public RollMessage(
-            Clone clone,
-            AttributeManager manager,
+            ControlUnit cpu,
             Stat defaultStat,
-            Boolean allowChangeSkill,
-            Skill defaultSkill,
             Boolean allowChangeStat,
+            Skill defaultSkill,
+            Boolean allowChangeSkill,
             Map<String, Integer> positiveModifiers,
             Map<String, Integer> negativeModifiers,
             String message
@@ -51,8 +54,10 @@ public class RollMessage extends JDialog {
         //Set up values
         this.positive = positiveModifiers;
         this.negative = negativeModifiers;
-        this.clone = clone;
-        this.manager = manager;
+        this.manager = (AttributeManager) cpu.getManager(ComponentName.SKILL_PANEL);
+        SecurityClearance clearance = ((TroubleShooterManager) cpu
+            .getManager(ComponentName.SELF_PANEL))
+            .getClearance();
 
         Map<TextAttribute, Integer> fontAttributes = new HashMap<>();
         fontAttributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
@@ -77,7 +82,7 @@ public class RollMessage extends JDialog {
         btnRoll.setHoverBG(new Color(166, 70, 73));
         btnRoll.setPressedBG(new Color(255, 126, 136));
         btnRoll.setForeground(Color.WHITE);
-        btnRoll.addActionListener( event -> dispose());
+        btnRoll.addActionListener( event -> roll(cpu, clearance) );
         //Selected Skill
         JLabel lbSkill = new JLabel();
         lbSkill.setFont(boldFont20);
@@ -159,6 +164,15 @@ public class RollMessage extends JDialog {
         pack();
         setLocationRelativeTo(null);
         setResizable(false);
+    }
+
+    private void roll(ControlUnit cpu, SecurityClearance clearance) {
+        JPanel rollPanel = new JPanel();
+        DiceManager diceManager = new DiceManager(calculateDiceValue(), clearance);
+        rollPanel.add(diceManager.getDicePanel());
+        diceManager.roll();
+        cpu.activateMiscPanel(rollPanel);
+        this.dispose();
     }
 
     private String updateTooltipText() {

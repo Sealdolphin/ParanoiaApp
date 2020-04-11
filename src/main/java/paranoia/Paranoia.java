@@ -7,13 +7,11 @@ import paranoia.core.cpu.Mission;
 import paranoia.core.cpu.Skill;
 import paranoia.core.cpu.Stat;
 import paranoia.services.hpdmc.ControlUnit;
-import paranoia.services.hpdmc.manager.AttributeManager;
 import paranoia.services.hpdmc.manager.MissionManager;
 import paranoia.services.hpdmc.manager.TroubleShooterManager;
 import paranoia.services.plc.ResourceManager;
 import paranoia.services.rnd.ParanoiaCard;
 import paranoia.visuals.ComponentName;
-import paranoia.visuals.messages.RollMessage;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -23,8 +21,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 
 import static paranoia.core.cpu.ParanoiaAttribute.getSkill;
 import static paranoia.core.cpu.ParanoiaAttribute.getStat;
@@ -127,26 +123,6 @@ public class Paranoia {
         setUpSkillsNStats(cpu);
 
         coreTech.setVisible(true);
-
-        //TODO: remove later
-        Map<String, Integer> positive = new HashMap<>();
-        Map<String, Integer> negative = new HashMap<>();
-
-        positive.put("The GM likes your style", 1);
-        positive.put("Action card", 2);
-        negative.put("Injury", 2);
-
-        RollMessage message = new RollMessage(
-                clone0,
-            (AttributeManager) cpu.getManager(ComponentName.SKILL_PANEL),
-                Stat.BRAINS, true,
-                Skill.ALPHA_COMPLEX, true,
-                positive, negative,
-                "Please roll with..."
-        );
-
-//        message.setVisible(true);
-
     }
 
     private static void setUpSkillsNStats(ControlUnit cpu) {

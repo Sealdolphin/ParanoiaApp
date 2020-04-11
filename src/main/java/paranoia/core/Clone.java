@@ -112,4 +112,8 @@ public class Clone implements Cloneable, ICoreTechPart {
     public void crossOut() {
         crossedOutMoxie++;
     }
+
+    public SecurityClearance getClearance() {
+        return clearance;
+    }
 }
