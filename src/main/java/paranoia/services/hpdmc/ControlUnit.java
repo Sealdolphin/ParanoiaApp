@@ -30,9 +30,9 @@ public class ControlUnit {
         managerMap.put(ComponentName.MISC_CARD_PANEL, new CardManager());
         managerMap.put(ComponentName.SKILL_PANEL, new AttributeManager());
         managerMap.put(ComponentName.TROUBLESHOOTER_PANEL, new TroubleShooterManager());
+        managerMap.put(ComponentName.SELF_PANEL, new TroubleShooterManager());
         //Setup managers
-
-        visuals = new CerebralCoretech(this, clone.getPlayerId());
+        visuals = new CerebralCoretech(this, clone);
     }
 
     @SuppressWarnings("rawtypes")

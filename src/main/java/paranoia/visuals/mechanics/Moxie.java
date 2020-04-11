@@ -26,6 +26,10 @@ public class Moxie extends ParanoiaMechanic {
         activate(false);
     }
 
+    public boolean crossedOut() {
+        return disabled;
+    }
+
     @Override
     public void activate(Boolean active) {
         if(disabled) imgDisabled = ResourceManager.getResource(ResourceManager.ResourceIcon.MOXIE_CROSSED);

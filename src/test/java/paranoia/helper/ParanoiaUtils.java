@@ -8,6 +8,7 @@ import paranoia.services.hpdmc.ControlUnit;
 import paranoia.services.hpdmc.manager.TroubleShooterManager;
 import paranoia.services.rnd.ParanoiaCard;
 import paranoia.visuals.ComponentName;
+import paranoia.visuals.mechanics.Moxie;
 
 import java.util.Random;
 
@@ -34,6 +35,8 @@ public class ParanoiaUtils {
     public Clone[] troubleshooters;
     public int[] treasonStars;
     public int[] injuries;
+    public int moxies = new Random().nextInt(Moxie.MOXIE_COUNT);
+    public int crossedOut = new Random().nextInt(Moxie.MOXIE_COUNT);
 
     public ParanoiaUtils(ControlUnit cpu) {
 
@@ -91,6 +94,16 @@ public class ParanoiaUtils {
             cloneManager.setTreasonStars(i, treasonStars[i]);
             cloneManager.setInjury(i, injuries[i]);
         }
+
+        //Self
+        cloneManager = (TroubleShooterManager) cpu.getManager(ComponentName.SELF_PANEL);
+
+        cloneManager.setTreasonStars(treasonStars[0]);
+        cloneManager.setInjury(injuries[0]);
+        for (int i = 0; i < crossedOut; i++) {
+            cloneManager.crossOutMoxie();
+        }
+        cloneManager.setMoxie(moxies);
 
     }
 

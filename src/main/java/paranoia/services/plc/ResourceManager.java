@@ -31,8 +31,8 @@ public abstract class ResourceManager {
         images.put(ResourceIcon.INJURY_OFF, ImageIO.read(new File(getParanoiaResource("mechanics/injury.png"))));
         images.put(ResourceIcon.TREASON_STAR, ImageIO.read(new File(getParanoiaResource("mechanics/treasonStar.png"))));
         images.put(ResourceIcon.TREASON_STAR_OFF, ImageIO.read(new File(getParanoiaResource("mechanics/treasonStarEmpty.png"))));
-        images.put(ResourceIcon.MOXIE, ImageIO.read(new File(getParanoiaResource("mechanics/moxie.png"))));
-        images.put(ResourceIcon.MOXIE_OFF, ImageIO.read(new File(getParanoiaResource("mechanics/moxieFilled.png"))));
+        images.put(ResourceIcon.MOXIE, ImageIO.read(new File(getParanoiaResource("mechanics/moxieFilled.png"))));
+        images.put(ResourceIcon.MOXIE_OFF, ImageIO.read(new File(getParanoiaResource("mechanics/moxie.png"))));
         images.put(ResourceIcon.MOXIE_CROSSED, ImageIO.read(new File(getParanoiaResource("mechanics/moxieCrossed.png"))));
         images.put(ResourceIcon.MISSION, ImageIO.read(new File(getParanoiaResource("mechanics/mission.png"))));
         images.put(ResourceIcon.MISSION_COMPLETED, ImageIO.read(new File(getParanoiaResource("mechanics/missionComplete.png"))));

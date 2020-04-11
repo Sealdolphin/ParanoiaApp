@@ -26,7 +26,8 @@ public class SelfPanel extends JPanel {
         int treasonStars,
         int injury,
         int moxie,
-        int crossedOutMoxie
+        int crossedOutMoxie,
+        int playerId
     ){
         GroupLayout layout = new GroupLayout(this);
         setLayout(layout);
@@ -39,9 +40,9 @@ public class SelfPanel extends JPanel {
         //Elements
         ParanoiaImage profile = new ParanoiaImage(profilePicture, true);
         profile.setPreferredSize(new Dimension(196,196));
-        JPanel moxiePanel = Moxie.createMoxiePanel(moxie,0, crossedOutMoxie);
-        JPanel injuryPanel = Injury.createInjuryPanel(injury,0);
-        JPanel starPanel = TreasonStar.createTreasonStarPanel(treasonStars,0);
+        JPanel moxiePanel = Moxie.createMoxiePanel(moxie,playerId, crossedOutMoxie);
+        JPanel injuryPanel = Injury.createInjuryPanel(injury,playerId);
+        JPanel starPanel = TreasonStar.createTreasonStarPanel(treasonStars,playerId);
         CloneInfoPanel details = new CloneInfoPanel(infoPanel, clearance);
 
         //Horizontal Group
