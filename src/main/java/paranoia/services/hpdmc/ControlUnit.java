@@ -2,6 +2,8 @@ package paranoia.services.hpdmc;
 
 import paranoia.core.Clone;
 import paranoia.core.ICoreTechPart;
+import paranoia.core.cpu.Skill;
+import paranoia.core.cpu.Stat;
 import paranoia.services.hpdmc.manager.AttributeManager;
 import paranoia.services.hpdmc.manager.CardManager;
 import paranoia.services.hpdmc.manager.MissionManager;
@@ -9,8 +11,13 @@ import paranoia.services.hpdmc.manager.ParanoiaManager;
 import paranoia.services.hpdmc.manager.TroubleShooterManager;
 import paranoia.visuals.CerebralCoretech;
 import paranoia.visuals.ComponentName;
+import paranoia.visuals.messages.RollMessage;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.WindowConstants;
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,7 +29,14 @@ public class ControlUnit {
     CerebralCoretech visuals;
     private final Map<ComponentName, ParanoiaManager<? extends ICoreTechPart>> managerMap;
 
+    private final JPanel miscPanel;
+    private final CardLayout miscPanelLayout = new CardLayout();
+
     public ControlUnit(Clone clone) {
+        miscPanel = new JPanel();
+        miscPanel.setLayout(miscPanelLayout);
+        miscPanelLayout.addLayoutComponent(new JPanel(), BorderLayout.PAGE_START);
+        //Setup managers
         managerMap = new HashMap<>();
         managerMap.put(ComponentName.MISSION_PANEL, new MissionManager());
         managerMap.put(ComponentName.ACTION_CARD_PANEL, new CardManager());
@@ -48,4 +62,31 @@ public class ControlUnit {
         managerMap.get(name).updateAsset(asset);
     }
 
+    public void activateMiscPanel(JPanel panel) {
+        miscPanel.add(panel, BorderLayout.CENTER);
+        miscPanelLayout.next(miscPanel);
+        visuals.invalidate();
+    }
+
+    public void fireRollMessage(
+        Stat stat, Skill skill,
+        boolean statChange, boolean skillChange,
+        Map<String, Integer> positive,
+        Map<String, Integer> negative
+    ) {
+        RollMessage msg = new RollMessage(
+            this,
+            stat, statChange,
+            skill, skillChange,
+            positive, negative,
+            "Please roll with..."
+        );
+        msg.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        msg.setLocationRelativeTo(visuals);
+        msg.setVisible(true);
+    }
+
+    public JPanel getMiscPanel() {
+        return miscPanel;
+    }
 }
