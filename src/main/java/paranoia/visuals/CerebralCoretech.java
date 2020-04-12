@@ -53,6 +53,7 @@ public class CerebralCoretech extends JFrame {
         //Setup visuals
         getContentPane().setBackground(PARANOIA_BACKGROUND);
 
+        //TODO: temporary
         miscPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("R"), "roll");
         miscPanel.getActionMap().put("roll", new AbstractAction() {
             @Override

@@ -13,11 +13,11 @@ import paranoia.visuals.CerebralCoretech;
 import paranoia.visuals.ComponentName;
 import paranoia.visuals.messages.RollMessage;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import java.awt.BorderLayout;
-import java.awt.CardLayout;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,12 +30,10 @@ public class ControlUnit {
     private final Map<ComponentName, ParanoiaManager<? extends ICoreTechPart>> managerMap;
 
     private final JPanel miscPanel;
-    private final CardLayout miscPanelLayout = new CardLayout();
 
     public ControlUnit(Clone clone) {
         miscPanel = new JPanel();
-        miscPanel.setLayout(miscPanelLayout);
-        miscPanelLayout.addLayoutComponent(new JPanel(), BorderLayout.PAGE_START);
+        miscPanel.setLayout(new BorderLayout());
         //Setup managers
         managerMap = new HashMap<>();
         managerMap.put(ComponentName.MISSION_PANEL, new MissionManager());
@@ -63,9 +61,18 @@ public class ControlUnit {
     }
 
     public void activateMiscPanel(JPanel panel) {
+        JButton btnX = new JButton("Clear");
+        btnX.addActionListener( event -> {
+            clearPanel();
+        });
+        miscPanel.add(btnX, BorderLayout.NORTH);
         miscPanel.add(panel, BorderLayout.CENTER);
-        miscPanelLayout.next(miscPanel);
-        visuals.invalidate();
+        miscPanel.updateUI();
+    }
+
+    private void clearPanel() {
+        miscPanel.removeAll();
+        miscPanel.updateUI();
     }
 
     public void fireRollMessage(
@@ -81,6 +88,10 @@ public class ControlUnit {
             positive, negative,
             "Please roll with..."
         );
+        //Auto updates from clone info
+        //Injury: --> negatives
+        //Action card on play --> positives
+
         msg.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         msg.setLocationRelativeTo(visuals);
         msg.setVisible(true);
