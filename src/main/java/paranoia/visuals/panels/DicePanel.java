@@ -11,7 +11,7 @@ import java.util.Collection;
 
 public class DicePanel extends JPanel implements ParanoiaListener<ParanoiaDice> {
 
-    public static final int DEFAULT_DICE = 3;
+    public static final int DEFAULT_DICE = 5;
     public static final int DEFAULT_DICE_GAP = 5;
     public static final int DEFAULT_DICE_SIZE = 64;
     private final int size;

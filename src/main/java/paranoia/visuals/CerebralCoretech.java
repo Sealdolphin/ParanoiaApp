@@ -25,6 +25,7 @@ public class CerebralCoretech extends JFrame {
     private final JScrollPane missionPanel;
     private final JPanel selfPanel;
     private final JTabbedPane cardStatPanel;
+    private final JPanel miscPanel;
 
     private Boolean isFullScreen = false;
 
@@ -34,6 +35,7 @@ public class CerebralCoretech extends JFrame {
         cardStatPanel = createCardSkillPanel(controller);
         troubleShooterPanel = createTroubleShooterPanel(controller);
         selfPanel = createSelfPanel(controller, self);
+        miscPanel = controller.getMiscPanel();
 
         layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -107,13 +109,18 @@ public class CerebralCoretech extends JFrame {
                         )
                         .addGroup(
                             layout.createSequentialGroup()
-                                .addComponent(missionPanel)
-                                .addContainerGap(500, Short.MAX_VALUE)
+                                .addComponent(
+                                    missionPanel,
+                                    GroupLayout.DEFAULT_SIZE,
+                                    GroupLayout.DEFAULT_SIZE,
+                                    Short.MAX_VALUE
+                                )
+                                .addComponent(miscPanel)
                         )
                         .addGroup(
                             layout.createSequentialGroup()
                                 .addComponent(cardStatPanel)
-                                .addContainerGap(500, Short.MAX_VALUE)
+
                                 .addComponent(
                                     selfPanel,
                                     GroupLayout.PREFERRED_SIZE,
@@ -133,7 +140,11 @@ public class CerebralCoretech extends JFrame {
                     GroupLayout.PREFERRED_SIZE,
                     Short.MAX_VALUE
                 )
-                .addComponent(missionPanel)
+                .addGroup(
+                    layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(missionPanel)
+                        .addComponent(miscPanel)
+                )
                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED, 300, Short.MAX_VALUE)
                 .addGroup(
                     layout.createParallelGroup(GroupLayout.Alignment.TRAILING)

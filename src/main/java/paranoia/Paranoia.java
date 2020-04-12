@@ -21,6 +21,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import static paranoia.core.cpu.ParanoiaAttribute.getSkill;
 import static paranoia.core.cpu.ParanoiaAttribute.getStat;
@@ -123,6 +125,21 @@ public class Paranoia {
         setUpSkillsNStats(cpu);
 
         coreTech.setVisible(true);
+
+
+        Map<String, Integer> positive = new HashMap<>();
+        Map<String, Integer> negative = new HashMap<>();
+
+        positive.put("The GM likes your style", 1);
+        positive.put("Action card", 2);
+        cpu.fireRollMessage(
+            Stat.VIOLENCE,
+            Skill.GUNS,
+            false,
+            false,
+            positive,
+            negative
+        );
     }
 
     private static void setUpSkillsNStats(ControlUnit cpu) {
