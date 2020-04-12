@@ -13,7 +13,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -31,13 +30,11 @@ public class MissionPanel extends JPanel implements ParanoiaListener<Mission> {
     }
 
     public JScrollPane getScrollPanel() {
-        JScrollPane pane = new JScrollPane(
+        return new JScrollPane(
             this,
             ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
-            ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER
+            ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED
         );
-        pane.setPreferredSize(new Dimension(0,500));
-        return pane;
     }
 
     private void getMissions(Collection<Mission> missions, Mission.MissionPriority priority) {
