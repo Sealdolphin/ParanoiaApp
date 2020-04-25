@@ -2,7 +2,6 @@ package paranoia.helper;
 
 import paranoia.core.Clone;
 import paranoia.core.Computer;
-import paranoia.core.SecurityClearance;
 import paranoia.core.cpu.Mission;
 import paranoia.services.hpdmc.ControlUnit;
 import paranoia.services.hpdmc.manager.TroubleShooterManager;
@@ -17,11 +16,8 @@ import static paranoia.visuals.mechanics.TreasonStar.TREASON_STAR_COUNT;
 
 public class ParanoiaUtils {
 
-    public static final String testGender = "MALE";
     public static final int testCards = 4;
-    public static final String testCloneName = "test";
-    public static final String testCloneSector = "TST";
-    public static final SecurityClearance testCloneClearance = SecurityClearance.INFRARED;
+    public static final Clone testClone = new TestClone();
 
     //Cards
     public int[] actionCards;
@@ -83,11 +79,7 @@ public class ParanoiaUtils {
             ComponentName.TROUBLESHOOTER_PANEL
         );
         for (int i = 0; i < troubleshooters.length; i++) {
-            cpu.updateAsset(new Clone(
-                testCloneName, testCloneSector,
-                testCloneClearance, testGender,
-                i, null
-            ), ComponentName.TROUBLESHOOTER_PANEL);
+            cpu.updateAsset(new TestClone(i), ComponentName.TROUBLESHOOTER_PANEL);
             treasonStars[i] = new Random().nextInt(TREASON_STAR_COUNT);
             injuries[i] = new Random().nextInt(INJURY_COUNT);
             //Set attributes

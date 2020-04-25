@@ -9,6 +9,8 @@ import paranoia.services.rnd.SecretSocietyCard;
 
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
 
 import static paranoia.services.rnd.ParanoiaCard.BONUS_DUTY_CARDS;
 import static paranoia.services.rnd.ParanoiaCard.SECRET_SOCIETY_CARDS;
@@ -52,7 +54,18 @@ public abstract class Computer {
     public static SecretSocietyCard getSecretSocietyCard(int index) {
         return secretSocietyCardDatabase.get(index);
     }
+
     public static BonusDutyCard getBonusDutyCard(int index) {
         return bonusDutyCardDatabase.get(index);
+    }
+
+    public static <T> T randomItem(T[] array) {
+        int random = new Random().nextInt(array.length);
+        return array[random];
+    }
+
+    public static <T> T randomItem(List<T> list) {
+        int random = new Random().nextInt(list.size());
+        return list.get(random);
     }
 }

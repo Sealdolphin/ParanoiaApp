@@ -102,6 +102,8 @@ public class RollMessage extends JDialog {
         stats.setFont(font);
         stats.setEnabled(allowChange);
         stats.addActionListener( event -> updateStats(stats.getSelectedItem(), lbStat));
+        stats.setName("cbStat");
+        lbStat.setName("lbStat");
     }
 
     private void setupSkill(Font font, boolean allowChange) {
@@ -110,6 +112,8 @@ public class RollMessage extends JDialog {
         skills.setFont(font);
         skills.setEnabled(allowChange);
         skills.addActionListener( event -> updateStats(skills.getSelectedItem(), lbSkill));
+        skills.setName("cbSkill");
+        lbSkill.setName("lbSkill");
     }
 
     private void setupRollButton(Font font, ControlUnit cpu, SecurityClearance clearance) {

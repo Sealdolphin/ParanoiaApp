@@ -12,11 +12,6 @@ import paranoia.services.hpdmc.ControlUnit;
 
 import javax.swing.JFrame;
 
-import static paranoia.helper.ParanoiaUtils.testCloneClearance;
-import static paranoia.helper.ParanoiaUtils.testCloneName;
-import static paranoia.helper.ParanoiaUtils.testCloneSector;
-import static paranoia.helper.ParanoiaUtils.testGender;
-
 public abstract class BasicUITest extends AssertJSwingJUnitTestCase {
 
     protected FrameFixture window;
@@ -33,7 +28,7 @@ public abstract class BasicUITest extends AssertJSwingJUnitTestCase {
     public void onSetUp(){
         GuiActionRunner.execute(Computer::initDatabase);
         //create test clone
-        testClone = new Clone(testCloneName, testCloneSector, testCloneClearance, testGender, 0, null);
+        testClone = new TestClone(0);
         controller = GuiActionRunner.execute(() -> new ControlUnit(testClone));
         utils = GuiActionRunner.execute(() -> new ParanoiaUtils(controller));
 
