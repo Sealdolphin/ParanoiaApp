@@ -112,7 +112,7 @@ public class DiceUITest extends AssertJSwingJUnitTestCase {
 
         //Assert roll action value
         FrameFixture coreTech = new FrameFixture(robot(), cpu.getVisuals());
-        coreTech.show(new Dimension(700, 300));
+        coreTech.show(new Dimension(700, 300)); //Must be smaller then usual -> button must be in window boundary
         JPanelFixture miscPanel = coreTech.panel(ComponentName.MISC_PANEL.name());
         JPanelFixture dicePanel = miscPanel.panel(ComponentName.DICE_PANEL.name());
         dicePanel.requireEnabled();
