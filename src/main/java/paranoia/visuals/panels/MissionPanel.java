@@ -49,13 +49,13 @@ public class MissionPanel extends JPanel implements ParanoiaListener<Mission> {
     @Override
     public void updateVisualDataChange(Collection<Mission> updatedModel) {
         removeAll();
-        lbTitle.setFont(AssetManager.getFont(25, true, false));
+        lbTitle.setFont(AssetManager.getBoldFont(25));
         lbTitle.setAlignmentX(Component.LEFT_ALIGNMENT);
         add(lbTitle);
 
         getMissions(updatedModel, Mission.MissionPriority.REQUIRED);
 
-        lbOpTitle.setFont(AssetManager.getFont(20, true, false));
+        lbOpTitle.setFont(AssetManager.getBoldFont(20));
         add(lbOpTitle);
 
         getMissions(updatedModel, Mission.MissionPriority.OPTIONAL);

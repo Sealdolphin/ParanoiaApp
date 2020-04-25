@@ -59,8 +59,9 @@ public class RollMessage extends JDialog {
             .getManager(ComponentName.SELF_PANEL))
             .getClearance();
 
-        Map<TextAttribute, Integer> fontAttributes = new HashMap<>();
-        fontAttributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+        Font boldFont15 = AssetManager.getFont(15, true, false, true);
+        Font boldFont20 = AssetManager.getBoldFont(20);
+        Font boldFont30 = AssetManager.getBoldFont(30);
 
         Font boldFont20 = new Font("Arial", Font.BOLD, 20);
         Font boldFont30 = new Font("Arial", Font.PLAIN, 30);

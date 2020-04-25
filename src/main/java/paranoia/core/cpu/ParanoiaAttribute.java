@@ -62,7 +62,7 @@ public class ParanoiaAttribute implements ICoreTechPart {
             JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column
         ) {
             setText(value.toString());
-            setFont(AssetManager.getFont(20, true, false));
+            setFont(AssetManager.getBoldFont(20));
             setOpaque(true);
 
             table.getColumnModel().getColumn(column).setPreferredWidth(20);
@@ -83,7 +83,7 @@ public class ParanoiaAttribute implements ICoreTechPart {
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             setText(value.toString());
-            setFont(AssetManager.getFont(20, false, true));
+            setFont(AssetManager.getItalicFont(20));
             table.getColumnModel().getColumn(column).setPreferredWidth(120);
             return this;
         }
