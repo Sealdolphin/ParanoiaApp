@@ -38,4 +38,15 @@ public enum Skill {
     public String toString() {
         return name;
     }
+
+    public static Skill getSkillByName(String name) {
+        Skill target = null;
+        for (Skill skill : values()) {
+            if(skill.name.equals(name)){
+                target = skill;
+                break;
+            }
+        }
+        return target;
+    }
 }
