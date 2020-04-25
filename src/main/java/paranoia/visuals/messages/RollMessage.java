@@ -72,6 +72,8 @@ public class RollMessage extends JDialog {
         lbMessage.setFont(boldFont30);
         lbDice.setFont(boldFont15);
         lbDiceValue.setFont(boldFont20);
+        lbDiceValue.setName("lbNode");
+        btnRoll.setName("btnRoll");
         //Other properties
         setupRollButton(boldFont20, cpu, clearance);
         setupSkill(boldFont20, allowChangeSkill);
@@ -182,11 +184,10 @@ public class RollMessage extends JDialog {
     }
 
     private void roll(ControlUnit cpu, SecurityClearance clearance) {
-        JPanel rollPanel = new JPanel();
         DiceManager diceManager = new DiceManager(calculateDiceValue(), clearance);
-        rollPanel.add(diceManager.getDicePanel());
+        JPanel dicePanel = diceManager.getDicePanel();
         diceManager.roll();
-        cpu.activateMiscPanel(rollPanel);
+        cpu.activateMiscPanel(dicePanel);
         this.dispose();
     }
 

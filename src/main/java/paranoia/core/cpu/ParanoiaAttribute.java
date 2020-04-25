@@ -30,9 +30,7 @@ public class ParanoiaAttribute implements ICoreTechPart {
     public void setValue(int value) {
         this.value = value;
     }
-    public String getName() {
-        return name;
-    }
+    public String getName() { return name; }
 
     public static TableCellRenderer createValueRenderer() {
         return new ParanoiaAttributeRenderer();
@@ -53,6 +51,15 @@ public class ParanoiaAttribute implements ICoreTechPart {
     @Override
     public JPanel getVisual() {
         return null;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if(other == this) return true;
+        if(other == null) return false;
+        if(!other.getClass().equals(ParanoiaAttribute.class)) return false;
+        ParanoiaAttribute o = (ParanoiaAttribute) other;
+        return o.name.equals(name);
     }
 
     private static class ParanoiaAttributeRenderer extends JLabel implements TableCellRenderer {

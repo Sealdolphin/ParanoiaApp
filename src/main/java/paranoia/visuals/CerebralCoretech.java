@@ -199,7 +199,12 @@ public class CerebralCoretech extends JFrame {
                                     300, Short.MAX_VALUE
                                 )
                         )
-                        .addComponent(miscPanel)
+                        .addComponent(
+                            miscPanel,
+                            GroupLayout.PREFERRED_SIZE,
+                            GroupLayout.PREFERRED_SIZE,
+                            GroupLayout.PREFERRED_SIZE
+                        )
                 )
                 .addGroup(
                     layout.createParallelGroup(GroupLayout.Alignment.TRAILING)

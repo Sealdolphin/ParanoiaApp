@@ -17,5 +17,6 @@ public enum ComponentName {
     MISSION,
     TROUBLESHOOTER_PANEL,
     CLONE_PANEL,
+    MISC_PANEL,
     DICE_PANEL
 }

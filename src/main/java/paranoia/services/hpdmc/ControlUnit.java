@@ -34,6 +34,7 @@ public class ControlUnit {
     public ControlUnit(Clone clone) {
         miscPanel = new JPanel();
         miscPanel.setLayout(new BorderLayout());
+        miscPanel.setName(ComponentName.MISC_PANEL.name());
         //Setup managers
         managerMap = new HashMap<>();
         managerMap.put(ComponentName.MISSION_PANEL, new MissionManager());
@@ -62,9 +63,7 @@ public class ControlUnit {
 
     public void activateMiscPanel(JPanel panel) {
         JButton btnX = new JButton("Clear");
-        btnX.addActionListener( event -> {
-            clearPanel();
-        });
+        btnX.addActionListener( event -> clearPanel());
         miscPanel.add(btnX, BorderLayout.NORTH);
         miscPanel.add(panel, BorderLayout.CENTER);
         miscPanel.updateUI();
