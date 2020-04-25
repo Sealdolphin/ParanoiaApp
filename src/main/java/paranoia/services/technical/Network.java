@@ -7,8 +7,11 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.URL;
+import java.net.UnknownHostException;
+import java.util.function.Function;
 
 /**
  * Establishes the Network
@@ -16,17 +19,19 @@ import java.net.URL;
 public class Network {
 
     private Socket client;
-    private static final int workingPort = 6532;
+    public static final int workingPort = 6532;
     private BufferedWriter output;
     private BufferedReader input;
+    private CommandParser parser;
 
-    public boolean connectWithIP(String ip) {
-        return connect("http://" + ip + ":" + workingPort);
+    public void connectWithIP(String ip) throws MalformedURLException, UnknownHostException {
+        URL url = new URL("http", ip, workingPort,"");
+        connect(url);
     }
 
-    public boolean connect(String host) {
+    public void connect(URL url) throws UnknownHostException {
         try {
-            URL url = new URL("http", host, workingPort,"");
+            System.out.println("Connecting to " + url.toString());
             client = new Socket(url.getHost(), url.getPort());
 
             output = new BufferedWriter(
@@ -39,11 +44,10 @@ public class Network {
                     new BufferedInputStream(client.getInputStream())
                 )
             );
-
-            return true;
-        } catch (IOException malformed) {
-            malformed.printStackTrace();
-            return false;
+        } catch (UnknownHostException it) {
+            throw it;
+        } catch (IOException error) {
+            error.printStackTrace();
         }
     }
 
@@ -61,11 +65,11 @@ public class Network {
         }
     }
 
-    public void listen() {
+    public void listen(Function<String, Void> function) {
         try {
             if(client.isConnected()) {
-                //TODO: send command to JSON parser
-                System.out.println(input.readLine());
+                String msg = input.readLine();
+                function.apply(msg);
             } else {
                 input.close();
             }
