@@ -83,6 +83,7 @@ public class RollMessage extends JDialog {
         btnRoll.setPressedBG(new Color(255, 126, 136));
         btnRoll.setForeground(Color.WHITE);
         btnRoll.addActionListener( event -> roll(cpu, clearance) );
+        btnRoll.setName("btnRoll");
         //Selected Skill
         JLabel lbSkill = new JLabel();
         lbSkill.setFont(boldFont20);

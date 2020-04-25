@@ -2,6 +2,7 @@ package paranoia.visuals.panels;
 
 import paranoia.core.SecurityClearance;
 import paranoia.services.hpdmc.ParanoiaListener;
+import paranoia.visuals.ComponentName;
 import paranoia.visuals.animation.ParanoiaDice;
 
 import javax.swing.JPanel;
@@ -28,6 +29,7 @@ public class DicePanel extends JPanel implements ParanoiaListener<ParanoiaDice> 
         placeholder.roll(6);
         JPanel visual = placeholder.getVisual();
         visual.setPreferredSize(new Dimension(size, size));
+        setName(ComponentName.DICE_PANEL.name());
         add(visual);
     }
 
