@@ -13,7 +13,6 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import paranoia.core.Computer;
-import paranoia.core.SecurityClearance;
 import paranoia.core.cpu.ParanoiaAttribute;
 import paranoia.core.cpu.Skill;
 import paranoia.core.cpu.Stat;
@@ -23,6 +22,7 @@ import paranoia.visuals.ComponentName;
 import paranoia.visuals.messages.RollMessage;
 
 import javax.swing.JDialog;
+import java.awt.Dimension;
 import java.util.Collections;
 
 public class DiceUITest extends AssertJSwingJUnitTestCase {
@@ -34,7 +34,6 @@ public class DiceUITest extends AssertJSwingJUnitTestCase {
 
     private final Stat testStat = Computer.randomItem(Stat.values());
     private final Skill testSkill = Computer.randomItem(Skill.values());
-    private final SecurityClearance clearance = Computer.randomItem(SecurityClearance.values());
 
     private static final String testMessage = "Please roll with...";
 
@@ -113,7 +112,7 @@ public class DiceUITest extends AssertJSwingJUnitTestCase {
 
         //Assert roll action value
         FrameFixture coreTech = new FrameFixture(robot(), cpu.getVisuals());
-        coreTech.show();
+        coreTech.show(new Dimension(700, 300));
         JPanelFixture miscPanel = coreTech.panel(ComponentName.MISC_PANEL.name());
         JPanelFixture dicePanel = miscPanel.panel(ComponentName.DICE_PANEL.name());
         dicePanel.requireEnabled();
