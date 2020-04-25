@@ -103,13 +103,22 @@ public class Clone implements Cloneable, ICoreTechPart {
     }
 
     @Override
-    public Object clone() throws CloneNotSupportedException {
-        Clone c = (Clone) super.clone();
-        c.cloneID = cloneID + 1;
+    public Object clone() {
+        Clone c = null;
+        try {
+            c = (Clone) super.clone();
+            c.cloneID = cloneID + 1;
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
         return c;
     }
 
     public void crossOut() {
         crossedOutMoxie++;
+    }
+
+    public SecurityClearance getClearance() {
+        return clearance;
     }
 }

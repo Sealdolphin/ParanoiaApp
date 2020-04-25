@@ -30,9 +30,7 @@ public class ParanoiaAttribute implements ICoreTechPart {
     public void setValue(int value) {
         this.value = value;
     }
-    public String getName() {
-        return name;
-    }
+    public String getName() { return name; }
 
     public static TableCellRenderer createValueRenderer() {
         return new ParanoiaAttributeRenderer();
@@ -55,6 +53,15 @@ public class ParanoiaAttribute implements ICoreTechPart {
         return null;
     }
 
+    @Override
+    public boolean equals(Object other) {
+        if(other == this) return true;
+        if(other == null) return false;
+        if(!other.getClass().equals(ParanoiaAttribute.class)) return false;
+        ParanoiaAttribute o = (ParanoiaAttribute) other;
+        return o.name.equals(name);
+    }
+
     private static class ParanoiaAttributeRenderer extends JLabel implements TableCellRenderer {
 
         @Override
@@ -62,7 +69,7 @@ public class ParanoiaAttribute implements ICoreTechPart {
             JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column
         ) {
             setText(value.toString());
-            setFont(AssetManager.getFont(20, true, false));
+            setFont(AssetManager.getBoldFont(20));
             setOpaque(true);
 
             table.getColumnModel().getColumn(column).setPreferredWidth(20);
@@ -83,7 +90,7 @@ public class ParanoiaAttribute implements ICoreTechPart {
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             setText(value.toString());
-            setFont(AssetManager.getFont(20, false, true));
+            setFont(AssetManager.getItalicFont(20));
             table.getColumnModel().getColumn(column).setPreferredWidth(120);
             return this;
         }

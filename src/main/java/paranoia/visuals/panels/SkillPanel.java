@@ -26,7 +26,7 @@ public class SkillPanel extends JPanel implements ParanoiaListener<ParanoiaAttri
     private final JLabel lbStats = new JLabel("Stats");
 
     public SkillPanel(ParanoiaManager<ParanoiaAttribute> cpu) {
-        Font stringFont = AssetManager.getFont(20, false, true);
+        Font stringFont = AssetManager.getItalicFont(20);
         //Set UI
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         lbSkills.setFont(stringFont);
@@ -66,6 +66,7 @@ public class SkillPanel extends JPanel implements ParanoiaListener<ParanoiaAttri
         add(lbSkills);
         add(Box.createGlue());
         add(skillTable);
+        updateUI();
     }
 
     private static class StatModel extends AbstractTableModel {

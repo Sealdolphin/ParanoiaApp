@@ -27,5 +27,6 @@ public class CardPanel extends JPanel implements ParanoiaListener<ParanoiaCard> 
     public void updateVisualDataChange(Collection<ParanoiaCard> updatedModel) {
         removeAll();
         updatedModel.forEach(this::add);
+        updateUI();
     }
 }

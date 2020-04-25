@@ -93,4 +93,8 @@ public class TroubleShooterManager implements ParanoiaManager<Clone>{
         troubleShooters.remove(clone);
         updateListeners();
     }
+
+    public SecurityClearance getClearance() {
+        return findCloneById(SELF_ID).getClearance();
+    }
 }

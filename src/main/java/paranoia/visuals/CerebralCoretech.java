@@ -1,19 +1,27 @@
 package paranoia.visuals;
 
 import paranoia.core.Clone;
+import paranoia.core.cpu.Skill;
+import paranoia.core.cpu.Stat;
 import paranoia.services.hpdmc.ControlUnit;
 import paranoia.visuals.panels.CardPanel;
 import paranoia.visuals.panels.MissionPanel;
 import paranoia.visuals.panels.SkillPanel;
 import paranoia.visuals.panels.TroubleShooterPanel;
 
+import javax.swing.AbstractAction;
 import javax.swing.GroupLayout;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.KeyStroke;
 import javax.swing.LayoutStyle;
 import javax.swing.WindowConstants;
+import java.awt.event.ActionEvent;
+import java.util.HashMap;
+import java.util.Map;
 
 import static paranoia.Paranoia.PARANOIA_BACKGROUND;
 
@@ -25,6 +33,7 @@ public class CerebralCoretech extends JFrame {
     private final JScrollPane missionPanel;
     private final JPanel selfPanel;
     private final JTabbedPane cardStatPanel;
+    private final JPanel miscPanel;
 
     private Boolean isFullScreen = false;
 
@@ -34,6 +43,7 @@ public class CerebralCoretech extends JFrame {
         cardStatPanel = createCardSkillPanel(controller);
         troubleShooterPanel = createTroubleShooterPanel(controller);
         selfPanel = createSelfPanel(controller, self);
+        miscPanel = controller.getMiscPanel();
 
         layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -42,6 +52,28 @@ public class CerebralCoretech extends JFrame {
         setTitle("Paranoia");
         //Setup visuals
         getContentPane().setBackground(PARANOIA_BACKGROUND);
+
+        //TODO: temporary
+        miscPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("R"), "roll");
+        miscPanel.getActionMap().put("roll", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Map<String, Integer> positive = new HashMap<>();
+                Map<String, Integer> negative = new HashMap<>();
+
+                positive.put("The GM likes your style", 1);
+                positive.put("Action card", 2);
+                negative.put("Injury", 1);  //Should be automatic
+                controller.fireRollMessage(
+                    Stat.VIOLENCE,
+                    Skill.GUNS,
+                    true,
+                    true,
+                    positive,
+                    negative
+                );
+            }
+        });
 
         //Assets
         refreshLayout();
@@ -73,6 +105,7 @@ public class CerebralCoretech extends JFrame {
         holderPanel.addTab("Miscellaneous cards", other);
         holderPanel.addTab("Skills and Stats", skillPanel);
         holderPanel.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+        holderPanel.setOpaque(false);
         return holderPanel;
     }
 
@@ -107,13 +140,33 @@ public class CerebralCoretech extends JFrame {
                         )
                         .addGroup(
                             layout.createSequentialGroup()
-                                .addComponent(missionPanel)
-                                .addContainerGap(500, Short.MAX_VALUE)
+                                .addComponent(
+                                    missionPanel,
+                                    GroupLayout.PREFERRED_SIZE,
+                                    300,
+                                    Short.MAX_VALUE
+                                )
+                                .addPreferredGap(
+                                    LayoutStyle.ComponentPlacement.UNRELATED,
+                                    1000, Short.MAX_VALUE
+                                )
+                                .addComponent(
+                                    miscPanel,
+                                    GroupLayout.PREFERRED_SIZE,
+                                    GroupLayout.PREFERRED_SIZE,
+                                    GroupLayout.PREFERRED_SIZE
+                                )
                         )
                         .addGroup(
                             layout.createSequentialGroup()
-                                .addComponent(cardStatPanel)
-                                .addContainerGap(500, Short.MAX_VALUE)
+                                .addComponent(
+                                    cardStatPanel,
+                                    GroupLayout.DEFAULT_SIZE,
+                                    GroupLayout.DEFAULT_SIZE,
+                                    Short.MAX_VALUE
+                                )
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED,
+                                    300, Short.MAX_VALUE)
                                 .addComponent(
                                     selfPanel,
                                     GroupLayout.PREFERRED_SIZE,
@@ -133,8 +186,26 @@ public class CerebralCoretech extends JFrame {
                     GroupLayout.PREFERRED_SIZE,
                     Short.MAX_VALUE
                 )
-                .addComponent(missionPanel)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED, 300, Short.MAX_VALUE)
+                .addGroup(
+                    layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addGroup(
+                            layout.createSequentialGroup()
+                                .addGroup(
+                                    layout.createBaselineGroup(false, false)
+                                        .addComponent(missionPanel)
+                                )
+                                .addPreferredGap(
+                                    LayoutStyle.ComponentPlacement.UNRELATED,
+                                    300, Short.MAX_VALUE
+                                )
+                        )
+                        .addComponent(
+                            miscPanel,
+                            GroupLayout.PREFERRED_SIZE,
+                            GroupLayout.PREFERRED_SIZE,
+                            GroupLayout.PREFERRED_SIZE
+                        )
+                )
                 .addGroup(
                     layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
                         .addComponent(cardStatPanel)
