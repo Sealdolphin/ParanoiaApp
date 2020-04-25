@@ -8,6 +8,7 @@ import paranoia.services.hpdmc.ControlUnit;
 import paranoia.services.hpdmc.manager.AttributeManager;
 import paranoia.services.hpdmc.manager.DiceManager;
 import paranoia.services.hpdmc.manager.TroubleShooterManager;
+import paranoia.services.plc.AssetManager;
 import paranoia.visuals.ComponentName;
 import paranoia.visuals.custom.ParanoiaButton;
 
@@ -19,8 +20,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextPane;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.font.TextAttribute;
-import java.util.HashMap;
 import java.util.Map;
 
 import static javax.swing.GroupLayout.Alignment.BASELINE;
@@ -32,11 +31,15 @@ public class RollMessage extends JDialog {
     private final AttributeManager manager;
     private final Map<String, Integer> positive;
     private final Map<String, Integer> negative;
-    private final JComboBox<Skill> skills;
-    private final JComboBox<Stat> stats;
-
-    private final JLabel lbDiceValue;
-    private final JTextPane lbText;
+    private final JComboBox<Skill> skills = new JComboBox<>(Skill.values());
+    private final JComboBox<Stat> stats = new JComboBox<>(Stat.values());
+    private final ParanoiaButton btnRoll = new ParanoiaButton("Roll");
+    private final JLabel lbDiceValue = new JLabel();
+    private final JTextPane lbText = new JTextPane();
+    private final JLabel lbMessage;
+    private final JLabel lbDice = new JLabel("NODE");
+    private final JLabel lbSkill = new JLabel();
+    private final JLabel lbStat = new JLabel();
 
     public RollMessage(
             ControlUnit cpu,
@@ -63,52 +66,63 @@ public class RollMessage extends JDialog {
         Font boldFont20 = AssetManager.getBoldFont(20);
         Font boldFont30 = AssetManager.getBoldFont(30);
 
-        Font boldFont20 = new Font("Arial", Font.BOLD, 20);
-        Font boldFont30 = new Font("Arial", Font.PLAIN, 30);
-        Font boldFont15 = new Font("Arial", Font.BOLD, 15).deriveFont(fontAttributes);
 
         //Properties
-        lbText = new JTextPane();
-        JLabel lbMessage = new JLabel(message);
+        lbMessage = new JLabel(message);
         lbMessage.setFont(boldFont30);
-        JLabel lbDice = new JLabel("NODE");
         lbDice.setFont(boldFont15);
-        //Dice value
-        lbDiceValue = new JLabel();
         lbDiceValue.setFont(boldFont20);
-        //Button
-        ParanoiaButton btnRoll = new ParanoiaButton("Roll");
-        btnRoll.setFont(boldFont20);
-        btnRoll.setBackground(new Color(166,0, 6));
-        btnRoll.setHoverBG(new Color(166, 70, 73));
-        btnRoll.setPressedBG(new Color(255, 126, 136));
-        btnRoll.setForeground(Color.WHITE);
-        btnRoll.addActionListener( event -> roll(cpu, clearance) );
-        btnRoll.setName("btnRoll");
-        //Selected Skill
-        JLabel lbSkill = new JLabel();
-        lbSkill.setFont(boldFont20);
-        skills = new JComboBox<>(Skill.values());
-        skills.setFont(boldFont20);
-        skills.setEnabled(allowChangeSkill);
-        skills.addActionListener( event -> updateStats(skills.getSelectedItem(), lbSkill));
-        //Selected Stat
-        JLabel lbStat = new JLabel();
-        lbStat.setFont(boldFont20);
-        stats = new JComboBox<>(Stat.values());
-        stats.setFont(boldFont20);
-        stats.setEnabled(allowChangeStat);
-        stats.addActionListener( event -> updateStats(stats.getSelectedItem(), lbStat));
+        //Other properties
+        setupRollButton(boldFont20, cpu, clearance);
+        setupSkill(boldFont20, allowChangeSkill);
+        setupStat(boldFont20, allowChangeStat);
         //Set initial selection
         skills.setSelectedItem(defaultSkill);
         stats.setSelectedItem(defaultStat);
+        setupModifierText();
+        //Assemble layout
+        assembleLayout();
+        pack();
+        setLocationRelativeTo(null);
+        setResizable(false);
+    }
+
+    private void setupModifierText() {
         //Modifiers text
         lbText.setContentType("text/html");
         lbText.setText(updateModifierText());
         lbText.setToolTipText(updateTooltipText());
         lbText.setEditable(false);
         lbText.setOpaque(false);
+    }
 
+    private void setupStat(Font font, Boolean allowChange) {
+        //Selected Stat
+        lbStat.setFont(font);
+        stats.setFont(font);
+        stats.setEnabled(allowChange);
+        stats.addActionListener( event -> updateStats(stats.getSelectedItem(), lbStat));
+    }
+
+    private void setupSkill(Font font, boolean allowChange) {
+        //Selected Skill
+        lbSkill.setFont(font);
+        skills.setFont(font);
+        skills.setEnabled(allowChange);
+        skills.addActionListener( event -> updateStats(skills.getSelectedItem(), lbSkill));
+    }
+
+    private void setupRollButton(Font font, ControlUnit cpu, SecurityClearance clearance) {
+        //Button
+        btnRoll.setFont(font);
+        btnRoll.setBackground(new Color(166,0, 6));
+        btnRoll.setHoverBG(new Color(166, 70, 73));
+        btnRoll.setPressedBG(new Color(255, 126, 136));
+        btnRoll.setForeground(Color.WHITE);
+        btnRoll.addActionListener( event -> roll(cpu, clearance) );
+    }
+
+    private void assembleLayout() {
         //Set Layout
         GroupLayout root = new GroupLayout(getContentPane());
         getContentPane().setLayout(root);
@@ -161,11 +175,6 @@ public class RollMessage extends JDialog {
                     )
             )
         );
-
-        //Assemble layout
-        pack();
-        setLocationRelativeTo(null);
-        setResizable(false);
     }
 
     private void roll(ControlUnit cpu, SecurityClearance clearance) {
