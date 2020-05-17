@@ -53,7 +53,7 @@ public class Network {
 
     public void sendMessage(String jsonMsg) {
         try {
-            if(client.isConnected()) {
+            if(client.isConnected() && !client.isClosed()) {
                 output.write(jsonMsg);
                 output.newLine();
                 output.flush();
@@ -67,9 +67,11 @@ public class Network {
 
     public void listen(Function<String, Void> function) {
         try {
-            if(client.isConnected()) {
+            if(client.isConnected() && !client.isClosed()) {
                 String msg = input.readLine();
-                function.apply(msg);
+                if(msg != null)
+                    function.apply(msg);
+                else client.close();
             } else {
                 input.close();
             }
