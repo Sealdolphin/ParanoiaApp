@@ -1,5 +1,6 @@
 package paranoia.services.technical;
 
+import paranoia.services.technical.command.ChatCommand;
 import paranoia.visuals.messages.ParanoiaError;
 
 import java.io.BufferedInputStream;
@@ -13,7 +14,6 @@ import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.URL;
 import java.net.UnknownHostException;
-import java.util.function.Function;
 
 /**
  * Establishes the Network
@@ -24,7 +24,13 @@ public class Network {
     public static final int workingPort = 6532;
     private BufferedWriter output;
     private BufferedReader input;
-    private CommandParser parser;
+    private final CommandParser parser = new CommandParser();
+
+    public Network(
+        ChatCommand.ParanoiaChatListener chatListener
+    ) {
+        parser.setChatListener(chatListener);
+    }
 
     public void connectWithIP(String ip) throws MalformedURLException, UnknownHostException {
         URL url = new URL("http", ip, workingPort,"");
@@ -69,12 +75,12 @@ public class Network {
         }
     }
 
-    public void listen(Function<String, Void> function) {
+    public void listen() {
         try {
             if(client.isConnected() && !client.isClosed()) {
                 String msg = input.readLine();
                 if(msg != null)
-                    function.apply(msg);
+                    parser.parse(msg);
                 else client.close();
             } else {
                 input.close();
