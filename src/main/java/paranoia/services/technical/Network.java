@@ -1,5 +1,7 @@
 package paranoia.services.technical;
 
+import paranoia.visuals.messages.ParanoiaError;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -48,6 +50,7 @@ public class Network {
             throw it;
         } catch (IOException error) {
             error.printStackTrace();
+            ParanoiaError.error(error);
         }
     }
 
@@ -62,6 +65,7 @@ public class Network {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            ParanoiaError.error(e);
         }
     }
 
@@ -77,6 +81,7 @@ public class Network {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            ParanoiaError.error(e);
         }
     }
 
