@@ -20,6 +20,8 @@ import javax.swing.KeyStroke;
 import javax.swing.LayoutStyle;
 import javax.swing.WindowConstants;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,10 +50,18 @@ public class CerebralCoretech extends JFrame {
         layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         //Setup metadata
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Paranoia");
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Paranoia HUB");
         //Setup visuals
         getContentPane().setBackground(PARANOIA_BACKGROUND);
+
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                super.windowClosed(e);
+                new MenuFrame().setVisible(true);
+            }
+        });
 
         //TODO: temporary
         miscPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("R"), "roll");
