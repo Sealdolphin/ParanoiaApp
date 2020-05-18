@@ -60,6 +60,14 @@ public class Network {
         }
     }
 
+    public void disconnect() {
+        try {
+            client.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void sendMessage(String jsonMsg) {
         try {
             if(client.isConnected() && !client.isClosed()) {
@@ -91,4 +99,7 @@ public class Network {
         }
     }
 
+    public boolean isOpen() {
+        return client.isConnected() && !client.isClosed();
+    }
 }

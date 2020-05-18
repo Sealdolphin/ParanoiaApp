@@ -98,7 +98,7 @@ public class Clone implements Cloneable, ICoreTechPart {
         this.injury = injury;
     }
 
-    private String getFullName() {
+    public String getFullName() {
         return name + "-" + clearance.getShort() + "-" + sectorName + "-" + cloneID;
     }
 
