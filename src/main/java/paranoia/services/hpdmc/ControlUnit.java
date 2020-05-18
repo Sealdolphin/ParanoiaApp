@@ -13,6 +13,7 @@ import paranoia.services.technical.Network;
 import paranoia.services.technical.command.ParanoiaCommand;
 import paranoia.visuals.CerebralCoretech;
 import paranoia.visuals.ComponentName;
+import paranoia.visuals.messages.ParanoiaError;
 import paranoia.visuals.messages.RollMessage;
 import paranoia.visuals.panels.ChatPanel;
 
@@ -86,6 +87,7 @@ public class ControlUnit {
     }
 
     public void activateMiscPanel(JPanel panel) {
+        clearPanel();
         JButton btnX = new JButton("Clear");
         btnX.addActionListener(event -> clearPanel());
         miscPanel.add(btnX, BorderLayout.NORTH);
@@ -125,7 +127,10 @@ public class ControlUnit {
     }
 
     public void sendCommand(ParanoiaCommand command) {
-        network.sendMessage(command.toJsonObject().toString());
+        if(network.isOpen())
+            network.sendMessage(command.toJsonObject().toString());
+        else
+            ParanoiaError.error("Network is unavailable");
     }
 
     public JPanel getMiscPanel() {

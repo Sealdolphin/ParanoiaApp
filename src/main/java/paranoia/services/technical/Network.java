@@ -20,7 +20,7 @@ import java.net.UnknownHostException;
  */
 public class Network {
 
-    private Socket client;
+    private Socket client = null;
     public static final int workingPort = 6532;
     private BufferedWriter output;
     private BufferedReader input;
@@ -100,6 +100,7 @@ public class Network {
     }
 
     public boolean isOpen() {
+        if(client == null) return false;
         return client.isConnected() && !client.isClosed();
     }
 }

@@ -54,7 +54,7 @@ public class CerebralCoretech extends JFrame {
         setTitle("Paranoia HUB");
         //Setup visuals
         getContentPane().setBackground(PARANOIA_BACKGROUND);
-
+        //Setup closing
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
@@ -82,6 +82,13 @@ public class CerebralCoretech extends JFrame {
                     positive,
                     negative
                 );
+            }
+        });
+        miscPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("C"), "chat");
+        miscPanel.getActionMap().put("chat", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.activateChatWindow();
             }
         });
 
