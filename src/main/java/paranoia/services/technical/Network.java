@@ -1,6 +1,7 @@
 package paranoia.services.technical;
 
 import paranoia.services.technical.command.ChatCommand;
+import paranoia.services.technical.command.DisconnectCommand;
 import paranoia.visuals.messages.ParanoiaError;
 
 import java.io.BufferedInputStream;
@@ -27,9 +28,11 @@ public class Network {
     private final CommandParser parser = new CommandParser();
 
     public Network(
-        ChatCommand.ParanoiaChatListener chatListener
+        ChatCommand.ParanoiaChatListener chatListener,
+        DisconnectCommand.ParanoiaDisconnectListener discListener
     ) {
         parser.setChatListener(chatListener);
+        parser.setDisconnectListener(discListener);
     }
 
     public void connectWithIP(String ip) throws MalformedURLException, UnknownHostException {

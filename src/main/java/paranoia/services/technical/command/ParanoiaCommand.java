@@ -5,7 +5,8 @@ import org.json.JSONObject;
 public abstract class ParanoiaCommand {
 
     public enum CommandType {
-        CHAT
+        CHAT,
+        DISCONNECT
     }
 
     protected ParanoiaCommand(CommandType type) {

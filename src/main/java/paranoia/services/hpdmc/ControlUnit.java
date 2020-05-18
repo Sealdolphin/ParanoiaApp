@@ -10,6 +10,7 @@ import paranoia.services.hpdmc.manager.MissionManager;
 import paranoia.services.hpdmc.manager.ParanoiaManager;
 import paranoia.services.hpdmc.manager.TroubleShooterManager;
 import paranoia.services.technical.Network;
+import paranoia.services.technical.command.DisconnectCommand;
 import paranoia.services.technical.command.ParanoiaCommand;
 import paranoia.visuals.CerebralCoretech;
 import paranoia.visuals.ComponentName;
@@ -30,7 +31,7 @@ import java.util.Map;
 /**
  * Controls the core game elements - GameMaster interface
  */
-public class ControlUnit {
+public class ControlUnit implements DisconnectCommand.ParanoiaDisconnectListener {
 
     CerebralCoretech visuals;
     private final Map<ComponentName, ParanoiaManager<? extends ICoreTechPart>> managerMap;
@@ -55,7 +56,7 @@ public class ControlUnit {
         //Setup miscellaneous
         chatPanel = new ChatPanel(clone, this);
         //Setup network
-        network = new Network(chatPanel);
+        network = new Network(chatPanel, this);
         //Setup visuals
         visuals = new CerebralCoretech(this, clone);
     }
@@ -84,6 +85,11 @@ public class ControlUnit {
             }
         });
         listening.start();
+    }
+
+    @Override
+    public void disconnect() {
+        network.disconnect();
     }
 
     public void activateMiscPanel(JPanel panel) {
