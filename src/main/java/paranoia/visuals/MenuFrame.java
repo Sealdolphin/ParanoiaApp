@@ -4,6 +4,7 @@ import paranoia.core.Clone;
 import paranoia.core.SecurityClearance;
 import paranoia.services.hpdmc.ControlUnit;
 import paranoia.services.plc.AssetManager;
+import paranoia.visuals.messages.ParanoiaError;
 
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
@@ -19,6 +20,8 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.UnknownHostException;
 
 import static paranoia.Paranoia.getParanoiaResource;
 import static paranoia.Paranoia.setUpSkillsNStats;
@@ -59,7 +62,13 @@ public class MenuFrame extends JFrame {
             JFrame coreTech = controlUnit.getVisuals();
             coreTech.setExtendedState(Frame.MAXIMIZED_BOTH);
             setUpSkillsNStats(controlUnit);
-
+            //Network
+            try {
+                controlUnit.connectToServer(connectUrl);
+            } catch (MalformedURLException | UnknownHostException ex) {
+                ex.printStackTrace();
+                ParanoiaError.error(ex);
+            }
             coreTech.setVisible(true);
         });
 

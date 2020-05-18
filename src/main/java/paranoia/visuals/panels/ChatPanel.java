@@ -18,7 +18,7 @@ import java.time.format.DateTimeFormatter;
 
 public class ChatPanel extends JPanel implements ChatCommand.ParanoiaChatListener {
 
-    private JTextArea chatWindow = new JTextArea(15,30);
+    private final JTextArea chatWindow = new JTextArea(15,30);
 
     public ChatPanel(Clone clone, ControlUnit unit) {
         setLayout(new BorderLayout());
@@ -31,15 +31,12 @@ public class ChatPanel extends JPanel implements ChatCommand.ParanoiaChatListene
         JButton btnSend = new JButton("SEND");
 
         btnSend.addActionListener(l -> {
-            unit.sendCommand(
-                new ChatCommand(
-                    clone.getFullName(),
-                    writer.getText(),
-                    DateTimeFormatter.ofPattern("hh:mm:ss").format(LocalTime.now()),
-                    null
-                )
-            );
-
+            String sender = clone.getFullName();
+            String message = writer.getText();
+            String time = DateTimeFormatter.ofPattern("hh:mm:ss").format(LocalTime.now());
+            ChatCommand chatMessage = new ChatCommand(sender, message, time, null);
+            if(unit.sendCommand(chatMessage))
+                digest(sender, message, time);
             writer.setText("");
         });
 

@@ -9,6 +9,8 @@ import java.util.stream.Collectors;
 
 public class ParanoiaError {
 
+    public static final int ERROR_LINE_LIMIT = 15;
+
     private static final String[] errorHeaders = {
         "Cerebral CoreTech error",
         "Nearby mutant traitors attacked",
@@ -26,8 +28,11 @@ public class ParanoiaError {
         String stack = Arrays
             .stream(error.getStackTrace())
             .map(StackTraceElement::toString)
+            .limit(ERROR_LINE_LIMIT)
             .collect(Collectors.joining("\n"));
         String message = error.getLocalizedMessage() + "\n" + stack;
+        if(error.getStackTrace().length > ERROR_LINE_LIMIT)
+            message += "...";
         error(message);
     }
 

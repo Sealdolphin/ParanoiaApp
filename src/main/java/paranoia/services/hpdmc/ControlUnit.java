@@ -126,11 +126,14 @@ public class ControlUnit {
         activateMiscPanel(chatPanel);
     }
 
-    public void sendCommand(ParanoiaCommand command) {
-        if(network.isOpen())
+    public boolean sendCommand(ParanoiaCommand command) {
+        if(network.isOpen()) {
             network.sendMessage(command.toJsonObject().toString());
-        else
+            return true;
+        } else {
             ParanoiaError.error("Network is unavailable");
+            return false;
+        }
     }
 
     public JPanel getMiscPanel() {

@@ -95,7 +95,8 @@ public class Network {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            ParanoiaError.error(e);
+            disconnect();
+            ParanoiaError.error("Disconnected. Reason: " + e.getLocalizedMessage());
         }
     }
 
