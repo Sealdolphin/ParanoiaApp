@@ -16,10 +16,21 @@ public class MockServer extends Thread {
     private boolean open = false;
     private BufferedWriter clientWriter;
 
+    public MockServer() {
+        this(workingPort);
+    }
+
+    public MockServer(int port) {
+        try {
+            server = new ServerSocket(port);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void run() {
         try {
-            server = new ServerSocket(workingPort);
             client = server.accept();
             clientWriter = new BufferedWriter(
                 new OutputStreamWriter(client.getOutputStream())
