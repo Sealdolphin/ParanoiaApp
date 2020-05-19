@@ -20,12 +20,14 @@ public abstract class BasicNetworkTest {
         server.start();
     }
 
-    protected synchronized static void connect(Network client) {
+    protected void connect(Network client) {
         try {
             client.connect(new URL("http", "127.0.0.1", port, ""));
             port += 1;
-            while (!client.isOpen()) {
-                Thread.currentThread().wait();
+            synchronized(lock) {
+                while (!server.isOpen()) {
+                    lock.wait();
+                }
             }
         } catch (IOException | InterruptedException e) {
             Assert.fail(e.getLocalizedMessage());
