@@ -9,27 +9,35 @@ import paranoia.services.hpdmc.manager.CardManager;
 import paranoia.services.hpdmc.manager.MissionManager;
 import paranoia.services.hpdmc.manager.ParanoiaManager;
 import paranoia.services.hpdmc.manager.TroubleShooterManager;
+import paranoia.services.technical.Network;
+import paranoia.services.technical.command.DisconnectCommand;
+import paranoia.services.technical.command.ParanoiaCommand;
 import paranoia.visuals.CerebralCoretech;
 import paranoia.visuals.ComponentName;
+import paranoia.visuals.messages.ParanoiaError;
 import paranoia.visuals.messages.RollMessage;
+import paranoia.visuals.panels.ChatPanel;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import java.awt.BorderLayout;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Controls the core game elements - GameMaster interface
  */
-public class ControlUnit {
+public class ControlUnit implements DisconnectCommand.ParanoiaDisconnectListener {
 
     CerebralCoretech visuals;
     private final Map<ComponentName, ParanoiaManager<? extends ICoreTechPart>> managerMap;
 
     private final JPanel miscPanel;
+    private final Network network;
+    private final ChatPanel chatPanel;
 
     public ControlUnit(Clone clone) {
         miscPanel = new JPanel();
@@ -44,7 +52,11 @@ public class ControlUnit {
         managerMap.put(ComponentName.SKILL_PANEL, new AttributeManager());
         managerMap.put(ComponentName.TROUBLESHOOTER_PANEL, new TroubleShooterManager());
         managerMap.put(ComponentName.SELF_PANEL, new TroubleShooterManager());
-        //Setup managers
+        //Setup miscellaneous
+        chatPanel = new ChatPanel(clone, this);
+        //Setup network
+        network = new Network(chatPanel, this);
+        //Setup visuals
         visuals = new CerebralCoretech(this, clone);
     }
 
@@ -61,9 +73,28 @@ public class ControlUnit {
         managerMap.get(name).updateAsset(asset);
     }
 
+    public void connectToServer(String ipAddress) throws IOException {
+        //Connect to server
+        network.connectWithIP(ipAddress);
+
+        //Start listening thread
+        Thread listening = new Thread(() -> {
+            while (network.isOpen()) {
+                network.listen();
+            }
+        });
+        listening.start();
+    }
+
+    @Override
+    public void disconnect() {
+        network.disconnect();
+    }
+
     public void activateMiscPanel(JPanel panel) {
+        clearPanel();
         JButton btnX = new JButton("Clear");
-        btnX.addActionListener( event -> clearPanel());
+        btnX.addActionListener(event -> clearPanel());
         miscPanel.add(btnX, BorderLayout.NORTH);
         miscPanel.add(panel, BorderLayout.CENTER);
         miscPanel.updateUI();
@@ -94,6 +125,20 @@ public class ControlUnit {
         msg.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         msg.setLocationRelativeTo(visuals);
         msg.setVisible(true);
+    }
+
+    public void activateChatWindow() {
+        activateMiscPanel(chatPanel);
+    }
+
+    public boolean sendCommand(ParanoiaCommand command) {
+        if(network.isOpen()) {
+            network.sendMessage(command.toJsonObject().toString());
+            return true;
+        } else {
+            ParanoiaError.error("Network is unavailable");
+            return false;
+        }
     }
 
     public JPanel getMiscPanel() {
