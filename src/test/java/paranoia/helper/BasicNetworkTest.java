@@ -25,8 +25,7 @@ public abstract class BasicNetworkTest {
             client.connect(new URL("http", "127.0.0.1", port, ""));
             port += 1;
         } catch (MalformedURLException | UnknownHostException e) {
-            e.printStackTrace();
-            Assert.fail();
+            Assert.fail(e.getLocalizedMessage());
         }
     }
 

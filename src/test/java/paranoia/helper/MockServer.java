@@ -1,5 +1,6 @@
 package paranoia.helper;
 
+import org.junit.Assert;
 import paranoia.services.technical.command.ParanoiaCommand;
 
 import java.io.BufferedWriter;
@@ -24,7 +25,7 @@ public class MockServer extends Thread {
         try {
             server = new ServerSocket(port);
         } catch (IOException e) {
-            e.printStackTrace();
+            Assert.fail(e.getLocalizedMessage());
         }
     }
 
@@ -37,7 +38,7 @@ public class MockServer extends Thread {
             );
             open = true;
         } catch (IOException e) {
-            e.printStackTrace();
+            Assert.fail(e.getLocalizedMessage());
         }
     }
 
@@ -46,7 +47,7 @@ public class MockServer extends Thread {
             client.close();
             server.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            Assert.fail(e.getLocalizedMessage());
         }
     }
 
@@ -58,7 +59,7 @@ public class MockServer extends Thread {
                 clientWriter.flush();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            Assert.fail(e.getLocalizedMessage());
         }
     }
 }
