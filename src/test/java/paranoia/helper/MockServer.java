@@ -9,19 +9,15 @@ import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import static paranoia.services.technical.Network.workingPort;
-
 public class MockServer extends Thread {
     private Socket client;
     private ServerSocket server;
     private boolean open = false;
     private BufferedWriter clientWriter;
+    private final Object lock;
 
-    public MockServer() {
-        this(workingPort);
-    }
-
-    public MockServer(int port) {
+    public MockServer(int port, Object lock) {
+        this.lock = lock;
         try {
             server = new ServerSocket(port);
         } catch (IOException e) {
@@ -37,6 +33,9 @@ public class MockServer extends Thread {
                 new OutputStreamWriter(client.getOutputStream())
             );
             open = true;
+            synchronized (lock) {
+                lock.notify();
+            }
         } catch (IOException e) {
             Assert.fail(e.getLocalizedMessage());
         }
@@ -51,13 +50,17 @@ public class MockServer extends Thread {
         }
     }
 
+    public boolean isOpen() {
+        return open;
+    }
+
     public void sendCommand(ParanoiaCommand command) {
         try {
             if(open && client.isConnected() && !client.isClosed()) {
                 clientWriter.write(command.toJsonObject().toString());
                 clientWriter.newLine();
                 clientWriter.flush();
-            }
+            } else Assert.fail("Server is closed");
         } catch (IOException e) {
             Assert.fail(e.getLocalizedMessage());
         }

@@ -11,10 +11,8 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.URL;
-import java.net.UnknownHostException;
 
 /**
  * Establishes the Network
@@ -35,32 +33,25 @@ public class Network {
         parser.setDisconnectListener(discListener);
     }
 
-    public void connectWithIP(String ip) throws MalformedURLException, UnknownHostException {
+    public void connectWithIP(String ip) throws IOException {
         URL url = new URL("http", ip, workingPort,"");
         connect(url);
     }
 
-    public void connect(URL url) throws UnknownHostException {
-        try {
-            System.out.println("Connecting to " + url.toString());
-            client = new Socket(url.getHost(), url.getPort());
+    public void connect(URL url) throws IOException {
+        System.out.println("Connecting to " + url.toString());
+        client = new Socket(url.getHost(), url.getPort());
 
-            output = new BufferedWriter(
-                new OutputStreamWriter(
-                    new BufferedOutputStream(client.getOutputStream())
-                )
-            );
-            input = new BufferedReader(
-                new InputStreamReader(
-                    new BufferedInputStream(client.getInputStream())
-                )
-            );
-        } catch (UnknownHostException it) {
-            throw it;
-        } catch (IOException error) {
-            error.printStackTrace();
-            ParanoiaError.error(error);
-        }
+        output = new BufferedWriter(
+            new OutputStreamWriter(
+                new BufferedOutputStream(client.getOutputStream())
+            )
+        );
+        input = new BufferedReader(
+            new InputStreamReader(
+                new BufferedInputStream(client.getInputStream())
+            )
+        );
     }
 
     public void disconnect() {

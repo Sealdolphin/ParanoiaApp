@@ -5,26 +5,29 @@ import org.junit.Assert;
 import org.junit.Before;
 import paranoia.services.technical.Network;
 
-import java.net.MalformedURLException;
+import java.io.IOException;
 import java.net.URL;
-import java.net.UnknownHostException;
 
 public abstract class BasicNetworkTest {
 
     protected MockServer server;
     private static int port = 6001;
+    private final Object lock = new Object();
 
     @Before
     public void setUp() {
-        server = new MockServer(port);
+        server = new MockServer(port, lock);
         server.start();
     }
 
-    protected static void connect(Network client) {
+    protected synchronized static void connect(Network client) {
         try {
             client.connect(new URL("http", "127.0.0.1", port, ""));
             port += 1;
-        } catch (MalformedURLException | UnknownHostException e) {
+            while (!client.isOpen()) {
+                Thread.currentThread().wait();
+            }
+        } catch (IOException | InterruptedException e) {
             Assert.fail(e.getLocalizedMessage());
         }
     }

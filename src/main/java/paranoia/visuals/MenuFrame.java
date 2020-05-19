@@ -20,8 +20,6 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.UnknownHostException;
 
 import static paranoia.Paranoia.getParanoiaResource;
 import static paranoia.Paranoia.setUpSkillsNStats;
@@ -65,7 +63,7 @@ public class MenuFrame extends JFrame {
             //Network
             try {
                 controlUnit.connectToServer(connectUrl);
-            } catch (MalformedURLException | UnknownHostException ex) {
+            } catch (IOException ex) {
                 ex.printStackTrace();
                 ParanoiaError.error(ex);
             }

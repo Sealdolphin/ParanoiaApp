@@ -23,8 +23,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import java.awt.BorderLayout;
-import java.net.MalformedURLException;
-import java.net.UnknownHostException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -74,7 +73,7 @@ public class ControlUnit implements DisconnectCommand.ParanoiaDisconnectListener
         managerMap.get(name).updateAsset(asset);
     }
 
-    public void connectToServer(String ipAddress) throws MalformedURLException, UnknownHostException {
+    public void connectToServer(String ipAddress) throws IOException {
         //Connect to server
         network.connectWithIP(ipAddress);
 
