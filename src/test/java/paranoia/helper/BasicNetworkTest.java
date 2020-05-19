@@ -1,8 +1,8 @@
 package paranoia.helper;
 
-import org.junit.AfterClass;
+import org.junit.After;
 import org.junit.Assert;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import paranoia.services.technical.Network;
 
 import java.net.MalformedURLException;
@@ -10,10 +10,10 @@ import java.net.UnknownHostException;
 
 public abstract class BasicNetworkTest {
 
-    protected static MockServer server;
+    protected MockServer server;
 
-    @BeforeClass
-    public static void setUp() {
+    @Before
+    public void setUp() {
         server = new MockServer();
         server.start();
     }
@@ -27,9 +27,8 @@ public abstract class BasicNetworkTest {
         }
     }
 
-    @AfterClass
-    public static void shutDown() {
+    @After
+    public void shutDown() {
         server.close();
-        server = null;
     }
 }
