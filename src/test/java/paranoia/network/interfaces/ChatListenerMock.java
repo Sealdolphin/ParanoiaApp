@@ -13,6 +13,10 @@ public class ChatListenerMock implements
     private final String testTime;
     private boolean success = false;
 
+    public ChatListenerMock() {
+        this("", "", "");
+    }
+
     public ChatListenerMock(String testSender, String testBody, String testTime) {
         this.testSender = testSender;
         this.testBody = testBody;
