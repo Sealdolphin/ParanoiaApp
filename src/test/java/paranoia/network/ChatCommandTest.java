@@ -1,7 +1,6 @@
 package paranoia.network;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import paranoia.helper.BasicNetworkTest;
 import paranoia.network.interfaces.ChatListenerMock;
@@ -25,7 +24,6 @@ public class ChatCommandTest extends BasicNetworkTest {
     );
 
     @Test
-    @Ignore
     public void sendChatCommand() {
         connect(client);
         ChatCommand command = new ChatCommand(

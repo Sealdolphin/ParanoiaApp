@@ -30,5 +30,10 @@ public abstract class BasicNetworkTest {
     @AfterClass
     public static void shutDown() {
         server.close();
+        try {
+            server.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
