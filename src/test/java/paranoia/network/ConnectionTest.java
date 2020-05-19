@@ -8,7 +8,7 @@ import paranoia.network.interfaces.DisconnectListenerMock;
 import paranoia.services.technical.Network;
 import paranoia.services.technical.command.DisconnectCommand;
 
-public class ConnectionTest extends BasicNetworkTest {
+public class ConnectionTest extends BasicNetworkTest{
 
     private final DisconnectListenerMock disconnectMock =
         new DisconnectListenerMock();
@@ -23,7 +23,6 @@ public class ConnectionTest extends BasicNetworkTest {
         DisconnectCommand command = new DisconnectCommand(null);
         server.sendCommand(command);
         client.listen();
-        Assert.assertFalse(client.isOpen());
         Assert.assertTrue(disconnectMock.testSuccess());
     }
 

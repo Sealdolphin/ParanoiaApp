@@ -34,7 +34,6 @@ public class ChatCommandTest extends BasicNetworkTest {
         );
         server.sendCommand(command);
         client.listen();
-        Assert.assertTrue(client.isOpen());
         Assert.assertTrue(chatMock.testSuccess());
     }
 
