@@ -1,14 +1,22 @@
 package paranoia.visuals.panels;
 
 import paranoia.visuals.ComponentName;
+import paranoia.visuals.custom.ParanoiaButton;
+import paranoia.visuals.messages.ParanoiaError;
 
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import static paranoia.Paranoia.getParanoiaResource;
 
 public class OperationPanel extends JPanel {
 
@@ -29,10 +37,25 @@ public class OperationPanel extends JPanel {
     }
 
     public static JPanel createOperationPanel(OperationPanel panel) {
+
+        JButton btnRoll;
+        JButton btnChat;
+
+        try {
+            BufferedImage chat = ImageIO.read(new File(getParanoiaResource("ui/btnChat.png")));
+            BufferedImage roll = ImageIO.read(new File(getParanoiaResource("ui/btnRoll.png")));
+            btnChat = new ParanoiaButton(chat);
+            btnRoll = new ParanoiaButton(roll);
+
+        } catch (IOException e) {
+            ParanoiaError.error(e);
+
+            btnChat = new JButton("Chat");
+            btnRoll = new JButton("Roll");
+        }
+
         JPanel operation = new JPanel();
         operation.setLayout(new FlowLayout());
-        JButton btnRoll = new JButton("Roll");
-        JButton btnChat = new JButton("Chat");
 
         btnRoll.addActionListener(e -> panel.showPanel(ComponentName.DICE_PANEL.name()));
         btnChat.addActionListener(e -> panel.showPanel(ComponentName.CHAT_PANEL.name()));
