@@ -17,8 +17,8 @@ import paranoia.visuals.ComponentName;
 import paranoia.visuals.messages.ParanoiaError;
 import paranoia.visuals.messages.RollMessage;
 import paranoia.visuals.panels.ChatPanel;
+import paranoia.visuals.panels.OperationPanel;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
@@ -35,14 +35,12 @@ public class ControlUnit implements DisconnectCommand.ParanoiaDisconnectListener
     CerebralCoretech visuals;
     private final Map<ComponentName, ParanoiaManager<? extends ICoreTechPart>> managerMap;
 
-    private final JPanel miscPanel;
+    private final OperationPanel operationPanel;
     private final Network network;
     private final ChatPanel chatPanel;
 
     public ControlUnit(Clone clone) {
-        miscPanel = new JPanel();
-        miscPanel.setLayout(new BorderLayout());
-        miscPanel.setName(ComponentName.MISC_PANEL.name());
+        operationPanel = new OperationPanel();
         //Setup managers
         managerMap = new HashMap<>();
         managerMap.put(ComponentName.MISSION_PANEL, new MissionManager());
@@ -54,6 +52,7 @@ public class ControlUnit implements DisconnectCommand.ParanoiaDisconnectListener
         managerMap.put(ComponentName.SELF_PANEL, new TroubleShooterManager());
         //Setup miscellaneous
         chatPanel = new ChatPanel(clone, this);
+        operationPanel.activatePanel(chatPanel, ComponentName.CHAT_PANEL.name());
         //Setup network
         network = new Network(chatPanel, this);
         //Setup visuals
@@ -91,20 +90,6 @@ public class ControlUnit implements DisconnectCommand.ParanoiaDisconnectListener
         network.disconnect();
     }
 
-    public void activateMiscPanel(JPanel panel) {
-        clearPanel();
-        JButton btnX = new JButton("Clear");
-        btnX.addActionListener(event -> clearPanel());
-        miscPanel.add(btnX, BorderLayout.NORTH);
-        miscPanel.add(panel, BorderLayout.CENTER);
-        miscPanel.updateUI();
-    }
-
-    private void clearPanel() {
-        miscPanel.removeAll();
-        miscPanel.updateUI();
-    }
-
     public void fireRollMessage(
         Stat stat, Skill skill,
         boolean statChange, boolean skillChange,
@@ -127,10 +112,6 @@ public class ControlUnit implements DisconnectCommand.ParanoiaDisconnectListener
         msg.setVisible(true);
     }
 
-    public void activateChatWindow() {
-        activateMiscPanel(chatPanel);
-    }
-
     public boolean sendCommand(ParanoiaCommand command) {
         if(network.isOpen()) {
             network.sendMessage(command.toJsonObject().toString());
@@ -142,6 +123,16 @@ public class ControlUnit implements DisconnectCommand.ParanoiaDisconnectListener
     }
 
     public JPanel getMiscPanel() {
+        JPanel miscPanel = new JPanel();
+        miscPanel.setLayout(new BorderLayout());
+        miscPanel.setName(ComponentName.MISC_PANEL.name());
+
+        miscPanel.add(OperationPanel.createOperationPanel(operationPanel), BorderLayout.NORTH);
+        miscPanel.add(operationPanel, BorderLayout.CENTER);
         return miscPanel;
+    }
+
+    public OperationPanel getOperationPanel() {
+        return operationPanel;
     }
 }
