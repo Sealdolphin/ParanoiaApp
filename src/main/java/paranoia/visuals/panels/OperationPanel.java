@@ -76,4 +76,8 @@ public class OperationPanel extends JPanel {
         componentMap.put(key, comp);
         super.add(comp, constraints);
     }
+
+    public boolean checkComponent(String key) {
+        return componentMap.containsKey(key);
+    }
 }

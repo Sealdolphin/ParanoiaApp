@@ -20,6 +20,7 @@ import paranoia.helper.TestClone;
 import paranoia.services.hpdmc.ControlUnit;
 import paranoia.visuals.ComponentName;
 import paranoia.visuals.messages.RollMessage;
+import paranoia.visuals.panels.OperationPanel;
 
 import javax.swing.JDialog;
 import java.awt.Dimension;
@@ -97,8 +98,11 @@ public class DiceUITest extends AssertJSwingJUnitTestCase {
         //Assert roll action value
         FrameFixture coreTech = new FrameFixture(robot(), cpu.getVisuals());
         coreTech.show();
+        //There should not be a dice panel
+        //How do I test that?
         JPanelFixture miscPanel = coreTech.panel(ComponentName.MISC_PANEL.name());
-        Assert.assertEquals(0, miscPanel.target().getComponentCount());
+        OperationPanel oPanel = (OperationPanel) miscPanel.target().getComponent(1);
+        Assert.assertFalse(oPanel.checkComponent(ComponentName.DICE_PANEL.name()));
     }
 
     @Test
@@ -119,9 +123,6 @@ public class DiceUITest extends AssertJSwingJUnitTestCase {
         dicePanel.requireVisible();
         int dice = Math.abs(getTestSkill() + getTestStat()) + 1;
         Assert.assertEquals(dice, dicePanel.target().getComponentCount());
-        //Close roll panel
-        miscPanel.button().click();
-        Assert.assertEquals(0, miscPanel.target().getComponentCount());
     }
 
     private int getTestSkill() {
