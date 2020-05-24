@@ -6,7 +6,8 @@ public abstract class ParanoiaCommand {
 
     public enum CommandType {
         CHAT,
-        DISCONNECT
+        DISCONNECT,
+        ACPF
     }
 
     protected ParanoiaCommand(CommandType type) {
