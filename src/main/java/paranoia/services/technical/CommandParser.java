@@ -49,6 +49,9 @@ public class CommandParser {
     public void setDisconnectListener(DisconnectCommand.ParanoiaDisconnectListener listener) {
         disconnectListener = listener;
     }
+    public void setAcpfListener(ACPFCommand.ParanoiaACPFListener listener) {
+        acpfListener = listener;
+    }
 
     private ParanoiaCommand parseChatCommand(JSONObject body) {
         String sender = body.getString("sender");

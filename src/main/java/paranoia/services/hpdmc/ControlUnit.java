@@ -37,7 +37,6 @@ public class ControlUnit implements DisconnectCommand.ParanoiaDisconnectListener
 
     private final OperationPanel operationPanel;
     private final Network network;
-    private final ChatPanel chatPanel;
 
     public ControlUnit(Clone clone) {
         operationPanel = new OperationPanel();
@@ -51,10 +50,10 @@ public class ControlUnit implements DisconnectCommand.ParanoiaDisconnectListener
         managerMap.put(ComponentName.TROUBLESHOOTER_PANEL, new TroubleShooterManager());
         managerMap.put(ComponentName.SELF_PANEL, new TroubleShooterManager());
         //Setup miscellaneous
-        chatPanel = new ChatPanel(clone, this);
+        ChatPanel chatPanel = new ChatPanel(clone, this);
         operationPanel.activatePanel(chatPanel, ComponentName.CHAT_PANEL.name());
         //Setup network
-        network = new Network(chatPanel, this);
+        network = new Network(chatPanel, this, clone);
         //Setup visuals
         visuals = new CerebralCoretech(this, clone);
     }

@@ -1,5 +1,6 @@
 package paranoia.core;
 
+import paranoia.services.technical.command.ACPFCommand;
 import paranoia.visuals.clones.ClonePanel;
 import paranoia.visuals.clones.SelfPanel;
 import paranoia.visuals.mechanics.Moxie;
@@ -9,22 +10,22 @@ import java.awt.image.BufferedImage;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class Clone implements Cloneable, ICoreTechPart {
+public class Clone implements Cloneable, ICoreTechPart, ACPFCommand.ParanoiaACPFListener {
     private static final String UNKNOWN = "UNKNOWN";
-    private final String name;
+    private String name;
     private int treasonStars = 0;
     private int moxie = Moxie.MOXIE_COUNT;
     private int crossedOutMoxie = 0;
     private int injury = 0;
     private int xpPoints = 0;
     private final String sectorName;
-    private final String gender;
+    private String gender;
     private SecurityClearance clearance;
     private int cloneID = 1;
-    private final BufferedImage profilePicture;
+    private BufferedImage profilePicture;
     private final int playerId;
 
-    private Map<String, String> info = new LinkedHashMap<>();
+    private final Map<String, String> info = new LinkedHashMap<>();
 
     public Clone(
         String name,
@@ -120,5 +121,15 @@ public class Clone implements Cloneable, ICoreTechPart {
 
     public SecurityClearance getClearance() {
         return clearance;
+    }
+
+    @Override
+    public void updateProfile(String name, String gender, String[] personality, BufferedImage image) {
+        this.name = name;
+        this.gender = gender;
+        profilePicture = image;
+        info.put("TRAIT", personality[0]);
+        info.put("ADDITIONAL INFO", personality[1]);
+        info.put("BEST MARK", personality[2]);
     }
 }

@@ -1,5 +1,6 @@
 package paranoia.services.technical;
 
+import paranoia.services.technical.command.ACPFCommand;
 import paranoia.services.technical.command.ChatCommand;
 import paranoia.services.technical.command.DisconnectCommand;
 import paranoia.visuals.messages.ParanoiaError;
@@ -27,10 +28,12 @@ public class Network {
 
     public Network(
         ChatCommand.ParanoiaChatListener chatListener,
-        DisconnectCommand.ParanoiaDisconnectListener discListener
+        DisconnectCommand.ParanoiaDisconnectListener discListener,
+        ACPFCommand.ParanoiaACPFListener acpfListener
     ) {
         parser.setChatListener(chatListener);
         parser.setDisconnectListener(discListener);
+        parser.setAcpfListener(acpfListener);
     }
 
     public void connectWithIP(String ip) throws IOException {
