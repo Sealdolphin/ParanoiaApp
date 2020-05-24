@@ -3,6 +3,7 @@ package paranoia.services.technical;
 import org.json.JSONObject;
 import paranoia.services.technical.command.ACPFCommand;
 import paranoia.services.technical.command.ChatCommand;
+import paranoia.services.technical.command.DefineCommand;
 import paranoia.services.technical.command.DisconnectCommand;
 import paranoia.services.technical.command.ParanoiaCommand;
 import paranoia.visuals.messages.ParanoiaError;
@@ -17,6 +18,7 @@ public class CommandParser {
     private ChatCommand.ParanoiaChatListener chatListener;
     private DisconnectCommand.ParanoiaDisconnectListener disconnectListener;
     private ACPFCommand.ParanoiaACPFListener acpfListener;
+    private DefineCommand.ParanoiaDefineListener defineListener;
 
     public void parse(String pureMessage) {
         JSONObject message = new JSONObject(pureMessage);
@@ -34,7 +36,10 @@ public class CommandParser {
                 command = parseDisconnectCommand(body);
                 break;
             case ACPF:
-                command = parseACPF(body);
+                command = parseACPFCommand(body);
+                break;
+            case DEFINE:
+                command = parseDefineCommand(body);
                 break;
             default:
                 command = null;
@@ -51,6 +56,9 @@ public class CommandParser {
     }
     public void setAcpfListener(ACPFCommand.ParanoiaACPFListener listener) {
         acpfListener = listener;
+    }
+    public void setDefineListener(DefineCommand.ParanoiaDefineListener listener) {
+        defineListener = listener;
     }
 
     private ParanoiaCommand parseChatCommand(JSONObject body) {
@@ -85,10 +93,12 @@ public class CommandParser {
             ParanoiaError.error(e);
         }
 
-        return new ACPFCommand(
-           name, gender, personalities,
-           image, acpfListener
-        );
+        return new ACPFCommand(name, gender, personalities, image, acpfListener);
+    }
+
+    private ParanoiaCommand parseDefineCommand(JSONObject body) {
+        int value = body.getInt("fillValue");
+        return new DefineCommand(value, null, defineListener);
     }
 
 }
