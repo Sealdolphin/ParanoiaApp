@@ -64,7 +64,7 @@ public class CommandParser {
         return new DisconnectCommand(disconnectListener);
     }
 
-    private ParanoiaCommand parseACPF(JSONObject body) {
+    private ParanoiaCommand parseACPFCommand(JSONObject body) {
         String name = body.getString("name");
         String gender = body.getString("gender");
         String[] personalities = body.getJSONArray("personality")

@@ -3,6 +3,7 @@ package paranoia.network;
 import org.junit.Assert;
 import org.junit.Test;
 import paranoia.helper.BasicNetworkTest;
+import paranoia.network.interfaces.ACPFListenerMock;
 import paranoia.network.interfaces.ChatListenerMock;
 import paranoia.network.interfaces.DisconnectListenerMock;
 import paranoia.services.technical.Network;
@@ -14,7 +15,9 @@ public class ConnectionTest extends BasicNetworkTest{
         new DisconnectListenerMock();
     private final Network client = new Network(
         new ChatListenerMock(),
-        disconnectMock
+        disconnectMock,
+        new ACPFListenerMock(),
+        null
     );
 
     @Test

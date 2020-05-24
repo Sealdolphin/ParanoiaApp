@@ -3,6 +3,7 @@ package paranoia.network;
 import org.junit.Assert;
 import org.junit.Test;
 import paranoia.helper.BasicNetworkTest;
+import paranoia.network.interfaces.ACPFListenerMock;
 import paranoia.network.interfaces.ChatListenerMock;
 import paranoia.network.interfaces.DisconnectListenerMock;
 import paranoia.services.technical.Network;
@@ -12,6 +13,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class ChatCommandTest extends BasicNetworkTest {
+
     private final String testSender = "TestSender";
     private final String testBody = "Hello World";
     private final String testTime =
@@ -20,7 +22,9 @@ public class ChatCommandTest extends BasicNetworkTest {
         new ChatListenerMock(testSender, testBody, testTime);
     private final Network client = new Network(
         chatMock,
-        new DisconnectListenerMock()
+        new DisconnectListenerMock(),
+        new ACPFListenerMock(),
+        null
     );
 
     @Test
