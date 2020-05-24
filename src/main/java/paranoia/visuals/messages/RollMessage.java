@@ -11,6 +11,7 @@ import paranoia.services.hpdmc.manager.TroubleShooterManager;
 import paranoia.services.plc.AssetManager;
 import paranoia.visuals.ComponentName;
 import paranoia.visuals.custom.ParanoiaButton;
+import paranoia.visuals.panels.OperationPanel;
 
 import javax.swing.GroupLayout;
 import javax.swing.JComboBox;
@@ -66,7 +67,6 @@ public class RollMessage extends JDialog {
         Font boldFont20 = AssetManager.getBoldFont(20);
         Font boldFont30 = AssetManager.getBoldFont(30);
 
-
         //Properties
         lbMessage = new JLabel(message);
         lbMessage.setFont(boldFont30);
@@ -75,7 +75,7 @@ public class RollMessage extends JDialog {
         lbDiceValue.setName("lbNode");
         btnRoll.setName("btnRoll");
         //Other properties
-        setupRollButton(boldFont20, cpu, clearance);
+        setupRollButton(boldFont20, cpu.getOperationPanel(), clearance);
         setupSkill(boldFont20, allowChangeSkill);
         setupStat(boldFont20, allowChangeStat);
         //Set initial selection
@@ -118,14 +118,14 @@ public class RollMessage extends JDialog {
         lbSkill.setName("lbSkill");
     }
 
-    private void setupRollButton(Font font, ControlUnit cpu, SecurityClearance clearance) {
+    private void setupRollButton(Font font, OperationPanel panel, SecurityClearance clearance) {
         //Button
         btnRoll.setFont(font);
         btnRoll.setBackground(new Color(166,0, 6));
         btnRoll.setHoverBG(new Color(166, 70, 73));
         btnRoll.setPressedBG(new Color(255, 126, 136));
         btnRoll.setForeground(Color.WHITE);
-        btnRoll.addActionListener( event -> roll(cpu, clearance) );
+        btnRoll.addActionListener( event -> roll(panel, clearance) );
     }
 
     private void assembleLayout() {
@@ -183,11 +183,11 @@ public class RollMessage extends JDialog {
         );
     }
 
-    private void roll(ControlUnit cpu, SecurityClearance clearance) {
+    private void roll(OperationPanel panel, SecurityClearance clearance) {
         DiceManager diceManager = new DiceManager(calculateDiceValue(), clearance);
         JPanel dicePanel = diceManager.getDicePanel();
         diceManager.roll();
-        cpu.activateMiscPanel(dicePanel);
+        panel.activatePanel(dicePanel, ComponentName.DICE_PANEL.name());
         this.dispose();
     }
 

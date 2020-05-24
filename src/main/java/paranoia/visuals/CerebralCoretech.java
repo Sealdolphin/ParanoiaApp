@@ -84,13 +84,6 @@ public class CerebralCoretech extends JFrame {
                 );
             }
         });
-        miscPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("C"), "chat");
-        miscPanel.getActionMap().put("chat", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                controller.activateChatWindow();
-            }
-        });
 
         //Assets
         refreshLayout();

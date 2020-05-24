@@ -26,6 +26,7 @@ public class DiceManager {
         dice[dice.length - 1] = new ParanoiaDice(color, true);
     }
 
+    @SuppressWarnings("unused")
     public JPanel getDicePanel(int width, int size) {
         DicePanel dicePanel = new DicePanel(width, size);
         diceListeners.add(dicePanel);
@@ -45,6 +46,7 @@ public class DiceManager {
         diceListeners.forEach(l -> l.updateVisualDataChange(Arrays.asList(dice)));
     }
 
+    @SuppressWarnings("unused")
     public DiceRoll getResult() {
         int sucess = 0;
         boolean computer = false;

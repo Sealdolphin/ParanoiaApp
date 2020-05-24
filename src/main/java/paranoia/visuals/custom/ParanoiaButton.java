@@ -1,23 +1,35 @@
 package paranoia.visuals.custom;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.UIDefaults;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 
 public class ParanoiaButton extends JButton {
 
     private static final UIDefaults defaults = javax.swing.UIManager.getDefaults();
+    private static final int DEFAULT_WIDTH = 32;
     private Color hoverBackgroundColor = defaults.getColor("Button.highlight");
     private Color pressedBackgroundColor = defaults.getColor("Button.select");
 
     public ParanoiaButton() {
-        this(null);
+        this((BufferedImage) null);
+    }
+
+    public ParanoiaButton(BufferedImage image) {
+        this(image, DEFAULT_WIDTH);
     }
 
     public ParanoiaButton(String text){
         super(text);
         super.setContentAreaFilled(false);
+    }
+
+    public ParanoiaButton(BufferedImage image, int width) {
+        super(new ImageIcon(image.getScaledInstance(width,-1, Image.SCALE_SMOOTH)));
     }
 
     @Override
