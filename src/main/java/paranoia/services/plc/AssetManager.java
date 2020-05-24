@@ -25,7 +25,10 @@ public abstract class AssetManager {
 
     @SuppressWarnings({"rawtypes", "unchecked"})
     public static Font getFont(int size, boolean bold, boolean italic, boolean underline) {
-        Font font = new Font("Segoe", Font.PLAIN, size);
+        int style = Font.PLAIN;
+        if(bold) style += Font.BOLD;
+        if(italic) style += Font.ITALIC;
+        Font font = new Font("Segoe", style, size);
         Map attributes = font.getAttributes();
         attributes.put(TextAttribute.SIZE, (float) size);
         attributes.put(TextAttribute.WEIGHT,
