@@ -3,15 +3,20 @@ package paranoia.visuals.panels;
 import paranoia.Paranoia;
 import paranoia.services.plc.AssetManager;
 import paranoia.visuals.custom.ParanoiaImage;
+import paranoia.visuals.custom.ParanoiaImageFilter;
 import paranoia.visuals.custom.ParanoiaSectorFilter;
+import paranoia.visuals.messages.ParanoiaError;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.WindowConstants;
 import javax.swing.border.Border;
 import javax.swing.text.AbstractDocument;
 import java.awt.BorderLayout;
@@ -50,6 +55,8 @@ public class ACPFPanel extends JPanel {
     private final JLabel lbError = new JLabel("This sector does not exist");
     private final Border defaultBorder = tfName.getBorder();
     private final List<JTextField> textFields = new ArrayList<>();
+    private ParanoiaImage profilePicture;
+    private String profilePath;
 
     public ACPFPanel() {
         setLayout(layout);
@@ -59,6 +66,16 @@ public class ACPFPanel extends JPanel {
         AbstractDocument sector = (AbstractDocument) tfSector.getDocument();
         sector.setDocumentFilter(new ParanoiaSectorFilter());
         lbError.setForeground(new Color(255,0,0,0));
+
+        //Custom profile picture
+        try {
+            profilePath = Paranoia.getParanoiaResource("clones/clone0.png");
+        } catch (IOException e) {
+            ParanoiaError.error(e);
+        }
+        btnPicture.addActionListener( e -> {
+            profilePath = chooseProfilePicture(profilePath);
+        });
 
         //Gathering text fields
         textFields.add(tfName);
@@ -72,6 +89,24 @@ public class ACPFPanel extends JPanel {
         layout.first(this);
     }
 
+    private String chooseProfilePicture(String profilePath) {
+        String newPath = profilePath;
+        JFileChooser chooser = new JFileChooser(profilePath);
+        chooser.addChoosableFileFilter(new ParanoiaImageFilter());
+        chooser.setAcceptAllFileFilterUsed(false);
+        int response = chooser.showOpenDialog(this);
+        if(response == JFileChooser.APPROVE_OPTION) {
+            newPath = chooser.getSelectedFile().getAbsolutePath();
+        }
+        try {
+            profilePicture.changeImage(ImageIO.read(new File(newPath)));
+        } catch (IOException e) {
+            ParanoiaError.error(e);
+        }
+
+        return newPath;
+    }
+
     private JPanel createFirstPage() {
         JPanel firstPage = new JPanel(new BorderLayout());
         firstPage.add(createStandardACPFPanel(), BorderLayout.CENTER);
@@ -82,12 +117,12 @@ public class ACPFPanel extends JPanel {
     private JPanel createStandardACPFPanel() {
         BufferedImage image = null;
         try {
-            image = ImageIO.read(new File(Paranoia.getParanoiaResource("clones/clone0.png")));
+            image = ImageIO.read(new File(profilePath));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        ParanoiaImage profile = new ParanoiaImage(image, true);
-        profile.setPreferredSize(new Dimension(200, 200));
+        profilePicture = new ParanoiaImage(image, true);
+        profilePicture.setPreferredSize(new Dimension(200, 200));
 
         JPanel standardPanel = new JPanel();
         standardPanel.setLayout(new GridBagLayout());
@@ -103,7 +138,7 @@ public class ACPFPanel extends JPanel {
         for (int i = 0; i < personalities.length; i++) {
             standardPanel.add(personalities[i], createGrid(2, 15, 2, 2).at(0, 5 + i, 3 ,1).get());
         }
-        standardPanel.add(profile, createGrid(15, 15, 2, 15).at(3,1, 1, 7).anchor(CENTER).get());
+        standardPanel.add(profilePicture, createGrid(15, 15, 2, 15).at(3,1, 1, 7).anchor(CENTER).get());
         standardPanel.add(btnPicture, createGrid().at(3, RELATIVE, 1, 1).anchor(PAGE_END).get());
 
         return standardPanel;
@@ -140,7 +175,7 @@ public class ACPFPanel extends JPanel {
     }
 
     private boolean validatePage() {
-        if(tfSector.getText().equals("THA")) {
+        if(tfSector.getText().equals("THA") || tfSector.getText().length() < 3) {
             hasEmptyTF();
             tfSector.setBorder(BorderFactory.createLineBorder(Color.RED));
             lbError.setForeground(new Color(255,0,0,255));
