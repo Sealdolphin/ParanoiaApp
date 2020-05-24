@@ -25,7 +25,7 @@ public class ACPFCommand extends ParanoiaCommand {
         this("","", new String[]{}, null, listener);
     }
 
-    private ACPFCommand(
+    public ACPFCommand(
         String name,
         String gender,
         String[] personality,
@@ -42,17 +42,9 @@ public class ACPFCommand extends ParanoiaCommand {
 
     @Override
     public void execute() {
-        listener.updateProfile(name, gender, personality, image);
+        if(listener != null)
+            listener.updateProfile(name, gender, personality, image);
     }
-
-    /*
-    BufferedImage buffered = null;
-        try {
-            buffered = ImageIO.read(new ByteArrayInputStream(image));
-        } catch (IOException e) {
-            ParanoiaError.error(e);
-        }
-     */
 
     @Override
     public JSONObject toJsonObject() {
@@ -60,7 +52,7 @@ public class ACPFCommand extends ParanoiaCommand {
         if(image == null) return body;  //Safe-check for image
         //Parse buffered image
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-        byte[] imageRaw = null;
+        byte[] imageRaw = new byte[0];
         try {
             ImageIO.write(image, "png", outStream);
             imageRaw = outStream.toByteArray();
@@ -71,7 +63,7 @@ public class ACPFCommand extends ParanoiaCommand {
         body.put("name", name);
         body.put("gender", gender);
         body.put("personality", new JSONArray(personality));
-        body.put("profile", imageRaw);
+        body.put("profile", new JSONArray(imageRaw));
         //Wrap command
         return wrapCommand(body);
     }

@@ -24,7 +24,6 @@ public abstract class ParanoiaCommand {
         JSONObject json = new JSONObject();
         json.put("type", type.name());
         json.put("command", body);
-        System.out.println(json.toString());
         return json;
     }
 }

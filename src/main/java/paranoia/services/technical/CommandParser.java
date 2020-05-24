@@ -1,14 +1,22 @@
 package paranoia.services.technical;
 
 import org.json.JSONObject;
+import paranoia.services.technical.command.ACPFCommand;
 import paranoia.services.technical.command.ChatCommand;
 import paranoia.services.technical.command.DisconnectCommand;
 import paranoia.services.technical.command.ParanoiaCommand;
+import paranoia.visuals.messages.ParanoiaError;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 
 public class CommandParser {
 
     private ChatCommand.ParanoiaChatListener chatListener;
     private DisconnectCommand.ParanoiaDisconnectListener disconnectListener;
+    private ACPFCommand.ParanoiaACPFListener acpfListener;
 
     public void parse(String pureMessage) {
         JSONObject message = new JSONObject(pureMessage);
@@ -25,12 +33,14 @@ public class CommandParser {
             case DISCONNECT:
                 command = parseDisconnectCommand(body);
                 break;
+            case ACPF:
+                command = parseACPF(body);
+                break;
             default:
                 command = null;
                 break;
         }
         command.execute();
-
     }
 
     public void setChatListener(ChatCommand.ParanoiaChatListener listener) {
@@ -49,6 +59,33 @@ public class CommandParser {
 
     private ParanoiaCommand parseDisconnectCommand(JSONObject body) {
         return new DisconnectCommand(disconnectListener);
+    }
+
+    private ParanoiaCommand parseACPF(JSONObject body) {
+        String name = body.getString("name");
+        String gender = body.getString("gender");
+        String[] personalities = body.getJSONArray("personality")
+            .toList().stream().map(Object::toString)
+            .toArray(String[]::new);
+        Byte[] imageRaw = body.getJSONArray("profile").toList()
+           .stream().map(Object::toString).map(Integer::parseInt).map(Integer::byteValue)
+           .toArray(Byte[]::new);
+        byte[] trueByteImage = new byte[imageRaw.length];
+        for (int i = 0; i < imageRaw.length; i++) {
+            trueByteImage[i] = imageRaw[i];
+        }
+
+        BufferedImage image = null;
+        try {
+           image = ImageIO.read(new ByteArrayInputStream(trueByteImage));
+        } catch (IOException e) {
+            ParanoiaError.error(e);
+        }
+
+        return new ACPFCommand(
+           name, gender, personalities,
+           image, acpfListener
+        );
     }
 
 }
