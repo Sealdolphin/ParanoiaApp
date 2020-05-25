@@ -17,7 +17,7 @@ public class ACPFPanel extends JPanel {
 
         //Adding pages
         add(new ACPFGeneralPage(this));
-        add(new ACPFStatPage());
+        add(new ACPFStatPage(this));
         layout.first(this);
     }
 

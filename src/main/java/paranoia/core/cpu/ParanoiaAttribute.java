@@ -72,7 +72,9 @@ public class ParanoiaAttribute implements ICoreTechPart {
             setFont(AssetManager.getBoldFont(20));
             setOpaque(true);
 
-            table.getColumnModel().getColumn(column).setPreferredWidth(20);
+            table.getColumnModel().getColumn(column).setPreferredWidth(
+                getFontMetrics(getFont()).stringWidth("000")
+            );
             setHorizontalAlignment(CENTER);
             if(Integer.parseInt(value.toString()) >= 0){
                 setBackground(new Color(105, 191, 105));
@@ -91,7 +93,9 @@ public class ParanoiaAttribute implements ICoreTechPart {
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             setText(value.toString());
             setFont(AssetManager.getItalicFont(20));
-            table.getColumnModel().getColumn(column).setPreferredWidth(120);
+            table.getColumnModel().getColumn(column).setPreferredWidth(
+                getFontMetrics(getFont()).stringWidth("Alpha Complex")
+            );
             return this;
         }
     }

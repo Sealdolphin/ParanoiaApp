@@ -1,6 +1,7 @@
 package paranoia.services.technical;
 
 import org.json.JSONObject;
+import paranoia.core.cpu.Skill;
 import paranoia.services.technical.command.ACPFCommand;
 import paranoia.services.technical.command.ChatCommand;
 import paranoia.services.technical.command.DefineCommand;
@@ -98,7 +99,11 @@ public class CommandParser {
 
     private ParanoiaCommand parseDefineCommand(JSONObject body) {
         int value = body.getInt("fillValue");
-        return new DefineCommand(value, null, defineListener);
+        Skill[] disabled = body.getJSONArray("disabled").toList()
+            .stream().map(Object::toString).map(Skill::valueOf)
+            .toArray(Skill[]::new);
+
+        return new DefineCommand(value, null, disabled, defineListener);
     }
 
 }
