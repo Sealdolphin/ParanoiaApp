@@ -1,4 +1,4 @@
-package paranoia.visuals.panels;
+package paranoia.visuals.panels.acpf;
 
 import paranoia.Paranoia;
 import paranoia.services.plc.AssetManager;
@@ -9,21 +9,16 @@ import paranoia.visuals.messages.ParanoiaError;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.WindowConstants;
 import javax.swing.border.Border;
 import javax.swing.text.AbstractDocument;
 import java.awt.BorderLayout;
-import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridBagLayout;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -39,9 +34,8 @@ import static java.awt.GridBagConstraints.RELATIVE;
 import static java.awt.GridBagConstraints.REMAINDER;
 import static paranoia.services.plc.LayoutManager.createGrid;
 
-public class ACPFPanel extends JPanel {
+public class ACPFGeneralPage extends JPanel implements ACPFPage {
 
-    private final CardLayout layout = new CardLayout();
     private final JTextField tfName = new JTextField(10);
     private final JTextField tfGender = new JTextField(10);
     private final JTextField tfSector = new JTextField(3);
@@ -55,66 +49,14 @@ public class ACPFPanel extends JPanel {
     private final JLabel lbError = new JLabel("This sector does not exist");
     private final Border defaultBorder = tfName.getBorder();
     private final List<JTextField> textFields = new ArrayList<>();
-    private ParanoiaImage profilePicture;
+    private final ParanoiaImage profilePicture;
     private String profilePath;
 
-    public ACPFPanel() {
-        setLayout(layout);
+    public ACPFGeneralPage(ACPFPanel main) {
+        setLayout(new BorderLayout());
 
-        //Set label
-        lbTitle.setFont(AssetManager.getFont(25, true, true, false));
-        AbstractDocument sector = (AbstractDocument) tfSector.getDocument();
-        sector.setDocumentFilter(new ParanoiaSectorFilter());
-        lbError.setForeground(new Color(255,0,0,0));
+        setUpComponents();
 
-        //Custom profile picture
-        try {
-            profilePath = Paranoia.getParanoiaResource("clones/clone0.png");
-        } catch (IOException e) {
-            ParanoiaError.error(e);
-        }
-        btnPicture.addActionListener( e -> {
-            profilePath = chooseProfilePicture(profilePath);
-        });
-
-        //Gathering text fields
-        textFields.add(tfName);
-        textFields.add(tfGender);
-        textFields.add(tfSector);
-        textFields.addAll(Arrays.asList(personalities));
-
-        //Adding pages
-        add(createFirstPage());
-        add(createSecondPage());
-        layout.first(this);
-    }
-
-    private String chooseProfilePicture(String profilePath) {
-        String newPath = profilePath;
-        JFileChooser chooser = new JFileChooser(profilePath);
-        chooser.addChoosableFileFilter(new ParanoiaImageFilter());
-        chooser.setAcceptAllFileFilterUsed(false);
-        int response = chooser.showOpenDialog(this);
-        if(response == JFileChooser.APPROVE_OPTION) {
-            newPath = chooser.getSelectedFile().getAbsolutePath();
-        }
-        try {
-            profilePicture.changeImage(ImageIO.read(new File(newPath)));
-        } catch (IOException e) {
-            ParanoiaError.error(e);
-        }
-
-        return newPath;
-    }
-
-    private JPanel createFirstPage() {
-        JPanel firstPage = new JPanel(new BorderLayout());
-        firstPage.add(createStandardACPFPanel(), BorderLayout.CENTER);
-        firstPage.add(createButtonPanel(false, true), BorderLayout.SOUTH);
-        return firstPage;
-    }
-
-    private JPanel createStandardACPFPanel() {
         BufferedImage image = null;
         try {
             image = ImageIO.read(new File(profilePath));
@@ -141,40 +83,54 @@ public class ACPFPanel extends JPanel {
         standardPanel.add(profilePicture, createGrid(15, 15, 2, 15).at(3,1, 1, 7).anchor(CENTER).get());
         standardPanel.add(btnPicture, createGrid().at(3, RELATIVE, 1, 1).anchor(PAGE_END).get());
 
-        return standardPanel;
+
+        add(standardPanel, BorderLayout.CENTER);
+        add(main.createButtonPanel(this,false, true), BorderLayout.SOUTH);
+
     }
 
-    private JPanel createSecondPage() {
-        JPanel secondPage = new JPanel(new BorderLayout());
-        secondPage.add(new JLabel("SECOND"), BorderLayout.CENTER);
-        secondPage.add(createButtonPanel(true, false), BorderLayout.SOUTH);
-        return secondPage;
+    private void setUpComponents() {
+        //Set label
+        lbTitle.setFont(AssetManager.getFont(25, true, true, false));
+        AbstractDocument sector = (AbstractDocument) tfSector.getDocument();
+        sector.setDocumentFilter(new ParanoiaSectorFilter());
+        lbError.setForeground(new Color(255,0,0,0));
+
+        //Custom profile picture
+        try {
+            profilePath = Paranoia.getParanoiaResource("clones/clone0.png");
+        } catch (IOException e) {
+            ParanoiaError.error(e);
+        }
+        btnPicture.addActionListener( e -> profilePath = chooseProfilePicture(profilePath));
+
+        //Gathering text fields
+        textFields.add(tfName);
+        textFields.add(tfGender);
+        textFields.add(tfSector);
+        textFields.addAll(Arrays.asList(personalities));
     }
 
-    private JPanel createButtonPanel(boolean hasPrev, boolean hasNext) {
-        JPanel panelButtons = new JPanel(new FlowLayout());
-        if(hasPrev) panelButtons.add(createPrevButton());
-        panelButtons.add(Box.createHorizontalGlue());
-        if(hasNext) panelButtons.add(createNextButton());
-        return panelButtons;
+    private String chooseProfilePicture(String profilePath) {
+        String newPath = profilePath;
+        JFileChooser chooser = new JFileChooser(profilePath);
+        chooser.addChoosableFileFilter(new ParanoiaImageFilter());
+        chooser.setAcceptAllFileFilterUsed(false);
+        int response = chooser.showOpenDialog(this);
+        if(response == JFileChooser.APPROVE_OPTION) {
+            newPath = chooser.getSelectedFile().getAbsolutePath();
+        }
+        try {
+            profilePicture.changeImage(ImageIO.read(new File(newPath)));
+        } catch (IOException e) {
+            ParanoiaError.error(e);
+        }
+
+        return newPath;
     }
 
-    private JButton createPrevButton() {
-        JButton btnPrev = new JButton("Previous");
-        btnPrev.addActionListener(e -> layout.previous(this));
-        return btnPrev;
-    }
-
-    private JButton createNextButton() {
-        JButton btnNext = new JButton("Next");
-        btnNext.addActionListener(e -> {
-            if(validatePage())
-                layout.next(this);
-        });
-        return btnNext;
-    }
-
-    private boolean validatePage() {
+    @Override
+    public boolean validatePage() {
         if(tfSector.getText().equals("THA") || tfSector.getText().length() < 3) {
             hasEmptyTF();
             tfSector.setBorder(BorderFactory.createLineBorder(Color.RED));
@@ -199,5 +155,4 @@ public class ACPFPanel extends JPanel {
         }
         return valid;
     }
-
 }

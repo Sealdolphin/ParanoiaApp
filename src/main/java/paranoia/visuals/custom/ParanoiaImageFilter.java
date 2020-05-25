@@ -11,8 +11,8 @@ public class ParanoiaImageFilter extends FileFilter {
         String path = f.getAbsolutePath();
         return path.endsWith(".png") ||
             path.endsWith(".jpg") ||
-            path.endsWith(".svg") ||
             path.endsWith(".jpeg") ||
+            path.endsWith(".svg") ||
             path.endsWith(".bmp") ||
             path.endsWith(".gif");
     }
