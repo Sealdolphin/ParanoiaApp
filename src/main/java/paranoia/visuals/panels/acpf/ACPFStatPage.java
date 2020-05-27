@@ -3,7 +3,7 @@ package paranoia.visuals.panels.acpf;
 import paranoia.core.cpu.Skill;
 import paranoia.core.cpu.Stat;
 import paranoia.services.plc.AssetManager;
-import paranoia.visuals.custom.ParanoiaButton;
+import paranoia.services.technical.command.DefineCommand;
 import paranoia.visuals.custom.ParanoiaSkillButton;
 
 import javax.swing.Box;
@@ -13,26 +13,28 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.util.HashMap;
-import java.util.Random;
 
 import static java.awt.GridBagConstraints.BOTH;
 import static java.awt.GridBagConstraints.CENTER;
 import static paranoia.services.plc.LayoutManager.createGrid;
 
 public class ACPFStatPage extends JPanel implements
-    ACPFPage, ParanoiaSkillButton.ParanoiaSkillBroadcastListener {
+    ACPFPage, ParanoiaSkillButton.ParanoiaSkillBroadcastListener,
+    DefineCommand.ParanoiaDefineListener {
 
-    private final JLabel lbValue = new JLabel("-3");
+    private final JLabel lbValue = new JLabel("3");
     private final JLabel lbMoxie = new JLabel("8");
     private final JLabel lbClones = new JLabel("6");
     private final JButton btnSend = new JButton("SEND");
     private final HashMap<Skill, ParanoiaSkillButton> attributes = new HashMap<>();
+    private final HashMap<Stat, JLabel> stats = new HashMap<>();
     //private int clonesLeft = 6;
     //private int moxieLeft = 8;
 
@@ -40,10 +42,14 @@ public class ACPFStatPage extends JPanel implements
         setLayout(new BorderLayout());
         btnSend.setEnabled(false);
         btnSend.addActionListener( e -> {
-            attributes.forEach((s, b) -> b.lock());
+            attributes.values().forEach(ParanoiaSkillButton::lock);
             btnSend.setEnabled(false);
-            lbValue.setText(String.valueOf(new Random().nextInt(10) - 5)); //TODO: temp
+            stats.forEach((stat, label) -> label.setText(String.valueOf(calculateStat(stat))));
         });
+        for (Stat stat : Stat.values()) {
+            stats.put(stat, new JLabel("0", SwingConstants.CENTER));
+        }
+
         for (Skill skill : Skill.values()) {
             attributes.put(skill, new ParanoiaSkillButton(lbValue, this));
         }
@@ -62,22 +68,23 @@ public class ACPFStatPage extends JPanel implements
         final int COLS = Stat.values().length;
         for (int i = 0; i < attributes.size() + COLS; i++) {
             JLabel label;
-            ParanoiaButton btnValue;
+            JComponent attributeValue;
             if(i < COLS) {
-                label = new JLabel(Stat.values()[i].toString());
+                Stat stat = Stat.values()[i];
+                label = new JLabel(stat.toString());
                 label.setFont(AssetManager.getBoldFont(20));
-                btnValue = new ParanoiaButton("0");
-                btnValue.setEnabled(false);
+                attributeValue = stats.get(stat);
             } else {
                 int get = (i % COLS) * COLS + ((i - COLS) / COLS);
                 Skill skill = Skill.values()[get];
                 label = new JLabel(skill.toString());
                 label.setFont(AssetManager.getFont(15));
-                btnValue = attributes.get(skill);
+                JButton btn = attributes.get(skill);
+                btn.setBorderPainted(false);
+                attributeValue = btn;
             }
-            btnValue.setBorderPainted(false);
             table.add(label, createGrid(15,10,0,10).at(i % COLS, 2 * (i / COLS)).anchor(CENTER).get());
-            table.add(btnValue, createGrid(0,0,0,0).at(i % COLS, 2 * (i / COLS) + 1).fill(BOTH).get());
+            table.add(attributeValue, createGrid(0,0,0,0).at(i % COLS, 2 * (i / COLS) + 1).fill(BOTH).get());
         }
         return table;
     }
@@ -128,12 +135,8 @@ public class ACPFStatPage extends JPanel implements
     }
 
     private static JPanel panelOf(JComponent[] components) {
-        return panelOf(components, BoxLayout.LINE_AXIS);
-    }
-
-    private static JPanel panelOf(JComponent[] components, int layout) {
         JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, layout));
+        panel.setLayout(new BoxLayout(panel, BoxLayout.LINE_AXIS));
         for (JComponent c : components) {
             panel.add(c);
             panel.add(Box.createHorizontalGlue());
@@ -142,12 +145,27 @@ public class ACPFStatPage extends JPanel implements
     }
 
     private int calculateStat(Stat stat) {
-        return 0;
+        return (int) attributes.entrySet().stream()
+            .filter(
+                entry -> entry.getKey().getParent().equals(stat) &&
+                    entry.getValue().getValue() > 0
+            ).count();
     }
 
     @Override
     public void unsetAll() {
         btnSend.setEnabled(true);
-        attributes.forEach((key, value) -> value.unset());
+        attributes.values().forEach(ParanoiaSkillButton::unset);
+    }
+
+    @Override
+    public void alert(int fillValue, Skill[] disabled) {
+        lbValue.setText(String.valueOf(fillValue));
+        attributes.forEach((key, value) -> {
+            value.setEditable(true);
+            for (Skill skill : disabled)
+                if(skill.equals(key))
+                    value.setEditable(false);
+        });
     }
 }

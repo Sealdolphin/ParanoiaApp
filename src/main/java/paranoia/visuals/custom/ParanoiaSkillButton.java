@@ -55,6 +55,7 @@ public class ParanoiaSkillButton extends ParanoiaButton implements ActionListene
             }
             setEnabled(false);
         }
+        setEditable(false);
     }
 
     public interface ParanoiaSkillBroadcastListener {
