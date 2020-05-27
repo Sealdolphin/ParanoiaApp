@@ -14,6 +14,8 @@ public class ParanoiaButton extends JButton {
     private static final int DEFAULT_WIDTH = 32;
     private Color hoverBackgroundColor = defaults.getColor("Button.highlight");
     private Color pressedBackgroundColor = defaults.getColor("Button.select");
+    private Color hoverBorderColor = defaults.getColor("Button.highlight");
+    private Color backgroundBorderColor = defaults.getColor("Button.highlight");
 
     public ParanoiaButton() {
         this((BufferedImage) null);
@@ -30,6 +32,10 @@ public class ParanoiaButton extends JButton {
 
     public ParanoiaButton(BufferedImage image, int width) {
         super(new ImageIcon(image.getScaledInstance(width,-1, Image.SCALE_SMOOTH)));
+    }
+
+    public void resetBackgroud() {
+        setBackground(defaults.getColor("Button.background"));
     }
 
     @Override
@@ -54,5 +60,9 @@ public class ParanoiaButton extends JButton {
 
     public void setPressedBG(Color color) {
         pressedBackgroundColor = color;
+    }
+
+    public void setHoverBorder(Color color) {
+        hoverBorderColor = color;
     }
 }

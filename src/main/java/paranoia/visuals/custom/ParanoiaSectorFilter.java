@@ -11,7 +11,7 @@ public class ParanoiaSectorFilter extends DocumentFilter {
     public void insertString(FilterBypass fb, int offs, String str, AttributeSet a)
         throws BadLocationException {
 
-        if ((fb.getDocument().getLength() + str.length()) <= 3)
+        if ((fb.getDocument().getLength() + str.length()) <= 3 && str.toLowerCase().matches("[a-z]"))
             super.insertString(fb, offs, str.toUpperCase(), a);
         else
             Toolkit.getDefaultToolkit().beep();
@@ -20,8 +20,7 @@ public class ParanoiaSectorFilter extends DocumentFilter {
     @Override
     public void replace(FilterBypass fb, int offs, int length, String str, AttributeSet a)
         throws BadLocationException {
-        if ((fb.getDocument().getLength() + str.length()
-            - length) <= 3)
+        if ((fb.getDocument().getLength() + str.length() - length) <= 3 && str.toLowerCase().matches("[a-z]"))
             super.replace(fb, offs, length, str.toUpperCase(), a);
         else
             Toolkit.getDefaultToolkit().beep();
