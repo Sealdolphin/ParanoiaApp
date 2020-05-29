@@ -7,6 +7,7 @@ import paranoia.services.technical.command.ChatCommand;
 import paranoia.services.technical.command.DefineCommand;
 import paranoia.services.technical.command.DisconnectCommand;
 import paranoia.services.technical.command.ParanoiaCommand;
+import paranoia.services.technical.command.ReorderCommand;
 import paranoia.visuals.messages.ParanoiaError;
 
 import javax.imageio.ImageIO;
@@ -20,6 +21,7 @@ public class CommandParser {
     private DisconnectCommand.ParanoiaDisconnectListener disconnectListener;
     private ACPFCommand.ParanoiaACPFListener acpfListener;
     private DefineCommand.ParanoiaDefineListener defineListener;
+    private ReorderCommand.ParanoiaReorderListener reorderListener;
 
     public void parse(String pureMessage) {
         JSONObject message = new JSONObject(pureMessage);
@@ -42,11 +44,22 @@ public class CommandParser {
             case DEFINE:
                 command = parseDefineCommand(body);
                 break;
+            case REORDER:
+                command = parseReorderCommand(body);
+                break;
             default:
                 command = null;
                 break;
         }
         command.execute();
+    }
+
+    private ParanoiaCommand parseReorderCommand(JSONObject body) {
+        String playerName = body.getString("player");
+        Integer[] order = body.getJSONArray("order")
+            .toList().stream().map(item -> Integer.parseInt(item.toString()))
+            .toArray(Integer[]::new);
+        return new ReorderCommand(playerName, order, reorderListener);
     }
 
     public void setChatListener(ChatCommand.ParanoiaChatListener listener) {
