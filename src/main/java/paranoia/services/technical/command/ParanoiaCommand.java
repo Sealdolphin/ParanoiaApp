@@ -8,7 +8,10 @@ public abstract class ParanoiaCommand {
         CHAT,
         DISCONNECT,
         ACPF,
-        DEFINE
+        DEFINE,
+        REORDER,
+        OPTIMIZE,
+        MODIFY
     }
 
     protected ParanoiaCommand(CommandType type) {

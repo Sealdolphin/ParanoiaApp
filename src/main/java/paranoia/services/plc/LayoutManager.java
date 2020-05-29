@@ -1,5 +1,8 @@
 package paranoia.services.plc;
 
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
+import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
@@ -11,6 +14,15 @@ public abstract class LayoutManager {
 
     public static Grid createGrid(int top, int left, int bottom, int right) {
         return new Grid(new Insets(top, left, bottom, right));
+    }
+
+    public static JPanel panelOf(Component[] components, int layout) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, layout));
+        for (Component c : components) {
+            panel.add(c);
+        }
+        return panel;
     }
 
     public static class Grid {
