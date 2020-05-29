@@ -3,7 +3,6 @@ package paranoia.visuals.panels.acpf;
 import paranoia.core.cpu.Skill;
 import paranoia.core.cpu.Stat;
 import paranoia.services.plc.AssetManager;
-import paranoia.services.plc.LayoutManager;
 import paranoia.services.technical.command.DefineCommand;
 import paranoia.visuals.custom.ParanoiaSkillButton;
 
@@ -25,20 +24,22 @@ import java.util.HashMap;
 import static java.awt.GridBagConstraints.BOTH;
 import static java.awt.GridBagConstraints.CENTER;
 import static paranoia.services.plc.LayoutManager.createGrid;
+import static paranoia.services.plc.LayoutManager.panelOf;
 
 public class ACPFStatPage extends JPanel implements
     ACPFPage, ParanoiaSkillButton.ParanoiaSkillBroadcastListener,
     DefineCommand.ParanoiaDefineListener {
 
-    private final JLabel lbValue = new JLabel("3");
-    private final JLabel lbMoxie = new JLabel("8");
-    private final JLabel lbClones = new JLabel("6");
+    private final JLabel lbValue = new JLabel("");
+    private final JTextArea lbChoose =  new JTextArea(2,5);
     private final JButton btnSend = new JButton("SEND");
     private final HashMap<Skill, ParanoiaSkillButton> attributes = new HashMap<>();
     private final HashMap<Stat, JLabel> stats = new HashMap<>();
     private JPanel btnPanel;
-    //private int clonesLeft = 6;
-    //private int moxieLeft = 8;
+    private boolean lastChoice = false;
+
+    private static final String txtChoose = "Choose a skill with a value of";
+    private static final String txtIdle = "Waiting for another player to choose...";
 
     public ACPFStatPage(ACPFPanel main) {
         setLayout(new BorderLayout());
@@ -47,17 +48,15 @@ public class ACPFStatPage extends JPanel implements
             attributes.values().forEach(ParanoiaSkillButton::lock);
             btnSend.setEnabled(false);
             stats.forEach((stat, label) -> label.setText(String.valueOf(calculateStat(stat))));
-            remove(btnPanel);
-            btnPanel = main.createButtonPanel(this, true, true);
-            add(btnPanel, BorderLayout.SOUTH);
+            lbValue.setText("");
+            lbChoose.setText(txtIdle);
+            if(lastChoice)
+                enableNextPage(main);
         });
         for (Stat stat : Stat.values()) {
             stats.put(stat, new JLabel("0", SwingConstants.CENTER));
         }
 
-        for (Skill skill : Skill.values()) {
-            attributes.put(skill, new ParanoiaSkillButton(lbValue, this));
-        }
         btnPanel = main.createButtonPanel(this, true, false);
         add(createInfoPanel(), BorderLayout.EAST);
         add(createStatsTable(), BorderLayout.CENTER);
@@ -72,7 +71,7 @@ public class ACPFStatPage extends JPanel implements
     private JPanel createStatsTable() {
         JPanel table = new JPanel(new GridBagLayout());
         final int COLS = Stat.values().length;
-        for (int i = 0; i < attributes.size() + COLS; i++) {
+        for (int i = 0; i < Skill.values().length + COLS; i++) {
             JLabel label;
             JComponent attributeValue;
             if(i < COLS) {
@@ -85,7 +84,9 @@ public class ACPFStatPage extends JPanel implements
                 Skill skill = Skill.values()[get];
                 label = new JLabel(skill.toString());
                 label.setFont(AssetManager.getFont(15));
-                JButton btn = attributes.get(skill);
+                ParanoiaSkillButton btn = new ParanoiaSkillButton(lbValue, label, this);
+                attributes.put(skill, btn);
+                btn.lock();
                 btn.setBorderPainted(false);
                 attributeValue = btn;
             }
@@ -96,30 +97,10 @@ public class ACPFStatPage extends JPanel implements
     }
 
     private JPanel createInfoPanel() {
-        JPanel infoPanel = new JPanel();
-
         lbValue.setFont(AssetManager.getBoldFont(30));
         lbValue.setForeground(new Color(16, 27, 95));
-        JLabel lbCloneText = new JLabel("Clones left:");
-        JLabel lbMoxieText = new JLabel("Moxie left:");
-        lbCloneText.setFont(AssetManager.getBoldFont(15));
-        lbMoxieText.setFont(AssetManager.getBoldFont(15));
-        lbClones.setFont(AssetManager.getBoldFont(20));
-        lbClones.setForeground(new Color(16, 95 ,20));
-        lbMoxie.setFont(AssetManager.getBoldFont(20));
-        lbMoxie.setForeground(new Color(16, 95 ,20));
 
-        infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.PAGE_AXIS));
-        infoPanel.add(LayoutManager.panelOf(
-            new Component[]{lbCloneText, lbClones, Box.createHorizontalGlue()},
-            BoxLayout.LINE_AXIS
-        ));
-        infoPanel.add(LayoutManager.panelOf(
-            new Component[]{lbMoxieText, lbMoxie, Box.createHorizontalGlue()},
-            BoxLayout.LINE_AXIS
-        ));
-        JTextArea lbChoose = new JTextArea(2,5);
-        lbChoose.setText("Choose a skill with a value of");
+        lbChoose.setText(txtIdle);
         lbChoose.setLineWrap(true);
         lbChoose.setWrapStyleWord(true);
         lbChoose.setOpaque(false);
@@ -131,11 +112,15 @@ public class ACPFStatPage extends JPanel implements
                 getFontMetrics(lbChoose.getFont()).getHeight() * lbChoose.getRows()
             )
         );
-        infoPanel.add(Box.createVerticalGlue());
-        infoPanel.add(lbChoose);
-        infoPanel.add(lbValue);
-        infoPanel.add(btnSend);
-        infoPanel.add(Box.createVerticalGlue());
+        JPanel infoPanel = panelOf(
+            new Component[]{
+                Box.createVerticalGlue(),
+                lbChoose,
+                lbValue,
+                btnSend,
+                Box.createVerticalGlue()
+            }, BoxLayout.PAGE_AXIS
+        );
 
         for (Component component : infoPanel.getComponents()) {
             if(component instanceof JComponent){
@@ -144,6 +129,12 @@ public class ACPFStatPage extends JPanel implements
         }
 
         return infoPanel;
+    }
+
+    private void enableNextPage(ACPFPanel main) {
+        remove(btnPanel);
+        btnPanel = main.createButtonPanel(this, true, true);
+        add(btnPanel, BorderLayout.SOUTH);
     }
 
     private int calculateStat(Stat stat) {
@@ -161,8 +152,10 @@ public class ACPFStatPage extends JPanel implements
     }
 
     @Override
-    public void alert(int fillValue, Skill[] disabled) {
+    public void alert(int fillValue, Skill[] disabled, boolean lastChoice) {
         lbValue.setText(String.valueOf(fillValue));
+        lbChoose.setText(txtChoose);
+        this.lastChoice = lastChoice;
         attributes.forEach((key, value) -> {
             value.setEditable(true);
             for (Skill skill : disabled)

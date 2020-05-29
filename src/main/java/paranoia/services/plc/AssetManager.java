@@ -52,13 +52,31 @@ public abstract class AssetManager {
 
     public static class ParanoiaArrow extends BasicArrowButton {
 
+        private Dimension maxSize = new Dimension(50,50);
+        private Dimension prefSize = new Dimension(60, 28);
+
         public ParanoiaArrow(int direction) {
             super(direction);
         }
 
         @Override
+        public void setPreferredSize(Dimension preferredSize) {
+            prefSize = preferredSize;
+        }
+
+        @Override
+        public Dimension getPreferredSize() {
+            return prefSize;
+        }
+
+        @Override
+        public void setMaximumSize(Dimension maximumSize) {
+            maxSize = maximumSize;
+        }
+
+        @Override
         public Dimension getMaximumSize() {
-            return new Dimension(50,50);
+            return maxSize;
         }
     }
 

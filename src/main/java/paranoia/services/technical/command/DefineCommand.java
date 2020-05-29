@@ -7,29 +7,31 @@ import paranoia.core.cpu.Skill;
 public class DefineCommand extends ParanoiaCommand {
 
     public interface ParanoiaDefineListener {
-        void alert(int fillValue, Skill[] disabled);
+        void alert(int fillValue, Skill[] disabled, boolean lastChoice);
     }
 
     private final int fillValue;
+    private final boolean lastChoice;
     private final Skill attribute;
     private final Skill[] disabled;
     private final ParanoiaDefineListener listener;
 
     public DefineCommand(int fillValue, Skill attribute) {
-        this(fillValue, attribute, new Skill[0], null);
+        this(fillValue, false, attribute, new Skill[0], null);
     }
 
-    public DefineCommand(int fillValue, Skill attribute, Skill[] disabled, ParanoiaDefineListener listener) {
+    public DefineCommand(int fillValue, boolean last, Skill attribute, Skill[] disabled, ParanoiaDefineListener listener) {
         super(CommandType.DEFINE);
         this.fillValue = fillValue;
         this.attribute = attribute;
         this.listener = listener;
         this.disabled = disabled;
+        lastChoice = last;
     }
 
     @Override
     public void execute() {
-        listener.alert(fillValue, disabled);
+        listener.alert(fillValue, disabled, lastChoice);
     }
 
     @Override
@@ -39,7 +41,7 @@ public class DefineCommand extends ParanoiaCommand {
         if(attribute != null)
             body.put("attribute", attribute.toString());
         body.put("disabled", new JSONArray(disabled));
-
+        body.put("last", lastChoice);
         return wrapCommand(body);
     }
 }

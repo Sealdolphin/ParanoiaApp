@@ -36,7 +36,7 @@ public class CommandParser {
                 command = parseChatCommand(body);
                 break;
             case DISCONNECT:
-                command = parseDisconnectCommand(body);
+                command = parseDisconnectCommand();
                 break;
             case ACPF:
                 command = parseACPFCommand(body);
@@ -74,6 +74,9 @@ public class CommandParser {
     public void setDefineListener(DefineCommand.ParanoiaDefineListener listener) {
         defineListener = listener;
     }
+    public void setReorderListener(ReorderCommand.ParanoiaReorderListener listener) {
+        reorderListener = listener;
+    }
 
     private ParanoiaCommand parseChatCommand(JSONObject body) {
         String sender = body.getString("sender");
@@ -82,7 +85,7 @@ public class CommandParser {
         return new ChatCommand(sender, message, time, chatListener);
     }
 
-    private ParanoiaCommand parseDisconnectCommand(JSONObject body) {
+    private ParanoiaCommand parseDisconnectCommand() {
         return new DisconnectCommand(disconnectListener);
     }
 
@@ -115,8 +118,9 @@ public class CommandParser {
         Skill[] disabled = body.getJSONArray("disabled").toList()
             .stream().map(Object::toString).map(Skill::valueOf)
             .toArray(Skill[]::new);
+        boolean last = body.getBoolean("last");
 
-        return new DefineCommand(value, null, disabled, defineListener);
+        return new DefineCommand(value, last, null, disabled, defineListener);
     }
 
 }

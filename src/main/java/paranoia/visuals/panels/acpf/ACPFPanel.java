@@ -1,6 +1,9 @@
 package paranoia.visuals.panels.acpf;
 
 import paranoia.services.plc.AssetManager;
+import paranoia.services.plc.LayoutManager;
+import paranoia.services.technical.command.DefineCommand;
+import paranoia.services.technical.command.ReorderCommand;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -10,32 +13,40 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import javax.swing.plaf.basic.BasicArrowButton;
 import java.awt.CardLayout;
+import java.awt.Component;
 
 public class ACPFPanel extends JPanel {
 
     private final CardLayout layout = new CardLayout();
+    private final DefineCommand.ParanoiaDefineListener defineListener;
+    private final ReorderCommand.ParanoiaReorderListener reorderListener;
 
     public ACPFPanel() {
         setLayout(layout);
 
+        ACPFStatPage statPage = new ACPFStatPage(this);
+        defineListener = statPage;
+        ACPFSwapPage swapPage = new ACPFSwapPage(this);
+        reorderListener = swapPage;
         //Adding pages
         add(new ACPFGeneralPage(this));
-        add(new ACPFStatPage(this));
-        add(new ACPFSwapPage(this));
+        add(statPage);
+        add(swapPage);
         layout.first(this);
     }
 
+
+
     public JPanel createButtonPanel(ACPFPage page, boolean hasPrev, boolean hasNext) {
-        JPanel panelButtons = new JPanel();
-        panelButtons.setLayout(new BoxLayout(panelButtons, BoxLayout.LINE_AXIS));
         JButton btnPrev = createPrevButton();
         JButton btnNext = createNextButton(page);
         btnNext.setEnabled(hasNext);
         btnPrev.setEnabled(hasPrev);
-        panelButtons.add(Box.createHorizontalGlue());
-        panelButtons.add(btnPrev);
-        panelButtons.add(btnNext);
-        return panelButtons;
+        return LayoutManager.panelOf(new Component[]{
+            Box.createHorizontalGlue(),
+            btnPrev,
+            btnNext
+        }, BoxLayout.LINE_AXIS);
     }
 
     private JButton createPrevButton() {
@@ -53,4 +64,11 @@ public class ACPFPanel extends JPanel {
         return btnNext;
     }
 
+    public ReorderCommand.ParanoiaReorderListener getReorderListener() {
+        return reorderListener;
+    }
+
+    public DefineCommand.ParanoiaDefineListener getDefineListener() {
+        return defineListener;
+    }
 }
