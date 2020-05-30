@@ -8,6 +8,8 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 
+import static paranoia.services.plc.AssetManager.defaultButtonBackground;
+
 public class ParanoiaButton extends JButton {
 
     private static final UIDefaults defaults = javax.swing.UIManager.getDefaults();
@@ -35,7 +37,7 @@ public class ParanoiaButton extends JButton {
     }
 
     public void resetBackgroud() {
-        setBackground(defaults.getColor("Button.background"));
+        setBackground(defaultButtonBackground);
     }
 
     @Override

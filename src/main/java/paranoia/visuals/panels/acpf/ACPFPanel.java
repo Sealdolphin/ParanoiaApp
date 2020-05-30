@@ -36,6 +36,7 @@ public class ACPFPanel extends JPanel {
         add(new ACPFGeneralPage(this));
         add(statPage);
         add(swapPage);
+        add(new ACPFOptimizePage(this));
         layout.first(this);
     }
 

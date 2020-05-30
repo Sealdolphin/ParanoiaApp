@@ -1,5 +1,7 @@
 package paranoia.visuals.custom;
 
+import paranoia.services.plc.AssetManager;
+
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
@@ -14,21 +16,28 @@ public class ParanoiaAttributeSpinner extends JSpinner implements ChangeListener
     public static final int MAX_SKILL_FINALIZATION_VALUE = 5;
     private final int defaultMaxValue;
     private final int startValue;
+    private final String label;
 
-    public static ParanoiaAttributeSpinner createStatSpinner(int stat, ParanoiaSpinnerListener listener) {
-        return new ParanoiaAttributeSpinner(stat, stat, Math.max(stat, MAX_STAT_FINALIZATION_VALUE), listener);
+    public static ParanoiaAttributeSpinner createStatSpinner(String label, int stat, ParanoiaSpinnerListener listener) {
+        return new ParanoiaAttributeSpinner(label, stat, stat, Math.max(stat, MAX_STAT_FINALIZATION_VALUE), listener);
     }
 
-    public static ParanoiaAttributeSpinner createSkillSpinner(int skill, ParanoiaSpinnerListener listener) {
-        return new ParanoiaAttributeSpinner(skill, skill, MAX_SKILL_FINALIZATION_VALUE, listener);
+    public static ParanoiaAttributeSpinner createSkillSpinner(String label, int skill, ParanoiaSpinnerListener listener) {
+        return new ParanoiaAttributeSpinner(label, skill, skill, MAX_SKILL_FINALIZATION_VALUE, listener);
     }
 
-    private ParanoiaAttributeSpinner(int start, int minValue, int maxValue, ParanoiaSpinnerListener listener) {
+    private ParanoiaAttributeSpinner(String label, int start, int minValue, int maxValue, ParanoiaSpinnerListener listener) {
         setModel(new ParanoiaNumberModel(start, minValue, maxValue,1, listener));
         setEditor(new DefaultEditor(this));
+        ((DefaultEditor) getEditor()).getTextField().setFont(AssetManager.getFont(15));
         addChangeListener(this);
         this.defaultMaxValue = maxValue;
         this.startValue = start;
+        this.label = label;
+    }
+
+    public String getLabel() {
+        return label;
     }
 
     public void setLimit(boolean enabled) {
