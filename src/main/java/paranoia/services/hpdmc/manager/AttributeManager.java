@@ -5,13 +5,15 @@ import paranoia.core.cpu.ParanoiaAttribute;
 import paranoia.core.cpu.Skill;
 import paranoia.core.cpu.Stat;
 import paranoia.services.hpdmc.ParanoiaListener;
+import paranoia.services.technical.command.ModifyCommand;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-public class AttributeManager implements ParanoiaManager<ParanoiaAttribute> {
+public class AttributeManager implements
+    ParanoiaManager<ParanoiaAttribute>, ModifyCommand.ParanoiaModifyListener {
 
     private final Collection<ParanoiaAttribute> attributes = new ArrayList<>();
     private final List<ParanoiaListener<ParanoiaAttribute>> listeners = new ArrayList<>();
@@ -65,5 +67,18 @@ public class AttributeManager implements ParanoiaManager<ParanoiaAttribute> {
         attributes.stream().filter(attr -> attr.getName().equals(removable.getName()))
             .findAny().ifPresent(old -> attributes.remove(removable));
         updateListeners();
+    }
+
+    @Override
+    public void modify(ModifyCommand.Modifiable attribute, int value, Object details) {
+        if(details == null) return;
+        switch (attribute) {
+            case SKILL:
+                updateAsset(ParanoiaAttribute.getSkill(Skill.valueOf(details.toString()), value));
+                break;
+            case STAT:
+                updateAsset(ParanoiaAttribute.getStat(Stat.valueOf(details.toString()), value));
+                break;
+        }
     }
 }

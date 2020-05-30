@@ -84,7 +84,8 @@ public class Clone implements Cloneable, ICoreTechPart, ACPFCommand.ParanoiaACPF
     }
 
     public void setMoxie(int amount) {
-        moxie = amount;
+        int maxMoxie = Moxie.MOXIE_COUNT - crossedOutMoxie;
+        moxie = Math.min(amount, maxMoxie);
     }
 
     public void setTreasonStars(int amount) {
