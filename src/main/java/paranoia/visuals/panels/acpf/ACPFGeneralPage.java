@@ -22,6 +22,7 @@ import javax.swing.text.JTextComponent;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -31,6 +32,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static java.awt.GridBagConstraints.CENTER;
+import static java.awt.GridBagConstraints.LINE_START;
 import static java.awt.GridBagConstraints.PAGE_END;
 import static java.awt.GridBagConstraints.PAGE_START;
 import static java.awt.GridBagConstraints.RELATIVE;
@@ -71,12 +73,15 @@ public class ACPFGeneralPage extends JPanel implements ACPFPage {
         profilePicture = new ParanoiaImage(image, true);
         profilePicture.setPreferredSize(new Dimension(200, 200));
 
+        Font generalFont = AssetManager.getFont(18);
+        textFields.forEach(tf -> tf.setFont(generalFont));
+
         JPanel standardPanel = new JPanel();
         standardPanel.setLayout(new GridBagLayout());
         standardPanel.add(lbTitle, createGrid(15, 15, 15, 15).at(0, 0, REMAINDER, 1).anchor(PAGE_START).get());
-        standardPanel.add(new JLabel("Name:"), createGrid(15,15,2,2).at(0, RELATIVE).get());
-        standardPanel.add(new JLabel("Gender:"), createGrid(2, 15, 2, 2).at(0, RELATIVE).get());
-        standardPanel.add(new JLabel("Home Sector:"), createGrid(2, 15, 2, 2).at(0, RELATIVE).get());
+        standardPanel.add(new JLabel("Name:"), createGrid(15,15,2,2).at(0, RELATIVE).anchor(LINE_START).get());
+        standardPanel.add(new JLabel("Gender:"), createGrid(2, 15, 2, 2).at(0, RELATIVE).anchor(LINE_START).get());
+        standardPanel.add(new JLabel("Home Sector:"), createGrid(2, 15, 2, 2).at(0, RELATIVE).anchor(LINE_START).get());
         standardPanel.add(new JLabel("Personality:"), createGrid(15, 2, 10, 2).at(0, RELATIVE, 2, 1).anchor(CENTER).get());
         standardPanel.add(tfName, createGrid(15, 2, 2,2).at(1, 1, 2 ,1).get());
         standardPanel.add(tfGender, createGrid().at(1, 2, 2 ,1).get());
