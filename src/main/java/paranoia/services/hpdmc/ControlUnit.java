@@ -53,8 +53,8 @@ public class ControlUnit implements DisconnectCommand.ParanoiaDisconnectListener
         ChatPanel chatPanel = new ChatPanel(clone, this);
         operationPanel.activatePanel(chatPanel, ComponentName.CHAT_PANEL.name());
         //Setup network
-        //TODO: ACPF panel -> listens to network define commands
-        network = new Network(chatPanel, this, clone, null);
+        //TODO: ACPF panel -> listens to network define and reorder commands
+        network = new Network(chatPanel, this, clone, null, null);
         //Setup visuals
         visuals = new CerebralCoretech(this, clone);
     }

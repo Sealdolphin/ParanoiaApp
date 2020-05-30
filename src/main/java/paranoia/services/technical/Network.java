@@ -4,6 +4,7 @@ import paranoia.services.technical.command.ACPFCommand;
 import paranoia.services.technical.command.ChatCommand;
 import paranoia.services.technical.command.DefineCommand;
 import paranoia.services.technical.command.DisconnectCommand;
+import paranoia.services.technical.command.ReorderCommand;
 import paranoia.visuals.messages.ParanoiaError;
 
 import java.io.BufferedInputStream;
@@ -31,12 +32,14 @@ public class Network {
         ChatCommand.ParanoiaChatListener chatListener,
         DisconnectCommand.ParanoiaDisconnectListener discListener,
         ACPFCommand.ParanoiaACPFListener acpfListener,
-        DefineCommand.ParanoiaDefineListener defineListener
+        DefineCommand.ParanoiaDefineListener defineListener,
+        ReorderCommand.ParanoiaReorderListener reorderListener
     ) {
         parser.setChatListener(chatListener);
         parser.setDisconnectListener(discListener);
         parser.setAcpfListener(acpfListener);
         parser.setDefineListener(defineListener);
+        parser.setReorderListener(reorderListener);
     }
 
     public void connectWithIP(String ip) throws IOException {
