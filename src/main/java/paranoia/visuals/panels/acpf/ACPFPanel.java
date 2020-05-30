@@ -2,7 +2,9 @@ package paranoia.visuals.panels.acpf;
 
 import paranoia.services.plc.AssetManager;
 import paranoia.services.plc.LayoutManager;
+import paranoia.services.technical.Network;
 import paranoia.services.technical.command.DefineCommand;
+import paranoia.services.technical.command.ParanoiaCommand;
 import paranoia.services.technical.command.ReorderCommand;
 
 import javax.swing.Box;
@@ -20,9 +22,11 @@ public class ACPFPanel extends JPanel {
     private final CardLayout layout = new CardLayout();
     private final DefineCommand.ParanoiaDefineListener defineListener;
     private final ReorderCommand.ParanoiaReorderListener reorderListener;
+    private final Network network;
 
-    public ACPFPanel() {
+    public ACPFPanel(Network network) {
         setLayout(layout);
+        this.network = network;
 
         ACPFStatPage statPage = new ACPFStatPage(this);
         defineListener = statPage;
@@ -35,7 +39,9 @@ public class ACPFPanel extends JPanel {
         layout.first(this);
     }
 
-
+    public void sendResponse(ParanoiaCommand command) {
+        network.sendMessage(command.toJsonObject().toString());
+    }
 
     public JPanel createButtonPanel(ACPFPage page, boolean hasPrev, boolean hasNext) {
         JButton btnPrev = createPrevButton();

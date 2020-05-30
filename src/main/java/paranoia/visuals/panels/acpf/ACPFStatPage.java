@@ -35,7 +35,6 @@ public class ACPFStatPage extends JPanel implements
     private final JButton btnSend = new JButton("SEND");
     private final HashMap<Skill, ParanoiaSkillButton> attributes = new HashMap<>();
     private final HashMap<Stat, JLabel> stats = new HashMap<>();
-    private JPanel btnPanel;
     private boolean lastChoice = false;
 
     private static final String txtChoose = "Choose a skill with a value of";
@@ -50,22 +49,19 @@ public class ACPFStatPage extends JPanel implements
             stats.forEach((stat, label) -> label.setText(String.valueOf(calculateStat(stat))));
             lbValue.setText("");
             lbChoose.setText(txtIdle);
-            if(lastChoice)
-                enableNextPage(main);
         });
         for (Stat stat : Stat.values()) {
             stats.put(stat, new JLabel("0", SwingConstants.CENTER));
         }
 
-        btnPanel = main.createButtonPanel(this, true, false);
         add(createInfoPanel(), BorderLayout.EAST);
         add(createStatsTable(), BorderLayout.CENTER);
-        add(btnPanel, BorderLayout.SOUTH);
+        add(main.createButtonPanel(this, true, true), BorderLayout.SOUTH);
     }
 
     @Override
     public boolean validatePage() {
-        return true;
+        return lastChoice;
     }
 
     private JPanel createStatsTable() {
@@ -129,12 +125,6 @@ public class ACPFStatPage extends JPanel implements
         }
 
         return infoPanel;
-    }
-
-    private void enableNextPage(ACPFPanel main) {
-        remove(btnPanel);
-        btnPanel = main.createButtonPanel(this, true, true);
-        add(btnPanel, BorderLayout.SOUTH);
     }
 
     private int calculateStat(Stat stat) {

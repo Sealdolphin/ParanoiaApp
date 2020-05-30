@@ -2,6 +2,7 @@ package paranoia.visuals.panels.acpf;
 
 import paranoia.core.cpu.Stat;
 import paranoia.services.plc.AssetManager;
+import paranoia.services.technical.command.ParanoiaCommand;
 import paranoia.services.technical.command.ReorderCommand;
 
 import javax.swing.BorderFactory;
@@ -16,6 +17,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.util.Arrays;
 import java.util.Stack;
 
 import static javax.swing.SwingConstants.CENTER;
@@ -29,6 +31,7 @@ public class ACPFSwapPage extends JPanel
     private final JLabel lbTitle;
     private final JLabel[] modifiedStats = new JLabel[Stat.values().length];
     private final Stack<JButton> btnDowns = new Stack<>();
+    private boolean ready = false;
 
     public ACPFSwapPage(ACPFPanel main) {
         setLayout(new BorderLayout());
@@ -38,7 +41,17 @@ public class ACPFSwapPage extends JPanel
         btnReady.setFont(AssetManager.getFont(20));
         btnReady.setEnabled(false);
         btnReady.addActionListener( e -> {
-            //swap bottom panel
+            ready = true;
+            btnUndo.setEnabled(false);
+            btnReady.setEnabled(false);
+            //TODO: Need to know Player's name
+            Integer[] order = Arrays.stream(modifiedStats)
+                .map(JLabel::getText).map(Integer::parseInt)
+                .toArray(Integer[]::new);
+            ParanoiaCommand reorder = new ReorderCommand(
+                "name", order, null
+            );
+            main.sendResponse(reorder);
         });
 
         btnUndo.setAlignmentX(CENTER_ALIGNMENT);
@@ -57,7 +70,7 @@ public class ACPFSwapPage extends JPanel
 
         add(lbTitle, BorderLayout.NORTH);
         add(createInfoPanel(), BorderLayout.EAST);
-        add(main.createButtonPanel(this, true, false), BorderLayout.SOUTH);
+        add(main.createButtonPanel(this, true, true), BorderLayout.SOUTH);
     }
 
     private JPanel createSwapPanel(Integer[] order) {
@@ -122,7 +135,8 @@ public class ACPFSwapPage extends JPanel
 
     @Override
     public boolean validatePage() {
-        return true;
+        //TODO: create error message
+        return ready;
     }
 
     @Override

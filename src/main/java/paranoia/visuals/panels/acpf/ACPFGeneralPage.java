@@ -2,6 +2,8 @@ package paranoia.visuals.panels.acpf;
 
 import paranoia.Paranoia;
 import paranoia.services.plc.AssetManager;
+import paranoia.services.technical.command.ACPFCommand;
+import paranoia.services.technical.command.ParanoiaCommand;
 import paranoia.visuals.custom.ParanoiaImage;
 import paranoia.visuals.custom.ParanoiaImageFilter;
 import paranoia.visuals.custom.ParanoiaSectorFilter;
@@ -16,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.text.AbstractDocument;
+import javax.swing.text.JTextComponent;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -51,11 +54,13 @@ public class ACPFGeneralPage extends JPanel implements ACPFPage {
     private final List<JTextField> textFields = new ArrayList<>();
     private final ParanoiaImage profilePicture;
     private String profilePath;
+    private final ACPFPanel main;
 
     public ACPFGeneralPage(ACPFPanel main) {
         setLayout(new BorderLayout());
 
         setUpComponents();
+        this.main = main;
 
         BufferedImage image = null;
         try {
@@ -139,7 +144,19 @@ public class ACPFGeneralPage extends JPanel implements ACPFPage {
         } else {
             tfSector.setBorder(defaultBorder);
             lbError.setForeground(new Color(255,0,0,0));
-            return hasEmptyTF();
+            if(hasEmptyTF()) {
+                String[] personalitiesText = Arrays.stream(personalities)
+                    .map(JTextComponent::getText).toArray(String[]::new);
+                ParanoiaCommand command = new ACPFCommand(
+                    tfName.getText(),
+                    tfGender.getText(),
+                    personalitiesText,
+                    profilePicture.getImage(),
+                    null
+                );
+                main.sendResponse(command);
+                return true;
+            } else return false;
         }
     }
 
