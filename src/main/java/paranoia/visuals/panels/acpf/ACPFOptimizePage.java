@@ -54,29 +54,7 @@ public class ACPFOptimizePage extends JPanel implements ACPFPage {
         lbCloneText.setFont(AssetManager.getFont(18, true, true, true));
 
         JButton btnSend = new JButton("Send to Alpha Complex");
-        btnSend.addActionListener(e -> {
-            int moxie = Moxie.MOXIE_COUNT - MAX_SPENT_MOXIE + moxieLeft;
-            int cloneID = MAX_SPENT_CLONE - cloneLeft;
-            main.sendResponse(new ModifyCommand(ModifyCommand.Modifiable.MAX_MOXIE, moxie, null, null));
-            main.sendResponse(new ModifyCommand(ModifyCommand.Modifiable.CLONE, cloneID, null, null));
-            for (ParanoiaAttributeSpinner skillSpinner : skillSpinners) {
-                main.sendResponse(new ModifyCommand(
-                    ModifyCommand.Modifiable.SKILL,
-                    (Integer) skillSpinner.getValue(),
-                    skillSpinner.getLabel(),
-                    null
-                ));
-            }
-            for (ParanoiaAttributeSpinner statSpinner : statSpinners) {
-                main.sendResponse(new ModifyCommand(
-                    ModifyCommand.Modifiable.STAT,
-                    (Integer) statSpinner.getValue(),
-                    statSpinner.getLabel(),
-                    null
-                ));
-            }
-
-        });
+        btnSend.addActionListener(e -> sendResponse(main));
 
         JPanel centerTable = new JPanel(new GridBagLayout());
         centerTable.add(lbCloneText, createGrid().at(0,0,2,1).anchor(LINE_END).get());
@@ -104,6 +82,30 @@ public class ACPFOptimizePage extends JPanel implements ACPFPage {
             panel.add(lbSkill, createGrid().at(x, 2 * y + startY).anchor(PAGE_START).get());
             panel.add(spinner, createGrid().at(x, 2 * y + 1 + startY).fill(BOTH).get());
         }
+    }
+
+    private void sendResponse(ACPFPanel main) {
+        int moxie = Moxie.MOXIE_COUNT - MAX_SPENT_MOXIE + moxieLeft;
+        int cloneID = MAX_SPENT_CLONE - cloneLeft;
+        main.sendResponse(new ModifyCommand(ModifyCommand.Modifiable.MAX_MOXIE, moxie, null, null));
+        main.sendResponse(new ModifyCommand(ModifyCommand.Modifiable.CLONE, cloneID, null, null));
+        for (ParanoiaAttributeSpinner skillSpinner : skillSpinners) {
+            main.sendResponse(new ModifyCommand(
+                ModifyCommand.Modifiable.SKILL,
+                (Integer) skillSpinner.getValue(),
+                skillSpinner.getLabel(),
+                null
+            ));
+        }
+        for (ParanoiaAttributeSpinner statSpinner : statSpinners) {
+            main.sendResponse(new ModifyCommand(
+                ModifyCommand.Modifiable.STAT,
+                (Integer) statSpinner.getValue(),
+                statSpinner.getLabel(),
+                null
+            ));
+        }
+        main.lockPanel();
     }
 
     private void addStatsTable(JPanel panel) {

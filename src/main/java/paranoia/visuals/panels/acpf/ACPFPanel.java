@@ -12,10 +12,13 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.WindowConstants;
 import javax.swing.plaf.basic.BasicArrowButton;
+import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Component;
+import java.awt.Insets;
 
 public class ACPFPanel extends JPanel {
 
@@ -29,18 +32,50 @@ public class ACPFPanel extends JPanel {
         this.network = network;
 
         ACPFStatPage statPage = new ACPFStatPage(this);
-        defineListener = statPage;
         ACPFSwapPage swapPage = new ACPFSwapPage(this);
-        reorderListener = swapPage;
+        ACPFGeneralPage generalPage = new ACPFGeneralPage(this);
+        ACPFOptimizePage optimizePage = new ACPFOptimizePage(this);
+
         //Adding pages
-        add(new ACPFGeneralPage(this));
+        add(generalPage);
         add(statPage);
         add(swapPage);
-        add(new ACPFOptimizePage(this));
+        add(optimizePage);
+        add(createFinalPage());
         layout.first(this);
+
+        //Define listeners
+        defineListener = statPage;
+        reorderListener = swapPage;
+    }
+
+    public void lockPanel(){
+        layout.last(this);
+    }
+
+    private JPanel createFinalPage() {
+        JPanel finalPage = new JPanel(new BorderLayout());
+        finalPage.setLayout(new BoxLayout(finalPage, BoxLayout.PAGE_AXIS));
+
+        JTextArea text = new JTextArea();
+        text.setLineWrap(true);
+        text.setWrapStyleWord(true);
+        text.setEditable(false);
+        text.setOpaque(false);
+        text.setFont(AssetManager.getItalicFont(25));
+        text.setText(
+            "Your response has been sent to Friend Computer. " +
+                "Please wait until your clone is being created. " +
+                "Thank you for your cooperation, citizen. " +
+                "Remember, Happiness is mandatory!"
+        );
+        text.setMargin(new Insets(120,40,20,40));
+        finalPage.add(text, BorderLayout.CENTER);
+        return finalPage;
     }
 
     public void sendResponse(ParanoiaCommand command) {
+        if(network == null) return;
         network.sendMessage(command.toJsonObject().toString());
     }
 
