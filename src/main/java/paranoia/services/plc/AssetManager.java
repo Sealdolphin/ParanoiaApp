@@ -1,12 +1,18 @@
 package paranoia.services.plc;
 
+import javax.swing.UIDefaults;
 import javax.swing.plaf.basic.BasicArrowButton;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.font.TextAttribute;
 import java.util.Map;
 
 public abstract class AssetManager {
+
+    private static final UIDefaults defaults = javax.swing.UIManager.getDefaults();
+
+    public static final Color defaultButtonBackground = defaults.getColor("Button.background");
 
     public static Font getFont(String name, int size) {
         return getFont(name, size, false, false, false);
