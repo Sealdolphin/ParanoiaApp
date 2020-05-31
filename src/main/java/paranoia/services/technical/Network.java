@@ -5,7 +5,7 @@ import paranoia.services.technical.command.ChatCommand;
 import paranoia.services.technical.command.DefineCommand;
 import paranoia.services.technical.command.DisconnectCommand;
 import paranoia.services.technical.command.ReorderCommand;
-import paranoia.visuals.messages.ParanoiaError;
+import paranoia.visuals.messages.ParanoiaMessage;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -20,13 +20,15 @@ import java.net.URL;
 /**
  * Establishes the Network
  */
-public class Network {
+public class Network implements DisconnectCommand.ParanoiaDisconnectListener {
 
     private Socket client = null;
     public static final int workingPort = 6532;
     private BufferedWriter output;
     private BufferedReader input;
     private final CommandParser parser = new CommandParser();
+    private boolean connected = false;
+    private final Object readLock = new Object();
 
     public Network(
         ChatCommand.ParanoiaChatListener chatListener,
@@ -60,50 +62,71 @@ public class Network {
                 new BufferedInputStream(client.getInputStream())
             )
         );
+        connected = true;
     }
 
     public void disconnect() {
+        if(client == null) return;
         try {
+            synchronized (readLock) { readLock.notify(); }
             client.close();
+            connected = false;
         } catch (IOException e) {
             e.printStackTrace();
         }
+        ParanoiaMessage.info("You have been disconnected from the Alpha Complex");
     }
 
     public void sendMessage(String jsonMsg) {
         try {
-            if(client.isConnected() && !client.isClosed()) {
+            if(connected) {
                 output.write(jsonMsg);
                 output.newLine();
                 output.flush();
-            } else {
-                output.close();
             }
         } catch (IOException e) {
             e.printStackTrace();
-            ParanoiaError.error(e);
+            ParanoiaMessage.error(e);
         }
     }
 
     public void listen() {
-        try {
-            if(client.isConnected() && !client.isClosed()) {
-                String msg = input.readLine();
-                if(msg != null)
-                    parser.parse(msg);
-                else client.close();
-            } else {
-                input.close();
+        if(connected) {
+            new Thread(this::listenForInput).start();
+        }
+    }
+
+    private void listenForInput() {
+        while (connected) {
+            try {
+                HelperThread<String> reading =
+                    new HelperThread<>(v -> doRead(), readLock);
+                reading.start();
+                synchronized (readLock) { readLock.wait(); }
+                String line = reading.getValue();
+                if(line != null) {
+                    parser.parse(line);
+                } else {
+                    disconnect();
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                disconnect();
+                ParanoiaMessage.error(e);
             }
+        }
+    }
+
+    private String doRead() {
+        try {
+            return input.readLine();
         } catch (IOException e) {
-            e.printStackTrace();
-            disconnect();
-            ParanoiaError.error("Disconnected. Reason: " + e.getLocalizedMessage());
+            if(connected) e.printStackTrace();
+            return null;
         }
     }
 
     public boolean isOpen() {
-        if(client == null) return false;
-        return client.isConnected() && !client.isClosed();
+        return connected;
     }
 }

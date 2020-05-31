@@ -3,7 +3,7 @@ package paranoia.visuals.panels;
 import paranoia.core.Clone;
 import paranoia.services.hpdmc.ControlUnit;
 import paranoia.services.technical.command.ChatCommand;
-import paranoia.visuals.messages.ParanoiaError;
+import paranoia.visuals.messages.ParanoiaMessage;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -66,7 +66,7 @@ public class ChatPanel extends JPanel implements ChatCommand.ParanoiaChatListene
                 chatWindow.replaceRange("", 0, chatWindow.getLineEndOffset(0));
             } catch (BadLocationException e) {
                 e.printStackTrace();
-                ParanoiaError.error(e);
+                ParanoiaMessage.error(e);
             }
         }
     }

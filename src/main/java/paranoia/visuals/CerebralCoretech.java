@@ -4,6 +4,7 @@ import paranoia.core.Clone;
 import paranoia.core.cpu.Skill;
 import paranoia.core.cpu.Stat;
 import paranoia.services.hpdmc.ControlUnit;
+import paranoia.services.technical.command.DisconnectCommand;
 import paranoia.visuals.panels.CardPanel;
 import paranoia.visuals.panels.MissionPanel;
 import paranoia.visuals.panels.SkillPanel;
@@ -58,6 +59,7 @@ public class CerebralCoretech extends JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
+                controller.sendCommand(new DisconnectCommand(null));
                 super.windowClosed(e);
                 new MenuFrame().setVisible(true);
             }
