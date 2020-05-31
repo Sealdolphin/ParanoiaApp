@@ -68,8 +68,8 @@ public class ControlUnit implements ParanoiaController,
         return visuals;
     }
 
-    public void updateAsset(ICoreTechPart asset, ComponentName name) {
-        managerMap.get(name).updateAsset(asset);
+    public void updateAsset(ICoreTechPart asset, ComponentName managerName) {
+        managerMap.get(managerName).updateAsset(asset);
     }
 
     public void connectToServer(String ipAddress) throws IOException {

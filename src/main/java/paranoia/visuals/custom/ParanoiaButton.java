@@ -2,7 +2,6 @@ package paranoia.visuals.custom;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.UIDefaults;
 import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
@@ -16,7 +15,6 @@ import static paranoia.services.plc.AssetManager.defaultButtonBackground;
 
 public class ParanoiaButton extends JButton {
 
-    private static final UIDefaults defaults = javax.swing.UIManager.getDefaults();
     private static final int DEFAULT_WIDTH = 32;
 
     public ParanoiaButton(BufferedImage image) {
