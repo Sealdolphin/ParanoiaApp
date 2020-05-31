@@ -9,7 +9,7 @@ import paranoia.services.technical.command.DisconnectCommand;
 import paranoia.services.technical.command.ModifyCommand;
 import paranoia.services.technical.command.ParanoiaCommand;
 import paranoia.services.technical.command.ReorderCommand;
-import paranoia.visuals.messages.ParanoiaError;
+import paranoia.visuals.messages.ParanoiaMessage;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -56,7 +56,8 @@ public class CommandParser {
                 command = null;
                 break;
         }
-        command.execute();
+        if(command != null)
+            command.execute();
     }
 
     private ParanoiaCommand parseModifiyCommand(JSONObject body) {
@@ -121,7 +122,7 @@ public class CommandParser {
         try {
            image = ImageIO.read(new ByteArrayInputStream(trueByteImage));
         } catch (IOException e) {
-            ParanoiaError.error(e);
+            ParanoiaMessage.error(e);
         }
 
         return new ACPFCommand(name, gender, personalities, image, acpfListener);

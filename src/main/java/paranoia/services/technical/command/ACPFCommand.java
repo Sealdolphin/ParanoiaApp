@@ -2,7 +2,7 @@ package paranoia.services.technical.command;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import paranoia.visuals.messages.ParanoiaError;
+import paranoia.visuals.messages.ParanoiaMessage;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -57,7 +57,7 @@ public class ACPFCommand extends ParanoiaCommand {
             ImageIO.write(image, "png", outStream);
             imageRaw = outStream.toByteArray();
         } catch (IOException e) {
-            ParanoiaError.error(e);
+            ParanoiaMessage.error(e);
         }
         //Create JSON
         body.put("name", name);
