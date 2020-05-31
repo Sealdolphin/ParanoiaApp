@@ -4,7 +4,8 @@ import paranoia.core.Clone;
 import paranoia.core.SecurityClearance;
 import paranoia.services.hpdmc.ControlUnit;
 import paranoia.services.plc.AssetManager;
-import paranoia.visuals.messages.ParanoiaError;
+import paranoia.services.technical.command.ACPFCommand;
+import paranoia.visuals.messages.ParanoiaMessage;
 
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
@@ -16,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import java.awt.BorderLayout;
 import java.awt.Frame;
+import java.awt.Image;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -32,6 +34,8 @@ public class MenuFrame extends JFrame {
     public MenuFrame() {
         try {
             img = ImageIO.read(new File(getParanoiaResource("clones/clone0.png")));
+            Image icon = ImageIO.read(new File(getParanoiaResource("ui/paranoia.png")));
+            setIconImage(icon.getScaledInstance(64,64,Image.SCALE_SMOOTH));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -65,8 +69,10 @@ public class MenuFrame extends JFrame {
                 controlUnit.connectToServer(connectUrl);
             } catch (IOException ex) {
                 ex.printStackTrace();
-                ParanoiaError.error(ex);
+                ParanoiaMessage.error(ex);
             }
+            controlUnit.sendCommand(new ACPFCommand("CARA", "MALE", new String[]{}, img, null));
+            coreTech.setIconImage(getIconImage());
             coreTech.setVisible(true);
         });
 
