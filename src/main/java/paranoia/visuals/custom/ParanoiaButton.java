@@ -18,8 +18,6 @@ public class ParanoiaButton extends JButton {
 
     private static final UIDefaults defaults = javax.swing.UIManager.getDefaults();
     private static final int DEFAULT_WIDTH = 32;
-    private Color hoverBorderColor = defaults.getColor("Button.highlight");
-    private Color backgroundBorderColor = defaults.getColor("Button.highlight");
 
     public ParanoiaButton(BufferedImage image) {
         this(image, DEFAULT_WIDTH);
@@ -65,8 +63,4 @@ public class ParanoiaButton extends JButton {
 
     @Override
     public void setContentAreaFilled(boolean b) { }
-
-    public void setHoverBorder(Color color) {
-        hoverBorderColor = color;
-    }
 }
