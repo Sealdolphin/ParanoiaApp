@@ -28,7 +28,7 @@ import java.util.Map;
 /**
  * Controls the core game elements - GameMaster interface
  */
-public class ControlUnit {
+public class ControlUnit implements ParanoiaController {
 
     CerebralCoretech visuals;
     private final Map<ComponentName, ParanoiaManager<? extends ICoreTechPart>> managerMap;

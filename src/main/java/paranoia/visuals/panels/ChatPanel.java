@@ -1,7 +1,7 @@
 package paranoia.visuals.panels;
 
-import paranoia.core.Clone;
-import paranoia.services.hpdmc.ControlUnit;
+import paranoia.core.ParanoiaPlayer;
+import paranoia.services.hpdmc.ParanoiaController;
 import paranoia.services.technical.command.ChatCommand;
 import paranoia.visuals.messages.ParanoiaMessage;
 
@@ -20,7 +20,7 @@ public class ChatPanel extends JPanel implements ChatCommand.ParanoiaChatListene
 
     private final JTextArea chatWindow = new JTextArea(15,30);
 
-    public ChatPanel(Clone clone, ControlUnit unit) {
+    public ChatPanel(ParanoiaPlayer clone, ParanoiaController unit) {
         setLayout(new BorderLayout());
 
         chatWindow.setEditable(false);

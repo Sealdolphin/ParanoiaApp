@@ -10,7 +10,12 @@ import java.awt.image.BufferedImage;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class Clone implements Cloneable, ICoreTechPart, ACPFCommand.ParanoiaACPFListener {
+public class Clone implements
+    Cloneable,
+    ICoreTechPart,
+    ACPFCommand.ParanoiaACPFListener,
+    ParanoiaPlayer
+{
     private static final String UNKNOWN = "UNKNOWN";
     private String name;
     private int treasonStars = 0;
