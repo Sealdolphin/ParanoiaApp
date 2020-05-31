@@ -11,7 +11,8 @@ public abstract class ParanoiaCommand {
         DEFINE,
         REORDER,
         OPTIMIZE,
-        MODIFY
+        MODIFY,
+        ROLL
     }
 
     protected ParanoiaCommand(CommandType type) {

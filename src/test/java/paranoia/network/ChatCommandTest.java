@@ -23,6 +23,7 @@ public class ChatCommandTest extends BasicNetworkTest {
         chatMock,
         new ACPFListenerMock(),
         null,
+        null,
         null
     );
 

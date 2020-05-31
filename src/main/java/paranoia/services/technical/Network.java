@@ -5,6 +5,7 @@ import paranoia.services.technical.command.ChatCommand;
 import paranoia.services.technical.command.DefineCommand;
 import paranoia.services.technical.command.DisconnectCommand;
 import paranoia.services.technical.command.ReorderCommand;
+import paranoia.services.technical.command.RollCommand;
 import paranoia.visuals.messages.ParanoiaMessage;
 
 import java.io.BufferedInputStream;
@@ -34,13 +35,15 @@ public class Network implements DisconnectCommand.ParanoiaDisconnectListener {
         ChatCommand.ParanoiaChatListener chatListener,
         ACPFCommand.ParanoiaACPFListener acpfListener,
         DefineCommand.ParanoiaDefineListener defineListener,
-        ReorderCommand.ParanoiaReorderListener reorderListener
+        ReorderCommand.ParanoiaReorderListener reorderListener,
+        RollCommand.ParanoiaRollListener rollListener
     ) {
         parser.setChatListener(chatListener);
         parser.setDisconnectListener(this);
         parser.setAcpfListener(acpfListener);
         parser.setDefineListener(defineListener);
         parser.setReorderListener(reorderListener);
+        parser.setRollListener(rollListener);
     }
 
     public void connectWithIP(String ip) throws IOException {

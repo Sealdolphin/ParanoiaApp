@@ -38,6 +38,7 @@ public class ACPFCommandTest extends BasicNetworkTest {
             new ChatListenerMock(),
             acpfMock,
             null,
+            null,
             null
         );
         connect(client);

@@ -11,6 +11,7 @@ import paranoia.services.hpdmc.manager.ParanoiaManager;
 import paranoia.services.hpdmc.manager.TroubleShooterManager;
 import paranoia.services.technical.Network;
 import paranoia.services.technical.command.ParanoiaCommand;
+import paranoia.services.technical.command.RollCommand;
 import paranoia.visuals.CerebralCoretech;
 import paranoia.visuals.ComponentName;
 import paranoia.visuals.messages.RollMessage;
@@ -28,7 +29,8 @@ import java.util.Map;
 /**
  * Controls the core game elements - GameMaster interface
  */
-public class ControlUnit implements ParanoiaController {
+public class ControlUnit implements ParanoiaController,
+    RollCommand.ParanoiaRollListener {
 
     CerebralCoretech visuals;
     private final Map<ComponentName, ParanoiaManager<? extends ICoreTechPart>> managerMap;
@@ -52,7 +54,7 @@ public class ControlUnit implements ParanoiaController {
         operationPanel.activatePanel(chatPanel, ComponentName.CHAT_PANEL.name());
         //Setup network
         //TODO: ACPF panel -> listens to network define and reorder commands
-        network = new Network(chatPanel, clone, null, null);
+        network = new Network(chatPanel, clone, null, null, this);
         //Setup visuals
         visuals = new CerebralCoretech(this, clone);
     }
@@ -89,9 +91,6 @@ public class ControlUnit implements ParanoiaController {
             positive, negative,
             "Please roll with..."
         );
-        //Auto updates from clone info
-        //Injury: --> negatives
-        //Action card on play --> positives
 
         msg.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         msg.setLocationRelativeTo(visuals);

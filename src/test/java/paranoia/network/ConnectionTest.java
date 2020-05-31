@@ -14,6 +14,7 @@ public class ConnectionTest extends BasicNetworkTest{
         new ChatListenerMock(),
         new ACPFListenerMock(),
         null,
+        null,
         null
     );
 

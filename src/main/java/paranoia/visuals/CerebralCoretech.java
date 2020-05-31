@@ -1,8 +1,6 @@
 package paranoia.visuals;
 
 import paranoia.core.Clone;
-import paranoia.core.cpu.Skill;
-import paranoia.core.cpu.Stat;
 import paranoia.services.hpdmc.ControlUnit;
 import paranoia.services.technical.command.DisconnectCommand;
 import paranoia.visuals.panels.CardPanel;
@@ -10,21 +8,15 @@ import paranoia.visuals.panels.MissionPanel;
 import paranoia.visuals.panels.SkillPanel;
 import paranoia.visuals.panels.TroubleShooterPanel;
 
-import javax.swing.AbstractAction;
 import javax.swing.GroupLayout;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.KeyStroke;
 import javax.swing.LayoutStyle;
 import javax.swing.WindowConstants;
-import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.HashMap;
-import java.util.Map;
 
 import static paranoia.Paranoia.PARANOIA_BACKGROUND;
 
@@ -62,28 +54,6 @@ public class CerebralCoretech extends JFrame {
                 controller.sendCommand(new DisconnectCommand(null));
                 super.windowClosed(e);
                 new MenuFrame().setVisible(true);
-            }
-        });
-
-        //TODO: temporary
-        miscPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("R"), "roll");
-        miscPanel.getActionMap().put("roll", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Map<String, Integer> positive = new HashMap<>();
-                Map<String, Integer> negative = new HashMap<>();
-
-                positive.put("The GM likes your style", 1);
-                positive.put("Action card", 2);
-                negative.put("Injury", 1);  //Should be automatic
-                controller.fireRollMessage(
-                    Stat.VIOLENCE,
-                    Skill.GUNS,
-                    true,
-                    true,
-                    positive,
-                    negative
-                );
             }
         });
 

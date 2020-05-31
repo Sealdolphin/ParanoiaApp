@@ -1,7 +1,9 @@
 package paranoia.services.technical;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import paranoia.core.cpu.Skill;
+import paranoia.core.cpu.Stat;
 import paranoia.services.technical.command.ACPFCommand;
 import paranoia.services.technical.command.ChatCommand;
 import paranoia.services.technical.command.DefineCommand;
@@ -9,12 +11,15 @@ import paranoia.services.technical.command.DisconnectCommand;
 import paranoia.services.technical.command.ModifyCommand;
 import paranoia.services.technical.command.ParanoiaCommand;
 import paranoia.services.technical.command.ReorderCommand;
+import paranoia.services.technical.command.RollCommand;
 import paranoia.visuals.messages.ParanoiaMessage;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CommandParser {
 
@@ -24,6 +29,7 @@ public class CommandParser {
     private DefineCommand.ParanoiaDefineListener defineListener;
     private ReorderCommand.ParanoiaReorderListener reorderListener;
     private ModifyCommand.ParanoiaModifyListener modifyListener;
+    private RollCommand.ParanoiaRollListener rollListener;
 
     public void parse(String pureMessage) {
         JSONObject message = new JSONObject(pureMessage);
@@ -52,12 +58,47 @@ public class CommandParser {
             case MODIFY:
                 command = parseModifiyCommand(body);
                 break;
+            case ROLL:
+                command = parseRollCommand(body);
+                break;
             default:
                 command = null;
                 break;
         }
         if(command != null)
             command.execute();
+    }
+
+    private ParanoiaCommand parseRollCommand(JSONObject body) {
+        Map<String, Integer> positive = new HashMap<>();
+        Map<String, Integer> negative = new HashMap<>();
+
+        Stat stat = Stat.valueOf(body.getString("stat").toUpperCase());
+        Skill skill = Skill.valueOf(body.getString("skill").toUpperCase());
+        boolean statChange = body.getBoolean("stat_enabled");
+        boolean skillChange = body.getBoolean("skill_enabled");
+
+        JSONArray positiveObj = body.getJSONArray("positive");
+        JSONArray negativeObj = body.getJSONArray("negative");
+
+        positiveObj.forEach( o -> {
+            JSONObject entry = (JSONObject) o;
+            String key = entry.getString("message");
+            int value = entry.getInt("value");
+            positive.put(key, value);
+        });
+
+        negativeObj.forEach( o -> {
+            JSONObject entry = new JSONObject(o);
+            String key = entry.getString("message");
+            int value = entry.getInt("value");
+            negative.put(key, value);
+        });
+
+        return new RollCommand(
+            stat, skill, statChange, skillChange,
+            positive, negative, rollListener
+        );
     }
 
     private ParanoiaCommand parseModifiyCommand(JSONObject body) {
@@ -91,6 +132,9 @@ public class CommandParser {
     }
     public void setReorderListener(ReorderCommand.ParanoiaReorderListener listener) {
         reorderListener = listener;
+    }
+    public void setRollListener(RollCommand.ParanoiaRollListener listener) {
+        this.rollListener = listener;
     }
 
     private ParanoiaCommand parseChatCommand(JSONObject body) {
