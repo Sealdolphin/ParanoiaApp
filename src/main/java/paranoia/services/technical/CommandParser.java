@@ -7,6 +7,7 @@ import paranoia.core.cpu.Stat;
 import paranoia.services.technical.command.ACPFCommand;
 import paranoia.services.technical.command.ChatCommand;
 import paranoia.services.technical.command.DefineCommand;
+import paranoia.services.technical.command.DiceCommand;
 import paranoia.services.technical.command.DisconnectCommand;
 import paranoia.services.technical.command.ModifyCommand;
 import paranoia.services.technical.command.ParanoiaCommand;
@@ -30,6 +31,7 @@ public class CommandParser {
     private ReorderCommand.ParanoiaReorderListener reorderListener;
     private ModifyCommand.ParanoiaModifyListener modifyListener;
     private RollCommand.ParanoiaRollListener rollListener;
+    private DiceCommand.ParanoiaDiceResultListener diceListener;
 
     public void parse(String pureMessage) {
         JSONObject message = new JSONObject(pureMessage);
@@ -61,12 +63,21 @@ public class CommandParser {
             case ROLL:
                 command = parseRollCommand(body);
                 break;
+            case DICE:
+                command = parseDiceCommand(body);
+                break;
             default:
                 command = null;
                 break;
         }
         if(command != null)
             command.execute();
+    }
+
+    private ParanoiaCommand parseDiceCommand(JSONObject body) {
+        int success = body.getInt("success");
+        boolean computer = body.getBoolean("computer");
+        return new DiceCommand(success, computer, diceListener);
     }
 
     private ParanoiaCommand parseRollCommand(JSONObject body) {
@@ -135,6 +146,9 @@ public class CommandParser {
     }
     public void setRollListener(RollCommand.ParanoiaRollListener listener) {
         this.rollListener = listener;
+    }
+    public void setDiceListener(DiceCommand.ParanoiaDiceResultListener listener) {
+        this.diceListener = listener;
     }
 
     private ParanoiaCommand parseChatCommand(JSONObject body) {

@@ -19,10 +19,6 @@ public class ParanoiaButton extends JButton {
     private Color hoverBorderColor = defaults.getColor("Button.highlight");
     private Color backgroundBorderColor = defaults.getColor("Button.highlight");
 
-    public ParanoiaButton() {
-        this((BufferedImage) null);
-    }
-
     public ParanoiaButton(BufferedImage image) {
         this(image, DEFAULT_WIDTH);
     }
