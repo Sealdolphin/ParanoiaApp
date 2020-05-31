@@ -7,7 +7,7 @@ import paranoia.services.technical.command.ParanoiaCommand;
 import paranoia.visuals.custom.ParanoiaImage;
 import paranoia.visuals.custom.ParanoiaImageFilter;
 import paranoia.visuals.custom.ParanoiaSectorFilter;
-import paranoia.visuals.messages.ParanoiaError;
+import paranoia.visuals.messages.ParanoiaMessage;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -110,7 +110,7 @@ public class ACPFGeneralPage extends JPanel implements ACPFPage {
         try {
             profilePath = Paranoia.getParanoiaResource("clones/clone0.png");
         } catch (IOException e) {
-            ParanoiaError.error(e);
+            ParanoiaMessage.error(e);
         }
         btnPicture.addActionListener( e -> profilePath = chooseProfilePicture(profilePath));
 
@@ -133,7 +133,7 @@ public class ACPFGeneralPage extends JPanel implements ACPFPage {
         try {
             profilePicture.changeImage(ImageIO.read(new File(newPath)));
         } catch (IOException e) {
-            ParanoiaError.error(e);
+            ParanoiaMessage.error(e);
         }
 
         return newPath;

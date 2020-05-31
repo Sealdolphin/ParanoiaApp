@@ -30,13 +30,12 @@ public class Network {
 
     public Network(
         ChatCommand.ParanoiaChatListener chatListener,
-        DisconnectCommand.ParanoiaDisconnectListener discListener,
         ACPFCommand.ParanoiaACPFListener acpfListener,
         DefineCommand.ParanoiaDefineListener defineListener,
         ReorderCommand.ParanoiaReorderListener reorderListener
     ) {
         parser.setChatListener(chatListener);
-        parser.setDisconnectListener(discListener);
+        parser.setDisconnectListener(this);
         parser.setAcpfListener(acpfListener);
         parser.setDefineListener(defineListener);
         parser.setReorderListener(reorderListener);

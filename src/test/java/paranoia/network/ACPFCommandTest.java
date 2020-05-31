@@ -6,7 +6,6 @@ import paranoia.Paranoia;
 import paranoia.helper.BasicNetworkTest;
 import paranoia.network.interfaces.ACPFListenerMock;
 import paranoia.network.interfaces.ChatListenerMock;
-import paranoia.network.interfaces.DisconnectListenerMock;
 import paranoia.services.technical.Network;
 import paranoia.services.technical.command.ACPFCommand;
 
@@ -37,8 +36,8 @@ public class ACPFCommandTest extends BasicNetworkTest {
         );
         Network client = new Network(
             new ChatListenerMock(),
-            new DisconnectListenerMock(),
             acpfMock,
+            null,
             null
         );
         connect(client);

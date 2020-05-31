@@ -10,11 +10,9 @@ import paranoia.services.hpdmc.manager.MissionManager;
 import paranoia.services.hpdmc.manager.ParanoiaManager;
 import paranoia.services.hpdmc.manager.TroubleShooterManager;
 import paranoia.services.technical.Network;
-import paranoia.services.technical.command.DisconnectCommand;
 import paranoia.services.technical.command.ParanoiaCommand;
 import paranoia.visuals.CerebralCoretech;
 import paranoia.visuals.ComponentName;
-import paranoia.visuals.messages.ParanoiaError;
 import paranoia.visuals.messages.RollMessage;
 import paranoia.visuals.panels.ChatPanel;
 import paranoia.visuals.panels.OperationPanel;
@@ -30,7 +28,7 @@ import java.util.Map;
 /**
  * Controls the core game elements - GameMaster interface
  */
-public class ControlUnit implements DisconnectCommand.ParanoiaDisconnectListener {
+public class ControlUnit {
 
     CerebralCoretech visuals;
     private final Map<ComponentName, ParanoiaManager<? extends ICoreTechPart>> managerMap;
@@ -54,7 +52,7 @@ public class ControlUnit implements DisconnectCommand.ParanoiaDisconnectListener
         operationPanel.activatePanel(chatPanel, ComponentName.CHAT_PANEL.name());
         //Setup network
         //TODO: ACPF panel -> listens to network define and reorder commands
-        network = new Network(chatPanel, this, clone, null, null);
+        network = new Network(chatPanel, clone, null, null);
         //Setup visuals
         visuals = new CerebralCoretech(this, clone);
     }
@@ -75,19 +73,7 @@ public class ControlUnit implements DisconnectCommand.ParanoiaDisconnectListener
     public void connectToServer(String ipAddress) throws IOException {
         //Connect to server
         network.connectWithIP(ipAddress);
-
-        //Start listening thread
-        Thread listening = new Thread(() -> {
-            while (network.isOpen()) {
-                network.listen();
-            }
-        });
-        listening.start();
-    }
-
-    @Override
-    public void disconnect() {
-        network.disconnect();
+        network.listen();
     }
 
     public void fireRollMessage(
@@ -117,7 +103,6 @@ public class ControlUnit implements DisconnectCommand.ParanoiaDisconnectListener
             network.sendMessage(command.toJsonObject().toString());
             return true;
         } else {
-            ParanoiaError.error("Network is unavailable");
             return false;
         }
     }

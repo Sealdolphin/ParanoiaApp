@@ -5,7 +5,6 @@ import org.junit.Test;
 import paranoia.helper.BasicNetworkTest;
 import paranoia.network.interfaces.ACPFListenerMock;
 import paranoia.network.interfaces.ChatListenerMock;
-import paranoia.network.interfaces.DisconnectListenerMock;
 import paranoia.services.technical.Network;
 import paranoia.services.technical.command.ChatCommand;
 
@@ -22,8 +21,8 @@ public class ChatCommandTest extends BasicNetworkTest {
         new ChatListenerMock(testSender, testBody, testTime);
     private final Network client = new Network(
         chatMock,
-        new DisconnectListenerMock(),
         new ACPFListenerMock(),
+        null,
         null
     );
 
