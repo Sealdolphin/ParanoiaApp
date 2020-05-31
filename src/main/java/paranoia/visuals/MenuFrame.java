@@ -71,7 +71,7 @@ public class MenuFrame extends JFrame {
                 ex.printStackTrace();
                 ParanoiaMessage.error(ex);
             }
-            controlUnit.sendCommand(new ACPFCommand("CARA", "MALE", new String[]{}, img, null));
+            controlUnit.sendCommand(new ACPFCommand(clone.getFullName(), "MALE", new String[]{}, img, null));
             coreTech.setIconImage(getIconImage());
             coreTech.setVisible(true);
         });

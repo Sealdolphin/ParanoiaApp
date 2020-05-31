@@ -4,8 +4,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.UIDefaults;
 import java.awt.Color;
+import java.awt.GradientPaint;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Paint;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 
 import static paranoia.services.plc.AssetManager.defaultButtonBackground;
@@ -14,8 +18,6 @@ public class ParanoiaButton extends JButton {
 
     private static final UIDefaults defaults = javax.swing.UIManager.getDefaults();
     private static final int DEFAULT_WIDTH = 32;
-    private Color hoverBackgroundColor = defaults.getColor("Button.highlight");
-    private Color pressedBackgroundColor = defaults.getColor("Button.select");
     private Color hoverBorderColor = defaults.getColor("Button.highlight");
     private Color backgroundBorderColor = defaults.getColor("Button.highlight");
 
@@ -38,27 +40,31 @@ public class ParanoiaButton extends JButton {
 
     @Override
     protected void paintComponent(Graphics g) {
+        final Graphics2D g2 = (Graphics2D) g.create();
         if( getModel().isPressed() ){
-            g.setColor(pressedBackgroundColor);
+            g2.setColor(getBackground().darker());
         } else if( getModel().isRollover() ) {
-            g.setColor(hoverBackgroundColor);
+            g2.setPaint(getBackgroundPaint(getBackground().brighter()));
         } else {
-            g.setColor(getBackground());
+            g2.setPaint(getBackgroundPaint(getBackground()));
         }
-        g.fillRect(0, 0, getWidth(), getHeight());
+        g2.fillRect(0, 0, getWidth(), getHeight());
+        g2.dispose();
+
         super.paintComponent(g);
+    }
+
+    private Paint getBackgroundPaint(Color color) {
+        return new GradientPaint(
+            new Point(),
+            color,
+            new Point(0, getHeight()),
+            color.darker()
+        );
     }
 
     @Override
     public void setContentAreaFilled(boolean b) { }
-
-    public void setHoverBG(Color color) {
-        hoverBackgroundColor = color;
-    }
-
-    public void setPressedBG(Color color) {
-        pressedBackgroundColor = color;
-    }
 
     public void setHoverBorder(Color color) {
         hoverBorderColor = color;

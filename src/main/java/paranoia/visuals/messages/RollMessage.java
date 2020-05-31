@@ -128,8 +128,6 @@ public class RollMessage extends JDialog {
         //Button
         btnRoll.setFont(font);
         btnRoll.setBackground(new Color(166,0, 6));
-        btnRoll.setHoverBG(new Color(166, 70, 73));
-        btnRoll.setPressedBG(new Color(255, 126, 136));
         btnRoll.setForeground(Color.WHITE);
         btnRoll.addActionListener( event -> roll(panel, clearance, controller) );
     }

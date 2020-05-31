@@ -53,4 +53,10 @@ public class ParanoiaMessage {
             JOptionPane.INFORMATION_MESSAGE
         );
     }
+
+    public static boolean confirm(String question, Component parent) {
+        return JOptionPane.showConfirmDialog(
+            parent, question, "Confirmation",
+            JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+    }
 }
