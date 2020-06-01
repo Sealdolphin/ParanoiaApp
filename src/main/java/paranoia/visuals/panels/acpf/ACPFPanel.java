@@ -2,10 +2,10 @@ package paranoia.visuals.panels.acpf;
 
 import paranoia.services.plc.AssetManager;
 import paranoia.services.plc.LayoutManager;
-import paranoia.services.technical.Network;
 import paranoia.services.technical.command.DefineCommand;
 import paranoia.services.technical.command.ParanoiaCommand;
 import paranoia.services.technical.command.ReorderCommand;
+import paranoia.services.technical.networking.Network;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
