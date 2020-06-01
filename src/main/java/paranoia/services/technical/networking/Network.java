@@ -32,7 +32,7 @@ public class Network implements
     public static final int workingPort = 6532;
     private BufferedWriter output;
     private BufferedReader input;
-    private final CommandParser parser = new CommandParser();
+    private final CommandParser parser;
     private boolean connected = false;
     private final Object readLock = new Object();
 
@@ -44,6 +44,7 @@ public class Network implements
         RollCommand.ParanoiaRollListener rollListener,
         HelloCommand.ParanoiaInfoListener infoListener
     ) {
+        parser = new CommandParser();
         parser.setChatListener(chatListener);
         parser.setDisconnectListener(this);
         parser.setAcpfListener(acpfListener);
@@ -51,6 +52,10 @@ public class Network implements
         parser.setReorderListener(reorderListener);
         parser.setRollListener(rollListener);
         parser.setInfoListener(infoListener);
+    }
+
+    public Network(CommandParser parser) {
+        this.parser = parser;
     }
 
     public void connectWithIP(String ip) throws IOException {

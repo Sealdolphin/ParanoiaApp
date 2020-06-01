@@ -3,6 +3,7 @@ package paranoia.helper;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import paranoia.services.technical.CommandParser;
 import paranoia.services.technical.networking.Network;
 
 import java.io.IOException;
@@ -11,6 +12,7 @@ import java.net.URL;
 public abstract class BasicNetworkTest {
 
     protected MockServer server;
+    protected CommandParser parser = new CommandParser();
     private static int port = 6001;
     private final Object lock = new Object();
 
