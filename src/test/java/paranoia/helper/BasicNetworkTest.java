@@ -3,7 +3,7 @@ package paranoia.helper;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import paranoia.services.technical.Network;
+import paranoia.services.technical.networking.Network;
 
 import java.io.IOException;
 import java.net.URL;
@@ -31,6 +31,16 @@ public abstract class BasicNetworkTest {
             }
         } catch (IOException | InterruptedException e) {
             Assert.fail(e.getLocalizedMessage());
+        }
+    }
+
+    protected void waitForClient() {
+        synchronized (lock) {
+            try {
+                lock.wait(3000);
+            } catch (InterruptedException e) {
+                Assert.fail(e.getLocalizedMessage());
+            }
         }
     }
 

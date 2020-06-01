@@ -68,4 +68,8 @@ public abstract class Computer {
         int random = new Random().nextInt(list.size());
         return list.get(random);
     }
+
+    public static boolean coinFlip() {
+        return randomItem(new Boolean[]{true, false});
+    }
 }

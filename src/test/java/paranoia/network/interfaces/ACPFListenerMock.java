@@ -18,10 +18,6 @@ public class ACPFListenerMock implements
     private final String[] personality;
     private final BufferedImage image;
 
-    public ACPFListenerMock() {
-        this("", "", new String[0], null);
-    }
-
     public ACPFListenerMock(String name, String gender, String[] personality, BufferedImage image) {
         this.name = name;
         this.gender = gender;

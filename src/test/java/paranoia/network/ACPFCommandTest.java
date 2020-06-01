@@ -5,9 +5,8 @@ import org.junit.Test;
 import paranoia.Paranoia;
 import paranoia.helper.BasicNetworkTest;
 import paranoia.network.interfaces.ACPFListenerMock;
-import paranoia.network.interfaces.ChatListenerMock;
-import paranoia.services.technical.Network;
 import paranoia.services.technical.command.ACPFCommand;
+import paranoia.services.technical.networking.Network;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -35,18 +34,16 @@ public class ACPFCommandTest extends BasicNetworkTest {
             name, gender, personalities, testImage
         );
         Network client = new Network(
-            new ChatListenerMock(),
-            acpfMock,
-            null,
-            null,
-            null,
-            null);
+            null, acpfMock, null,
+            null, null, null
+        );
         connect(client);
         ACPFCommand command = new ACPFCommand(
             name, gender, personalities, testImage, null
         );
         server.sendCommand(command);
         client.listen();
+        waitForClient();
         Assert.assertTrue(acpfMock.testSuccess());
     }
 

@@ -1,5 +1,7 @@
-package paranoia.services.technical;
+package paranoia.services.technical.networking;
 
+import paranoia.services.technical.CommandParser;
+import paranoia.services.technical.HelperThread;
 import paranoia.services.technical.command.ACPFCommand;
 import paranoia.services.technical.command.ChatCommand;
 import paranoia.services.technical.command.DefineCommand;

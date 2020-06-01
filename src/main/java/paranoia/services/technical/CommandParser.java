@@ -111,7 +111,7 @@ public class CommandParser {
         });
 
         negativeObj.forEach( o -> {
-            JSONObject entry = new JSONObject(o);
+            JSONObject entry = (JSONObject) o;
             String key = entry.getString("message");
             int value = entry.getInt("value");
             negative.put(key, value);
