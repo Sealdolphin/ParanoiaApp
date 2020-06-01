@@ -7,7 +7,6 @@ import paranoia.core.cpu.Skill;
 import paranoia.helper.BasicNetworkTest;
 import paranoia.network.interfaces.DefineListenerMock;
 import paranoia.services.technical.command.DefineCommand;
-import paranoia.services.technical.networking.Network;
 
 import java.util.Random;
 
@@ -26,13 +25,9 @@ public class DefineCommandTest extends BasicNetworkTest {
         fillValue, lastChoice, attribute, disabled
     );
 
-    private final Network client = new Network(
-        null, null, defineMock,
-    null, null, null
-    );
-
     @Test
     public void testDefineCommand() {
+        parser.setDefineListener(defineMock);
         connect();
         DefineCommand command = new DefineCommand(
             fillValue, lastChoice, attribute, disabled, null
