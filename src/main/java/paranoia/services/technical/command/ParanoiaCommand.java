@@ -13,7 +13,8 @@ public abstract class ParanoiaCommand {
         OPTIMIZE,
         MODIFY,
         ROLL,
-        DICE
+        DICE,
+        HELLO
     }
 
     protected ParanoiaCommand(CommandType type) {

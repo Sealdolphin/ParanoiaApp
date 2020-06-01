@@ -4,6 +4,7 @@ import paranoia.services.technical.command.ACPFCommand;
 import paranoia.services.technical.command.ChatCommand;
 import paranoia.services.technical.command.DefineCommand;
 import paranoia.services.technical.command.DisconnectCommand;
+import paranoia.services.technical.command.HelloCommand;
 import paranoia.services.technical.command.ReorderCommand;
 import paranoia.services.technical.command.RollCommand;
 import paranoia.visuals.messages.ParanoiaMessage;
@@ -21,7 +22,9 @@ import java.net.URL;
 /**
  * Establishes the Network
  */
-public class Network implements DisconnectCommand.ParanoiaDisconnectListener {
+public class Network implements
+    DisconnectCommand.ParanoiaDisconnectListener
+{
 
     private Socket client = null;
     public static final int workingPort = 6532;
@@ -36,7 +39,8 @@ public class Network implements DisconnectCommand.ParanoiaDisconnectListener {
         ACPFCommand.ParanoiaACPFListener acpfListener,
         DefineCommand.ParanoiaDefineListener defineListener,
         ReorderCommand.ParanoiaReorderListener reorderListener,
-        RollCommand.ParanoiaRollListener rollListener
+        RollCommand.ParanoiaRollListener rollListener,
+        HelloCommand.ParanoiaInfoListener infoListener
     ) {
         parser.setChatListener(chatListener);
         parser.setDisconnectListener(this);
@@ -44,6 +48,7 @@ public class Network implements DisconnectCommand.ParanoiaDisconnectListener {
         parser.setDefineListener(defineListener);
         parser.setReorderListener(reorderListener);
         parser.setRollListener(rollListener);
+        parser.setInfoListener(infoListener);
     }
 
     public void connectWithIP(String ip) throws IOException {
@@ -80,7 +85,7 @@ public class Network implements DisconnectCommand.ParanoiaDisconnectListener {
         ParanoiaMessage.info("You have been disconnected from the Alpha Complex");
     }
 
-    public void sendMessage(String jsonMsg) {
+    public synchronized void sendMessage(String jsonMsg) {
         try {
             if(connected) {
                 output.write(jsonMsg);

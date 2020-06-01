@@ -59,4 +59,8 @@ public class ParanoiaMessage {
             parent, question, "Confirmation",
             JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
     }
+
+    public static String input(String question) {
+        return JOptionPane.showInputDialog(null, question, "A question from the Computer", JOptionPane.QUESTION_MESSAGE);
+    }
 }

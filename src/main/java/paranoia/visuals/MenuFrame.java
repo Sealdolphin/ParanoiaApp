@@ -64,23 +64,27 @@ public class MenuFrame extends JFrame {
         btnStart.setFont(AssetManager.getFont(20));
         btnStart.setMaximumSize(size);
         btnStart.addActionListener(e-> {
-            setVisible(false);
             //TODO: temporary
-            Clone clone = new Clone("CARA", "RLY", SecurityClearance.YELLOW, "MALE", 0, img);
-            ControlUnit controlUnit = new ControlUnit(clone);
-            JFrame coreTech = controlUnit.getVisuals();
-            coreTech.setExtendedState(Frame.MAXIMIZED_BOTH);
-            setUpSkillsNStats(controlUnit);
-            //Network
-            try {
-                controlUnit.connectToServer(connectUrl);
-            } catch (IOException ex) {
-                ex.printStackTrace();
-                ParanoiaMessage.error(ex);
+            String playerName = ParanoiaMessage.input("What is your name, citizen?");
+            if(playerName != null && !playerName.isEmpty()) {
+                Clone clone = new Clone("CARA", "RLY", SecurityClearance.YELLOW, "MALE", 0, img);
+                ControlUnit controlUnit = new ControlUnit(clone, playerName);
+                JFrame coreTech = controlUnit.getVisuals();
+                coreTech.setExtendedState(Frame.MAXIMIZED_BOTH);
+                setUpSkillsNStats(controlUnit);
+                //Network
+                try {
+                    controlUnit.connectToServer(connectUrl);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                    ParanoiaMessage.error(ex);
+                    return;
+                }
+                controlUnit.sendCommand(new ACPFCommand(clone.getFullName(), "MALE", new String[]{}, img, null));
+                coreTech.setIconImage(getIconImage());
+                setVisible(false);
+                coreTech.setVisible(true);
             }
-            controlUnit.sendCommand(new ACPFCommand(clone.getFullName(), "MALE", new String[]{}, img, null));
-            coreTech.setIconImage(getIconImage());
-            coreTech.setVisible(true);
         });
 
         JLabel lbAddr = new JLabel("Address: " + connectUrl);

@@ -15,8 +15,8 @@ public class ConnectionTest extends BasicNetworkTest{
         new ACPFListenerMock(),
         null,
         null,
-        null
-    );
+        null,
+        null);
 
     @Test
     public void testConnection() {

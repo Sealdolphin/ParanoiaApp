@@ -10,10 +10,12 @@ import paranoia.services.hpdmc.manager.MissionManager;
 import paranoia.services.hpdmc.manager.ParanoiaManager;
 import paranoia.services.hpdmc.manager.TroubleShooterManager;
 import paranoia.services.technical.Network;
+import paranoia.services.technical.command.HelloCommand;
 import paranoia.services.technical.command.ParanoiaCommand;
 import paranoia.services.technical.command.RollCommand;
 import paranoia.visuals.CerebralCoretech;
 import paranoia.visuals.ComponentName;
+import paranoia.visuals.messages.ParanoiaMessage;
 import paranoia.visuals.messages.RollMessage;
 import paranoia.visuals.panels.ChatPanel;
 import paranoia.visuals.panels.OperationPanel;
@@ -30,15 +32,19 @@ import java.util.Map;
  * Controls the core game elements - GameMaster interface
  */
 public class ControlUnit implements ParanoiaController,
-    RollCommand.ParanoiaRollListener {
+    RollCommand.ParanoiaRollListener,
+    HelloCommand.ParanoiaInfoListener
+{
 
     CerebralCoretech visuals;
     private final Map<ComponentName, ParanoiaManager<? extends ICoreTechPart>> managerMap;
 
     private final OperationPanel operationPanel;
     private final Network network;
+    private final String playerName;
 
-    public ControlUnit(Clone clone) {
+    public ControlUnit(Clone clone, String playerName) {
+        this.playerName = playerName;
         operationPanel = new OperationPanel();
         //Setup managers
         managerMap = new HashMap<>();
@@ -54,7 +60,10 @@ public class ControlUnit implements ParanoiaController,
         operationPanel.activatePanel(chatPanel, ComponentName.CHAT_PANEL.name());
         //Setup network
         //TODO: ACPF panel -> listens to network define and reorder commands
-        network = new Network(chatPanel, clone, null, null, this);
+        network = new Network(
+            chatPanel, clone, null,
+            null, this, this
+        );
         //Setup visuals
         visuals = new CerebralCoretech(this, clone);
     }
@@ -78,25 +87,6 @@ public class ControlUnit implements ParanoiaController,
         network.listen();
     }
 
-    public void fireRollMessage(
-        Stat stat, Skill skill,
-        boolean statChange, boolean skillChange,
-        Map<String, Integer> positive,
-        Map<String, Integer> negative
-    ) {
-        RollMessage msg = new RollMessage(
-            this,
-            stat, statChange,
-            skill, skillChange,
-            positive, negative,
-            "Please roll with..."
-        );
-
-        msg.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        msg.setLocationRelativeTo(visuals);
-        msg.setVisible(true);
-    }
-
     public boolean sendCommand(ParanoiaCommand command) {
         if(network.isOpen()) {
             network.sendMessage(command.toJsonObject().toString());
@@ -118,5 +108,35 @@ public class ControlUnit implements ParanoiaController,
 
     public OperationPanel getOperationPanel() {
         return operationPanel;
+    }
+
+    public void fireRollMessage(
+        Stat stat, Skill skill,
+        boolean statChange, boolean skillChange,
+        Map<String, Integer> positive,
+        Map<String, Integer> negative
+    ) {
+        RollMessage msg = new RollMessage(
+            this,
+            stat, statChange,
+            skill, skillChange,
+            positive, negative,
+            "Please roll with..."
+        );
+
+        msg.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        msg.setLocationRelativeTo(visuals);
+        msg.setVisible(true);
+    }
+
+    @Override
+    public void sayHello(String player, String password, boolean hasPassword) {
+        System.out.println("HELLO!!");
+        String pass = null;
+        if(hasPassword) {
+            pass = ParanoiaMessage.input("Enter server password");
+        }
+        //PONG!
+        sendCommand(new HelloCommand(playerName, pass, hasPassword, null));
     }
 }

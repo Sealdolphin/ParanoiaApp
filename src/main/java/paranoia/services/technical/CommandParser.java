@@ -9,6 +9,7 @@ import paranoia.services.technical.command.ChatCommand;
 import paranoia.services.technical.command.DefineCommand;
 import paranoia.services.technical.command.DiceCommand;
 import paranoia.services.technical.command.DisconnectCommand;
+import paranoia.services.technical.command.HelloCommand;
 import paranoia.services.technical.command.ModifyCommand;
 import paranoia.services.technical.command.ParanoiaCommand;
 import paranoia.services.technical.command.ReorderCommand;
@@ -32,12 +33,12 @@ public class CommandParser {
     private ModifyCommand.ParanoiaModifyListener modifyListener;
     private RollCommand.ParanoiaRollListener rollListener;
     private DiceCommand.ParanoiaDiceResultListener diceListener;
+    private HelloCommand.ParanoiaInfoListener infoListener;
 
     public void parse(String pureMessage) {
         JSONObject message = new JSONObject(pureMessage);
         ParanoiaCommand.CommandType type = ParanoiaCommand.CommandType
                 .valueOf(message.getString("type").toUpperCase());
-
         JSONObject body = message.getJSONObject("command");
 
         ParanoiaCommand command;
@@ -66,12 +67,22 @@ public class CommandParser {
             case DICE:
                 command = parseDiceCommand(body);
                 break;
+            case HELLO:
+                command = parseHelloCommand(body);
+                break;
             default:
                 command = null;
                 break;
         }
         if(command != null)
             command.execute();
+    }
+
+    private ParanoiaCommand parseHelloCommand(JSONObject body) {
+        String name = body.optString("player", null);
+        String password = body.optString("password", null);
+        boolean hasPassword = body.getBoolean("hasPass");
+        return new HelloCommand(name, password, hasPassword, infoListener);
     }
 
     private ParanoiaCommand parseDiceCommand(JSONObject body) {
@@ -129,28 +140,6 @@ public class CommandParser {
         return new ReorderCommand(playerName, order, reorderListener);
     }
 
-    public void setChatListener(ChatCommand.ParanoiaChatListener listener) {
-        chatListener = listener;
-    }
-    public void setDisconnectListener(DisconnectCommand.ParanoiaDisconnectListener listener) {
-        disconnectListener = listener;
-    }
-    public void setAcpfListener(ACPFCommand.ParanoiaACPFListener listener) {
-        acpfListener = listener;
-    }
-    public void setDefineListener(DefineCommand.ParanoiaDefineListener listener) {
-        defineListener = listener;
-    }
-    public void setReorderListener(ReorderCommand.ParanoiaReorderListener listener) {
-        reorderListener = listener;
-    }
-    public void setRollListener(RollCommand.ParanoiaRollListener listener) {
-        this.rollListener = listener;
-    }
-    public void setDiceListener(DiceCommand.ParanoiaDiceResultListener listener) {
-        this.diceListener = listener;
-    }
-
     private ParanoiaCommand parseChatCommand(JSONObject body) {
         String sender = body.getString("sender");
         String message = body.getString("body");
@@ -194,6 +183,31 @@ public class CommandParser {
         boolean last = body.getBoolean("last");
 
         return new DefineCommand(value, last, null, disabled, defineListener);
+    }
+
+    public void setChatListener(ChatCommand.ParanoiaChatListener listener) {
+        chatListener = listener;
+    }
+    public void setDisconnectListener(DisconnectCommand.ParanoiaDisconnectListener listener) {
+        disconnectListener = listener;
+    }
+    public void setAcpfListener(ACPFCommand.ParanoiaACPFListener listener) {
+        acpfListener = listener;
+    }
+    public void setDefineListener(DefineCommand.ParanoiaDefineListener listener) {
+        defineListener = listener;
+    }
+    public void setReorderListener(ReorderCommand.ParanoiaReorderListener listener) {
+        reorderListener = listener;
+    }
+    public void setRollListener(RollCommand.ParanoiaRollListener listener) {
+        this.rollListener = listener;
+    }
+    public void setDiceListener(DiceCommand.ParanoiaDiceResultListener listener) {
+        this.diceListener = listener;
+    }
+    public void setInfoListener(HelloCommand.ParanoiaInfoListener listener) {
+        this.infoListener = listener;
     }
 
 }

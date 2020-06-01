@@ -39,8 +39,8 @@ public class ACPFCommandTest extends BasicNetworkTest {
             acpfMock,
             null,
             null,
-            null
-        );
+            null,
+            null);
         connect(client);
         ACPFCommand command = new ACPFCommand(
             name, gender, personalities, testImage, null
