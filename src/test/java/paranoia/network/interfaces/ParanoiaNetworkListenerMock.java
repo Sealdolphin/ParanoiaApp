@@ -1,7 +1,15 @@
 package paranoia.network.interfaces;
 
-public interface ParanoiaNetworkListenerMock {
+public abstract class ParanoiaNetworkListenerMock {
 
-    boolean testSuccess();
+    private boolean success = false;
+
+    protected void succeed() {
+        success = true;
+    }
+
+    public boolean testSuccess() {
+        return success;
+    }
 
 }

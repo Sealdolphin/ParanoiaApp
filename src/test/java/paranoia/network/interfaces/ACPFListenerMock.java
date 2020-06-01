@@ -8,11 +8,10 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-public class ACPFListenerMock implements
-    ACPFCommand.ParanoiaACPFListener,
-    ParanoiaNetworkListenerMock
+public class ACPFListenerMock
+    extends ParanoiaNetworkListenerMock
+    implements ACPFCommand.ParanoiaACPFListener
 {
-    private boolean success = false;
     private final String name;
     private final String gender;
     private final String[] personality;
@@ -23,11 +22,6 @@ public class ACPFListenerMock implements
         this.gender = gender;
         this.personality = personality;
         this.image = image;
-    }
-
-    @Override
-    public boolean testSuccess() {
-        return success;
     }
 
     @Override
@@ -50,6 +44,6 @@ public class ACPFListenerMock implements
             Assert.fail(e.getLocalizedMessage());
         }
 
-        success = true;
+        succeed();
     }
 }

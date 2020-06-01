@@ -7,9 +7,9 @@ import paranoia.services.technical.command.RollCommand;
 
 import java.util.Map;
 
-public class RollListenerMock implements
-    ParanoiaNetworkListenerMock,
-    RollCommand.ParanoiaRollListener
+public class RollListenerMock
+    extends ParanoiaNetworkListenerMock
+    implements RollCommand.ParanoiaRollListener
 {
 
     private final Skill skill;
@@ -18,8 +18,6 @@ public class RollListenerMock implements
     private final boolean skillEnabled;
     private final Map<String, Integer> positive;
     private final Map<String, Integer> negative;
-
-    private boolean success = false;
 
     public RollListenerMock(
         Skill skill, Stat stat, boolean statEnabled, boolean skillEnabled,
@@ -31,11 +29,6 @@ public class RollListenerMock implements
         this.skillEnabled = skillEnabled;
         this.positive = positive;
         this.negative = negative;
-    }
-
-    @Override
-    public boolean testSuccess() {
-        return success;
     }
 
     @Override
@@ -55,6 +48,6 @@ public class RollListenerMock implements
             this.negative.entrySet().toArray(),
             negative.entrySet().toArray()
         );
-        success = true;
+        succeed();
     }
 }
