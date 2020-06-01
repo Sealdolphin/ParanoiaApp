@@ -5,7 +5,6 @@ import org.junit.Test;
 import paranoia.helper.BasicNetworkTest;
 import paranoia.network.interfaces.ChatListenerMock;
 import paranoia.services.technical.command.ChatCommand;
-import paranoia.services.technical.networking.Network;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -18,14 +17,11 @@ public class ChatCommandTest extends BasicNetworkTest {
         DateTimeFormatter.ofPattern("hh:mm:ss").format(LocalTime.now());
     private final ChatListenerMock chatMock =
         new ChatListenerMock(testSender, testBody, testTime);
-    private final Network client = new Network(
-        chatMock, null, null,
-        null, null, null
-    );
 
     @Test
     public void testChatCommand() {
-        connect(client);
+        parser.setChatListener(chatMock);
+        connect();
         ChatCommand command = new ChatCommand(
             testSender,
             testBody,

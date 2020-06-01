@@ -33,7 +33,7 @@ public class DefineCommandTest extends BasicNetworkTest {
 
     @Test
     public void testDefineCommand() {
-        connect(client);
+        connect();
         DefineCommand command = new DefineCommand(
             fillValue, lastChoice, attribute, disabled, null
         );

@@ -13,6 +13,7 @@ public abstract class BasicNetworkTest {
 
     protected MockServer server;
     protected CommandParser parser = new CommandParser();
+    protected final Network client = new Network(parser);
     private static int port = 6001;
     private final Object lock = new Object();
 
@@ -22,7 +23,7 @@ public abstract class BasicNetworkTest {
         server.start();
     }
 
-    protected void connect(Network client) {
+    protected void connect() {
         try {
             client.connect(new URL("http", "127.0.0.1", port, ""));
             port += 1;

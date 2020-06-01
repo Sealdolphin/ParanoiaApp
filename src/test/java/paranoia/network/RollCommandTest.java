@@ -8,7 +8,6 @@ import paranoia.core.cpu.Stat;
 import paranoia.helper.BasicNetworkTest;
 import paranoia.network.interfaces.RollListenerMock;
 import paranoia.services.technical.command.RollCommand;
-import paranoia.services.technical.networking.Network;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,15 +28,10 @@ public class RollCommandTest extends BasicNetworkTest {
     private final RollListenerMock rollMock = new RollListenerMock(
         skill, stat, statEnabled, skillEnabled, positive, negative
     );
-
-    private final Network client = new Network(
-        null, null, null,
-        null, rollMock, null
-    );
-
     @Test
     public void testRollCommand() {
-        connect(client);
+        parser.setRollListener(rollMock);
+        connect();
         RollCommand command = new RollCommand(
             stat, skill, statEnabled, skillEnabled, positive, negative, null
         );
