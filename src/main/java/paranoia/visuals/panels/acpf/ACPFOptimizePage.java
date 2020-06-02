@@ -123,7 +123,7 @@ public class ACPFOptimizePage extends JPanel implements ACPFPage {
 
     @Override
     public boolean validatePage() {
-        return false;
+        return true;
     }
 
     private class MoxieListener implements ParanoiaAttributeSpinner.ParanoiaSpinnerListener {

@@ -109,6 +109,10 @@ public class Clone implements
         return name + "-" + clearance.getShort() + "-" + sectorName + "-" + cloneID;
     }
 
+    public int getClone() {
+        return cloneID;
+    }
+
     @Override
     public Object clone() {
         Clone c = null;

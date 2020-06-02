@@ -127,5 +127,6 @@ public class TroubleShooterManager implements
             default:
                 break;
         }
+        updateListeners();
     }
 }
