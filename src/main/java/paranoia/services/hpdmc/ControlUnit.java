@@ -25,6 +25,7 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import java.awt.BorderLayout;
 import java.io.IOException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -83,6 +84,9 @@ public class ControlUnit implements ParanoiaController,
 
     public void connectToServer(String ipAddress) throws IOException {
         //Connect to server
+        if(ipAddress.contains(":")){
+            network.connect(new URL(ipAddress));
+        }
         network.connectWithIP(ipAddress);
         network.listen();
     }
@@ -131,7 +135,6 @@ public class ControlUnit implements ParanoiaController,
 
     @Override
     public void sayHello(String player, String password, boolean hasPassword) {
-        System.out.println("HELLO!!");
         String pass = null;
         if(hasPassword) {
             pass = ParanoiaMessage.input("Enter server password");

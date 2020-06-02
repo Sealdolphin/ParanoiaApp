@@ -34,7 +34,7 @@ import static paranoia.services.plc.LayoutManager.panelOf;
 
 public class MenuFrame extends JFrame {
 
-    private String connectUrl = "127.0.0.1";
+    private String connectUrl = "http://127.0.0.1:6532";
     private BufferedImage img = null;
 
     public MenuFrame() {
