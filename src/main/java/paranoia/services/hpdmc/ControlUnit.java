@@ -9,6 +9,7 @@ import paranoia.services.hpdmc.manager.CardManager;
 import paranoia.services.hpdmc.manager.MissionManager;
 import paranoia.services.hpdmc.manager.ParanoiaManager;
 import paranoia.services.hpdmc.manager.TroubleShooterManager;
+import paranoia.services.technical.CommandParser;
 import paranoia.services.technical.command.HelloCommand;
 import paranoia.services.technical.command.ParanoiaCommand;
 import paranoia.services.technical.command.RollCommand;
@@ -19,6 +20,7 @@ import paranoia.visuals.messages.ParanoiaMessage;
 import paranoia.visuals.messages.RollMessage;
 import paranoia.visuals.panels.ChatPanel;
 import paranoia.visuals.panels.OperationPanel;
+import paranoia.visuals.panels.acpf.ACPFPanel;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -60,11 +62,15 @@ public class ControlUnit implements ParanoiaController,
         ChatPanel chatPanel = new ChatPanel(clone, this);
         operationPanel.activatePanel(chatPanel, ComponentName.CHAT_PANEL.name());
         //Setup network
-        //TODO: ACPF panel -> listens to network define and reorder commands
-        network = new Network(
-            chatPanel, clone, null,
-            null, this, this
-        );
+        CommandParser parser = new CommandParser();
+        network = new Network(parser);
+        ACPFPanel acpfPanel = new ACPFPanel(network);
+        parser.setChatListener(chatPanel);
+        parser.setAcpfListener(clone);
+        parser.setRollListener(this);
+        parser.setInfoListener(this);
+        parser.setDefineListener(acpfPanel.getDefineListener());
+        parser.setReorderListener(acpfPanel.getReorderListener());
         //Setup visuals
         visuals = new CerebralCoretech(this, clone);
     }
