@@ -3,7 +3,8 @@ package paranoia.helper;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import paranoia.services.technical.Network;
+import paranoia.services.technical.CommandParser;
+import paranoia.services.technical.networking.Network;
 
 import java.io.IOException;
 import java.net.URL;
@@ -11,6 +12,8 @@ import java.net.URL;
 public abstract class BasicNetworkTest {
 
     protected MockServer server;
+    protected CommandParser parser = new CommandParser();
+    protected final Network client = new Network(parser);
     private static int port = 6001;
     private final Object lock = new Object();
 
@@ -20,7 +23,7 @@ public abstract class BasicNetworkTest {
         server.start();
     }
 
-    protected void connect(Network client) {
+    protected void connect() {
         try {
             client.connect(new URL("http", "127.0.0.1", port, ""));
             port += 1;
@@ -31,6 +34,16 @@ public abstract class BasicNetworkTest {
             }
         } catch (IOException | InterruptedException e) {
             Assert.fail(e.getLocalizedMessage());
+        }
+    }
+
+    protected void waitForClient() {
+        synchronized (lock) {
+            try {
+                lock.wait(3000);
+            } catch (InterruptedException e) {
+                Assert.fail(e.getLocalizedMessage());
+            }
         }
     }
 

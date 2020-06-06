@@ -4,28 +4,24 @@ import org.junit.Assert;
 import org.junit.Test;
 import paranoia.helper.BasicNetworkTest;
 import paranoia.network.interfaces.ChatListenerMock;
-import paranoia.network.interfaces.DisconnectListenerMock;
-import paranoia.services.technical.Network;
 import paranoia.services.technical.command.ChatCommand;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class ChatCommandTest extends BasicNetworkTest {
+
     private final String testSender = "TestSender";
     private final String testBody = "Hello World";
     private final String testTime =
         DateTimeFormatter.ofPattern("hh:mm:ss").format(LocalTime.now());
     private final ChatListenerMock chatMock =
         new ChatListenerMock(testSender, testBody, testTime);
-    private final Network client = new Network(
-        chatMock,
-        new DisconnectListenerMock()
-    );
 
     @Test
-    public void sendChatCommand() {
-        connect(client);
+    public void testChatCommand() {
+        parser.setChatListener(chatMock);
+        connect();
         ChatCommand command = new ChatCommand(
             testSender,
             testBody,
@@ -34,6 +30,7 @@ public class ChatCommandTest extends BasicNetworkTest {
         );
         server.sendCommand(command);
         client.listen();
+        waitForClient();
         Assert.assertTrue(chatMock.testSuccess());
     }
 

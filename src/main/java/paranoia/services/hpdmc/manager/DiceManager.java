@@ -46,7 +46,6 @@ public class DiceManager {
         diceListeners.forEach(l -> l.updateVisualDataChange(Arrays.asList(dice)));
     }
 
-    @SuppressWarnings("unused")
     public DiceRoll getResult() {
         int sucess = 0;
         boolean computer = false;

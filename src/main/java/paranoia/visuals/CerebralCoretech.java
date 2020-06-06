@@ -1,29 +1,21 @@
 package paranoia.visuals;
 
 import paranoia.core.Clone;
-import paranoia.core.cpu.Skill;
-import paranoia.core.cpu.Stat;
 import paranoia.services.hpdmc.ControlUnit;
+import paranoia.services.technical.command.DisconnectCommand;
 import paranoia.visuals.panels.CardPanel;
 import paranoia.visuals.panels.MissionPanel;
 import paranoia.visuals.panels.SkillPanel;
 import paranoia.visuals.panels.TroubleShooterPanel;
 
-import javax.swing.AbstractAction;
 import javax.swing.GroupLayout;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.KeyStroke;
-import javax.swing.LayoutStyle;
 import javax.swing.WindowConstants;
-import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.HashMap;
-import java.util.Map;
 
 import static paranoia.Paranoia.PARANOIA_BACKGROUND;
 
@@ -58,30 +50,9 @@ public class CerebralCoretech extends JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
+                controller.sendCommand(new DisconnectCommand(null));
                 super.windowClosed(e);
                 new MenuFrame().setVisible(true);
-            }
-        });
-
-        //TODO: temporary
-        miscPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("R"), "roll");
-        miscPanel.getActionMap().put("roll", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Map<String, Integer> positive = new HashMap<>();
-                Map<String, Integer> negative = new HashMap<>();
-
-                positive.put("The GM likes your style", 1);
-                positive.put("Action card", 2);
-                negative.put("Injury", 1);  //Should be automatic
-                controller.fireRollMessage(
-                    Stat.VIOLENCE,
-                    Skill.GUNS,
-                    true,
-                    true,
-                    positive,
-                    negative
-                );
             }
         });
 
@@ -139,74 +110,16 @@ public class CerebralCoretech extends JFrame {
     private void refreshLayout() {
         //set horizontal
         layout.setHorizontalGroup(
-            layout.createSequentialGroup()
+            layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
                 .addGroup(
-                    layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-                        .addComponent(
-                            troubleShooterPanel,
-                            GroupLayout.DEFAULT_SIZE,
-                            GroupLayout.DEFAULT_SIZE,
-                            Short.MAX_VALUE
-                        )
+                    layout.createSequentialGroup()
                         .addGroup(
-                            layout.createSequentialGroup()
-                                .addComponent(
-                                    missionPanel,
-                                    GroupLayout.PREFERRED_SIZE,
-                                    300,
-                                    Short.MAX_VALUE
-                                )
-                                .addPreferredGap(
-                                    LayoutStyle.ComponentPlacement.UNRELATED,
-                                    1000, Short.MAX_VALUE
-                                )
-                                .addComponent(
-                                    miscPanel,
-                                    GroupLayout.PREFERRED_SIZE,
-                                    GroupLayout.PREFERRED_SIZE,
-                                    GroupLayout.PREFERRED_SIZE
-                                )
-                        )
-                        .addGroup(
-                            layout.createSequentialGroup()
-                                .addComponent(
-                                    cardStatPanel,
-                                    GroupLayout.DEFAULT_SIZE,
-                                    GroupLayout.DEFAULT_SIZE,
-                                    Short.MAX_VALUE
-                                )
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED,
-                                    300, Short.MAX_VALUE)
-                                .addComponent(
-                                    selfPanel,
-                                    GroupLayout.PREFERRED_SIZE,
-                                    GroupLayout.PREFERRED_SIZE,
-                                    Short.MAX_VALUE
-                                )
-                        )
-                )
-        );
-
-        //set vertical
-        layout.setVerticalGroup(
-            layout.createSequentialGroup()
-                .addComponent(
-                    troubleShooterPanel,
-                    GroupLayout.PREFERRED_SIZE,
-                    GroupLayout.PREFERRED_SIZE,
-                    Short.MAX_VALUE
-                )
-                .addGroup(
-                    layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addGroup(
-                            layout.createSequentialGroup()
+                            layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                                .addComponent(troubleShooterPanel)
                                 .addGroup(
-                                    layout.createBaselineGroup(false, false)
+                                    layout.createSequentialGroup()
                                         .addComponent(missionPanel)
-                                )
-                                .addPreferredGap(
-                                    LayoutStyle.ComponentPlacement.UNRELATED,
-                                    300, Short.MAX_VALUE
+                                        .addGap(0, 100, Short.MAX_VALUE)
                                 )
                         )
                         .addComponent(
@@ -217,16 +130,34 @@ public class CerebralCoretech extends JFrame {
                         )
                 )
                 .addGroup(
-                    layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                    layout.createSequentialGroup()
                         .addComponent(cardStatPanel)
-                        .addGroup(layout.createBaselineGroup(false, false)
+                        .addGap(0, 100, Short.MAX_VALUE)
+                        .addComponent(selfPanel)
+                )
+        );
+        //set vertical
+        layout.setVerticalGroup(
+            layout.createSequentialGroup()
+                .addGroup(
+                    layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                        .addGroup(
+                            layout.createSequentialGroup()
                                 .addComponent(
-                                    selfPanel,
+                                    troubleShooterPanel,
                                     GroupLayout.PREFERRED_SIZE,
                                     GroupLayout.PREFERRED_SIZE,
                                     Short.MAX_VALUE
                                 )
+                                .addComponent(missionPanel)
                         )
+                        .addComponent(miscPanel)
+                )
+                .addGap(0, 100, Short.MAX_VALUE)
+                .addGroup(
+                    layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                        .addComponent(cardStatPanel)
+                        .addComponent(selfPanel)
                 )
         );
 

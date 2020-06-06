@@ -9,37 +9,45 @@ import paranoia.services.hpdmc.manager.CardManager;
 import paranoia.services.hpdmc.manager.MissionManager;
 import paranoia.services.hpdmc.manager.ParanoiaManager;
 import paranoia.services.hpdmc.manager.TroubleShooterManager;
-import paranoia.services.technical.Network;
-import paranoia.services.technical.command.DisconnectCommand;
+import paranoia.services.technical.CommandParser;
+import paranoia.services.technical.command.HelloCommand;
 import paranoia.services.technical.command.ParanoiaCommand;
+import paranoia.services.technical.command.RollCommand;
+import paranoia.services.technical.networking.Network;
 import paranoia.visuals.CerebralCoretech;
 import paranoia.visuals.ComponentName;
-import paranoia.visuals.messages.ParanoiaError;
+import paranoia.visuals.messages.ParanoiaMessage;
 import paranoia.visuals.messages.RollMessage;
 import paranoia.visuals.panels.ChatPanel;
 import paranoia.visuals.panels.OperationPanel;
+import paranoia.visuals.panels.acpf.ACPFPanel;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import java.awt.BorderLayout;
 import java.io.IOException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Controls the core game elements - GameMaster interface
  */
-public class ControlUnit implements DisconnectCommand.ParanoiaDisconnectListener {
+public class ControlUnit implements ParanoiaController,
+    RollCommand.ParanoiaRollListener,
+    HelloCommand.ParanoiaInfoListener
+{
 
     CerebralCoretech visuals;
     private final Map<ComponentName, ParanoiaManager<? extends ICoreTechPart>> managerMap;
 
     private final OperationPanel operationPanel;
     private final Network network;
-    private final ChatPanel chatPanel;
+    private final String playerName;
 
-    public ControlUnit(Clone clone) {
+    public ControlUnit(Clone clone, String playerName) {
+        this.playerName = playerName;
         operationPanel = new OperationPanel();
         //Setup managers
         managerMap = new HashMap<>();
@@ -51,10 +59,18 @@ public class ControlUnit implements DisconnectCommand.ParanoiaDisconnectListener
         managerMap.put(ComponentName.TROUBLESHOOTER_PANEL, new TroubleShooterManager());
         managerMap.put(ComponentName.SELF_PANEL, new TroubleShooterManager());
         //Setup miscellaneous
-        chatPanel = new ChatPanel(clone, this);
+        ChatPanel chatPanel = new ChatPanel(clone, this);
         operationPanel.activatePanel(chatPanel, ComponentName.CHAT_PANEL.name());
         //Setup network
-        network = new Network(chatPanel, this);
+        CommandParser parser = new CommandParser();
+        network = new Network(parser);
+        ACPFPanel acpfPanel = new ACPFPanel(network);
+        parser.setChatListener(chatPanel);
+        parser.setAcpfListener(clone);
+        parser.setRollListener(this);
+        parser.setInfoListener(this);
+        parser.setDefineListener(acpfPanel.getDefineListener());
+        parser.setReorderListener(acpfPanel.getReorderListener());
         //Setup visuals
         visuals = new CerebralCoretech(this, clone);
     }
@@ -68,48 +84,17 @@ public class ControlUnit implements DisconnectCommand.ParanoiaDisconnectListener
         return visuals;
     }
 
-    public void updateAsset(ICoreTechPart asset, ComponentName name) {
-        managerMap.get(name).updateAsset(asset);
+    public void updateAsset(ICoreTechPart asset, ComponentName managerName) {
+        managerMap.get(managerName).updateAsset(asset);
     }
 
     public void connectToServer(String ipAddress) throws IOException {
         //Connect to server
+        if(ipAddress.contains(":")){
+            network.connect(new URL(ipAddress));
+        }
         network.connectWithIP(ipAddress);
-
-        //Start listening thread
-        Thread listening = new Thread(() -> {
-            while (network.isOpen()) {
-                network.listen();
-            }
-        });
-        listening.start();
-    }
-
-    @Override
-    public void disconnect() {
-        network.disconnect();
-    }
-
-    public void fireRollMessage(
-        Stat stat, Skill skill,
-        boolean statChange, boolean skillChange,
-        Map<String, Integer> positive,
-        Map<String, Integer> negative
-    ) {
-        RollMessage msg = new RollMessage(
-            this,
-            stat, statChange,
-            skill, skillChange,
-            positive, negative,
-            "Please roll with..."
-        );
-        //Auto updates from clone info
-        //Injury: --> negatives
-        //Action card on play --> positives
-
-        msg.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        msg.setLocationRelativeTo(visuals);
-        msg.setVisible(true);
+        network.listen();
     }
 
     public boolean sendCommand(ParanoiaCommand command) {
@@ -117,7 +102,6 @@ public class ControlUnit implements DisconnectCommand.ParanoiaDisconnectListener
             network.sendMessage(command.toJsonObject().toString());
             return true;
         } else {
-            ParanoiaError.error("Network is unavailable");
             return false;
         }
     }
@@ -134,5 +118,34 @@ public class ControlUnit implements DisconnectCommand.ParanoiaDisconnectListener
 
     public OperationPanel getOperationPanel() {
         return operationPanel;
+    }
+
+    public void fireRollMessage(
+        Stat stat, Skill skill,
+        boolean statChange, boolean skillChange,
+        Map<String, Integer> positive,
+        Map<String, Integer> negative
+    ) {
+        RollMessage msg = new RollMessage(
+            this,
+            stat, statChange,
+            skill, skillChange,
+            positive, negative,
+            "Please roll with..."
+        );
+
+        msg.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        msg.setLocationRelativeTo(visuals);
+        msg.setVisible(true);
+    }
+
+    @Override
+    public void sayHello(String player, String password, boolean hasPassword) {
+        String pass = null;
+        if(hasPassword) {
+            pass = ParanoiaMessage.input("Enter server password");
+        }
+        //PONG!
+        sendCommand(new HelloCommand(playerName, pass, hasPassword, null));
     }
 }

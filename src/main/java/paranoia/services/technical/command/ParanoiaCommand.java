@@ -6,7 +6,15 @@ public abstract class ParanoiaCommand {
 
     public enum CommandType {
         CHAT,
-        DISCONNECT
+        DISCONNECT,
+        ACPF,
+        DEFINE,
+        REORDER,
+        OPTIMIZE,
+        MODIFY,
+        ROLL,
+        DICE,
+        HELLO
     }
 
     protected ParanoiaCommand(CommandType type) {
@@ -23,7 +31,6 @@ public abstract class ParanoiaCommand {
         JSONObject json = new JSONObject();
         json.put("type", type.name());
         json.put("command", body);
-        System.out.println(json.toString());
         return json;
     }
 }

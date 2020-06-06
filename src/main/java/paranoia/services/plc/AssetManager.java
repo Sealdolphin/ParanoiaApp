@@ -1,31 +1,49 @@
 package paranoia.services.plc;
 
+import javax.swing.UIDefaults;
+import javax.swing.plaf.basic.BasicArrowButton;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.font.TextAttribute;
 import java.util.Map;
 
 public abstract class AssetManager {
 
+    private static final UIDefaults defaults = javax.swing.UIManager.getDefaults();
+
+    public static final Color defaultButtonBackground = defaults.getColor("Button.background");
+
+    public static Font getFont(String name, int size) {
+        return getFont(name, size, false, false, false);
+    }
+
     public static Font getFont(int size) {
-        return getFont(size, false, false, false);
+        return getFont("Segoe", size, false, false, false);
     }
 
     public static Font getBoldFont(int size) {
-        return getFont(size, true, false, false);
+        return getFont("Segoe", size, true, false, false);
     }
 
     public static Font getItalicFont(int size) {
-        return getFont(size, false, true, false);
+        return getFont("Segoe", size, false, true, false);
     }
 
     public static Font getUnderlineFont(int size) {
-        return getFont(size, false, false, true);
+        return getFont("Segoe", size, false, false, true);
     }
 
+    public static Font getFont(int size, boolean bold, boolean italic, boolean underline) {
+        return getFont("Segoe", size, bold, italic, underline);
+    }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public static Font getFont(int size, boolean bold, boolean italic, boolean underline) {
-        Font font = new Font("Segoe", Font.PLAIN, size);
+    public static Font getFont(String name, int size, boolean bold, boolean italic, boolean underline) {
+        int style = Font.PLAIN;
+        if(bold) style += Font.BOLD;
+        if(italic) style += Font.ITALIC;
+        Font font = new Font(name, style, size);
         Map attributes = font.getAttributes();
         attributes.put(TextAttribute.SIZE, (float) size);
         attributes.put(TextAttribute.WEIGHT,
@@ -36,6 +54,36 @@ public abstract class AssetManager {
             underline ? TextAttribute.UNDERLINE_ON : null);
         font.deriveFont(attributes);
         return font;
+    }
+
+    public static class ParanoiaArrow extends BasicArrowButton {
+
+        private Dimension maxSize = new Dimension(50,50);
+        private Dimension prefSize = new Dimension(60, 28);
+
+        public ParanoiaArrow(int direction) {
+            super(direction);
+        }
+
+        @Override
+        public void setPreferredSize(Dimension preferredSize) {
+            prefSize = preferredSize;
+        }
+
+        @Override
+        public Dimension getPreferredSize() {
+            return prefSize;
+        }
+
+        @Override
+        public void setMaximumSize(Dimension maximumSize) {
+            maxSize = maximumSize;
+        }
+
+        @Override
+        public Dimension getMaximumSize() {
+            return maxSize;
+        }
     }
 
 }

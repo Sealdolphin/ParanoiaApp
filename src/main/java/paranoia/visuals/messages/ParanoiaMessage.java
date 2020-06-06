@@ -7,7 +7,7 @@ import java.awt.Component;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-public class ParanoiaError {
+public class ParanoiaMessage {
 
     public static final int ERROR_LINE_LIMIT = 15;
 
@@ -43,5 +43,24 @@ public class ParanoiaError {
             Computer.randomItem(errorHeaders),
             JOptionPane.ERROR_MESSAGE
         );
+    }
+
+    public static void info(String info) {
+        JOptionPane.showMessageDialog(
+            null,
+            info,
+            "A message from the Computer",
+            JOptionPane.INFORMATION_MESSAGE
+        );
+    }
+
+    public static boolean confirm(String question, Component parent) {
+        return JOptionPane.showConfirmDialog(
+            parent, question, "Confirmation",
+            JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+    }
+
+    public static String input(String question) {
+        return JOptionPane.showInputDialog(null, question, "A question from the Computer", JOptionPane.QUESTION_MESSAGE);
     }
 }

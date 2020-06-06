@@ -48,7 +48,7 @@ public class DiceUITest extends AssertJSwingJUnitTestCase {
         JDialog rollDialog;
         GuiActionRunner.execute(() -> {
             testClone = new TestClone();
-            cpu = new ControlUnit(testClone);
+            cpu = new ControlUnit(testClone, "testPlayer");
             testClone.attributes.iterator().forEachRemaining(paranoiaAttribute ->
                 cpu.updateAsset(paranoiaAttribute, ComponentName.SKILL_PANEL));
 

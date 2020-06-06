@@ -2,7 +2,7 @@ package paranoia.visuals.panels;
 
 import paranoia.visuals.ComponentName;
 import paranoia.visuals.custom.ParanoiaButton;
-import paranoia.visuals.messages.ParanoiaError;
+import paranoia.visuals.messages.ParanoiaMessage;
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
@@ -48,7 +48,7 @@ public class OperationPanel extends JPanel {
             btnRoll = new ParanoiaButton(roll);
 
         } catch (IOException e) {
-            ParanoiaError.error(e);
+            ParanoiaMessage.error(e);
 
             btnChat = new JButton("Chat");
             btnRoll = new JButton("Roll");

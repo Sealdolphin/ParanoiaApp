@@ -29,7 +29,7 @@ public abstract class BasicUITest extends AssertJSwingJUnitTestCase {
         GuiActionRunner.execute(Computer::initDatabase);
         //create test clone
         testClone = new TestClone(0);
-        controller = GuiActionRunner.execute(() -> new ControlUnit(testClone));
+        controller = GuiActionRunner.execute(() -> new ControlUnit(testClone, "testPlayer"));
         utils = GuiActionRunner.execute(() -> new ParanoiaUtils(controller));
 
         //showing window

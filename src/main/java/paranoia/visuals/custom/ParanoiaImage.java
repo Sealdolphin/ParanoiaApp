@@ -20,6 +20,15 @@ public class ParanoiaImage extends JPanel {
         if(hasBorder) setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
     }
 
+    public void changeImage(BufferedImage image) {
+        this.image = image;
+        repaint();
+    }
+
+    public BufferedImage getImage() {
+        return image;
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

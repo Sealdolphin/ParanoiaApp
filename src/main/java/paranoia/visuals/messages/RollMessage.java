@@ -5,10 +5,12 @@ import paranoia.core.SecurityClearance;
 import paranoia.core.cpu.Skill;
 import paranoia.core.cpu.Stat;
 import paranoia.services.hpdmc.ControlUnit;
+import paranoia.services.hpdmc.ParanoiaController;
 import paranoia.services.hpdmc.manager.AttributeManager;
 import paranoia.services.hpdmc.manager.DiceManager;
 import paranoia.services.hpdmc.manager.TroubleShooterManager;
 import paranoia.services.plc.AssetManager;
+import paranoia.services.technical.command.DiceCommand;
 import paranoia.visuals.ComponentName;
 import paranoia.visuals.custom.ParanoiaButton;
 import paranoia.visuals.panels.OperationPanel;
@@ -75,7 +77,7 @@ public class RollMessage extends JDialog {
         lbDiceValue.setName("lbNode");
         btnRoll.setName("btnRoll");
         //Other properties
-        setupRollButton(boldFont20, cpu.getOperationPanel(), clearance);
+        setupRollButton(boldFont20, cpu.getOperationPanel(), clearance, cpu);
         setupSkill(boldFont20, allowChangeSkill);
         setupStat(boldFont20, allowChangeStat);
         //Set initial selection
@@ -118,14 +120,16 @@ public class RollMessage extends JDialog {
         lbSkill.setName("lbSkill");
     }
 
-    private void setupRollButton(Font font, OperationPanel panel, SecurityClearance clearance) {
+    private void setupRollButton(Font font,
+                                 OperationPanel panel,
+                                 SecurityClearance clearance,
+                                 ParanoiaController controller
+    ) {
         //Button
         btnRoll.setFont(font);
         btnRoll.setBackground(new Color(166,0, 6));
-        btnRoll.setHoverBG(new Color(166, 70, 73));
-        btnRoll.setPressedBG(new Color(255, 126, 136));
         btnRoll.setForeground(Color.WHITE);
-        btnRoll.addActionListener( event -> roll(panel, clearance) );
+        btnRoll.addActionListener( event -> roll(panel, clearance, controller) );
     }
 
     private void assembleLayout() {
@@ -183,10 +187,11 @@ public class RollMessage extends JDialog {
         );
     }
 
-    private void roll(OperationPanel panel, SecurityClearance clearance) {
+    private void roll(OperationPanel panel, SecurityClearance clearance, ParanoiaController controller) {
         DiceManager diceManager = new DiceManager(calculateDiceValue(), clearance);
         JPanel dicePanel = diceManager.getDicePanel();
         diceManager.roll();
+        controller.sendCommand(new DiceCommand(diceManager.getResult()));
         panel.activatePanel(dicePanel, ComponentName.DICE_PANEL.name());
         this.dispose();
     }

@@ -3,19 +3,14 @@ package paranoia.network.interfaces;
 import org.junit.Assert;
 import paranoia.services.technical.command.ChatCommand;
 
-public class ChatListenerMock implements
-    ChatCommand.ParanoiaChatListener,
-    ParanoiaNetworkListenerMock
+public class ChatListenerMock
+    extends ParanoiaNetworkListenerMock
+    implements ChatCommand.ParanoiaChatListener
 {
 
     private final String testSender;
     private final String testBody;
     private final String testTime;
-    private boolean success = false;
-
-    public ChatListenerMock() {
-        this("", "", "");
-    }
 
     public ChatListenerMock(String testSender, String testBody, String testTime) {
         this.testSender = testSender;
@@ -29,10 +24,6 @@ public class ChatListenerMock implements
         Assert.assertEquals(sender, testSender);
         Assert.assertEquals(message, testBody);
         Assert.assertEquals(timestamp, testTime);
-        success = true;
-    }
-
-    public boolean testSuccess() {
-        return success;
+        succeed();
     }
 }
