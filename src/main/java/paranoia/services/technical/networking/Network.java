@@ -39,12 +39,12 @@ public class Network implements
         this.parser = parser;
     }
 
-    public void connectWithIP(String ip) throws IOException {
+    private void connectWithIP(String ip) throws IOException {
         URL url = new URL("http", ip, workingPort,"");
         connect(url);
     }
 
-    public void connect(URL url) throws IOException {
+    private void connect(URL url) throws IOException {
         System.out.println("Connecting to " + url);
         client = new Socket(url.getHost(), url.getPort());
 
@@ -59,6 +59,20 @@ public class Network implements
             )
         );
         connected = true;
+    }
+
+    public CommandParser getParser() {
+        return parser;
+    }
+
+    public void connectToServer(String ipAddress) throws IOException {
+        //Connect to server
+        if(ipAddress.contains(":")){
+            connect(new URL(ipAddress));
+        } else {
+            connectWithIP(ipAddress);
+        }
+        listen();
     }
 
     public void disconnect() {
@@ -86,7 +100,7 @@ public class Network implements
         }
     }
 
-    public void listen() {
+    private void listen() {
         if(connected) {
             new Thread(this::listenForInput).start();
         }

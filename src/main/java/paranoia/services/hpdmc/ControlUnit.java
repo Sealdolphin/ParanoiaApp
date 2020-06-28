@@ -9,7 +9,6 @@ import paranoia.services.hpdmc.manager.CardManager;
 import paranoia.services.hpdmc.manager.MissionManager;
 import paranoia.services.hpdmc.manager.ParanoiaManager;
 import paranoia.services.hpdmc.manager.TroubleShooterManager;
-import paranoia.services.technical.CommandParser;
 import paranoia.services.technical.command.HelloCommand;
 import paranoia.services.technical.command.ParanoiaCommand;
 import paranoia.services.technical.command.PingCommand;
@@ -27,8 +26,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import java.awt.BorderLayout;
-import java.io.IOException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,12 +40,11 @@ public class ControlUnit implements ParanoiaController,
 
     CerebralCoretech visuals;
     private final Map<ComponentName, ParanoiaManager<? extends ICoreTechPart>> managerMap;
-
     private final OperationPanel operationPanel;
     private final Network network;
     private final String playerName;
 
-    public ControlUnit(Clone clone, String playerName) {
+    public ControlUnit(Clone clone, Network network, String playerName) {
         this.playerName = playerName;
         operationPanel = new OperationPanel();
         //Setup managers
@@ -64,16 +60,15 @@ public class ControlUnit implements ParanoiaController,
         ChatPanel chatPanel = new ChatPanel(clone, this);
         operationPanel.activatePanel(chatPanel, ComponentName.CHAT_PANEL.name());
         //Setup network
-        CommandParser parser = new CommandParser();
-        network = new Network(parser);
+        this.network = network;
         ACPFPanel acpfPanel = new ACPFPanel(network);
-        parser.setChatListener(chatPanel);
-        parser.setAcpfListener(clone);
-        parser.setRollListener(this);
-        parser.setInfoListener(this);
-        parser.setPingListener(this);
-        parser.setDefineListener(acpfPanel.getDefineListener());
-        parser.setReorderListener(acpfPanel.getReorderListener());
+        network.getParser().setChatListener(chatPanel);
+        network.getParser().setAcpfListener(clone);
+        network.getParser().setRollListener(this);
+        network.getParser().setInfoListener(this);
+        network.getParser().setPingListener(this);
+        network.getParser().setDefineListener(acpfPanel.getDefineListener());
+        network.getParser().setReorderListener(acpfPanel.getReorderListener());
         //Setup visuals
         visuals = new CerebralCoretech(this, clone);
     }
@@ -89,16 +84,6 @@ public class ControlUnit implements ParanoiaController,
 
     public void updateAsset(ICoreTechPart asset, ComponentName managerName) {
         managerMap.get(managerName).updateAsset(asset);
-    }
-
-    public void connectToServer(String ipAddress) throws IOException {
-        //Connect to server
-        if(ipAddress.contains(":")){
-            network.connect(new URL(ipAddress));
-        } else {
-            network.connectWithIP(ipAddress);
-        }
-        network.listen();
     }
 
     public boolean sendCommand(ParanoiaCommand command) {

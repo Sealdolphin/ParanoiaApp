@@ -1,11 +1,9 @@
 package paranoia.visuals;
 
 import paranoia.Paranoia;
-import paranoia.core.Clone;
-import paranoia.core.SecurityClearance;
-import paranoia.services.hpdmc.ControlUnit;
 import paranoia.services.plc.AssetManager;
-import paranoia.services.technical.command.ACPFCommand;
+import paranoia.services.technical.CommandParser;
+import paranoia.services.technical.networking.Network;
 import paranoia.visuals.custom.ParanoiaButton;
 import paranoia.visuals.messages.ParanoiaMessage;
 
@@ -22,25 +20,20 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
-import java.awt.Frame;
 import java.awt.Image;
 import java.awt.event.WindowEvent;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 import static paranoia.Paranoia.getParanoiaResource;
-import static paranoia.Paranoia.setUpSkillsNStats;
 import static paranoia.services.plc.LayoutManager.panelOf;
 
 public class MenuFrame extends JFrame {
 
     private String connectUrl = "http://127.0.0.1:6532";
-    private BufferedImage img = null;
 
     public MenuFrame() {
         try {
-            img = ImageIO.read(new File(getParanoiaResource("clones/clone0.png")));
             Image icon = ImageIO.read(new File(getParanoiaResource("ui/paranoia.png")));
             setIconImage(icon.getScaledInstance(64,64,Image.SCALE_SMOOTH));
         } catch (IOException e) {
@@ -64,29 +57,7 @@ public class MenuFrame extends JFrame {
         btnStart.setBackground(new Color(164, 201, 127));
         btnStart.setFont(AssetManager.getFont(20));
         btnStart.setMaximumSize(size);
-        btnStart.addActionListener(e-> {
-            //TODO: temporary
-            String playerName = ParanoiaMessage.input("What is your name, citizen?");
-            if(playerName != null && !playerName.isEmpty()) {
-                Clone clone = new Clone("CARA", "RLY", SecurityClearance.YELLOW, "MALE", 0, img);
-                ControlUnit controlUnit = new ControlUnit(clone, playerName);
-                JFrame coreTech = controlUnit.getVisuals();
-                coreTech.setExtendedState(Frame.MAXIMIZED_BOTH);
-                setUpSkillsNStats(controlUnit);
-                //Network
-                try {
-                    controlUnit.connectToServer(connectUrl);
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                    ParanoiaMessage.error(ex);
-                    return;
-                }
-                controlUnit.sendCommand(new ACPFCommand(clone.getFullName(), "MALE", new String[]{}, img, null));
-                coreTech.setIconImage(getIconImage());
-                setVisible(false);
-                coreTech.setVisible(true);
-            }
-        });
+        btnStart.addActionListener(e-> createPlayer());
 
         JLabel lbAddr = new JLabel("Address: " + connectUrl);
         lbAddr.setFont(AssetManager.getItalicFont(15));
@@ -125,6 +96,22 @@ public class MenuFrame extends JFrame {
         pack();
         setResizable(false);
         setLocationRelativeTo(null);
+    }
+
+    private void createPlayer() {
+        String playerName = ParanoiaMessage.input("What is your name, citizen?");
+        if(playerName != null && !playerName.isEmpty()) {
+            Network network = new Network(new CommandParser());
+            //Network
+            try {
+                network.connectToServer(connectUrl);
+                dispose();
+                new LobbyFrame(network, playerName).setVisible(true);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                ParanoiaMessage.error(ex);
+            }
+        }
     }
 
 }
