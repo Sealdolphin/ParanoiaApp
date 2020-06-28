@@ -10,10 +10,8 @@ import paranoia.services.technical.networking.Network;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.WindowConstants;
 import javax.swing.plaf.basic.BasicArrowButton;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
@@ -76,7 +74,7 @@ public class ACPFPanel extends JPanel {
 
     public void sendResponse(ParanoiaCommand command) {
         if(network == null) return;
-        network.sendMessage(command.toJsonObject().toString());
+        network.sendCommand(command);
     }
 
     public JPanel createButtonPanel(ACPFPage page, boolean hasPrev, boolean hasNext) {

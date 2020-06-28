@@ -9,14 +9,11 @@ import paranoia.services.hpdmc.manager.CardManager;
 import paranoia.services.hpdmc.manager.MissionManager;
 import paranoia.services.hpdmc.manager.ParanoiaManager;
 import paranoia.services.hpdmc.manager.TroubleShooterManager;
-import paranoia.services.technical.command.HelloCommand;
 import paranoia.services.technical.command.ParanoiaCommand;
-import paranoia.services.technical.command.PingCommand;
 import paranoia.services.technical.command.RollCommand;
 import paranoia.services.technical.networking.Network;
 import paranoia.visuals.CerebralCoretech;
 import paranoia.visuals.ComponentName;
-import paranoia.visuals.messages.ParanoiaMessage;
 import paranoia.visuals.messages.RollMessage;
 import paranoia.visuals.panels.ChatPanel;
 import paranoia.visuals.panels.OperationPanel;
@@ -33,11 +30,8 @@ import java.util.Map;
  * Controls the core game elements - GameMaster interface
  */
 public class ControlUnit implements ParanoiaController,
-    RollCommand.ParanoiaRollListener,
-    HelloCommand.ParanoiaInfoListener,
-    PingCommand.ParanoiaPingListener
+    RollCommand.ParanoiaRollListener
 {
-
     CerebralCoretech visuals;
     private final Map<ComponentName, ParanoiaManager<? extends ICoreTechPart>> managerMap;
     private final OperationPanel operationPanel;
@@ -65,8 +59,6 @@ public class ControlUnit implements ParanoiaController,
         network.getParser().setChatListener(chatPanel);
         network.getParser().setAcpfListener(clone);
         network.getParser().setRollListener(this);
-        network.getParser().setInfoListener(this);
-        network.getParser().setPingListener(this);
         network.getParser().setDefineListener(acpfPanel.getDefineListener());
         network.getParser().setReorderListener(acpfPanel.getReorderListener());
         //Setup visuals
@@ -84,15 +76,6 @@ public class ControlUnit implements ParanoiaController,
 
     public void updateAsset(ICoreTechPart asset, ComponentName managerName) {
         managerMap.get(managerName).updateAsset(asset);
-    }
-
-    public boolean sendCommand(ParanoiaCommand command) {
-        if(network.isOpen()) {
-            network.sendMessage(command.toJsonObject().toString());
-            return true;
-        } else {
-            return false;
-        }
     }
 
     public JPanel getMiscPanel() {
@@ -129,17 +112,7 @@ public class ControlUnit implements ParanoiaController,
     }
 
     @Override
-    public void sayHello(String player, String password, boolean hasPassword) {
-        String pass = null;
-        if(hasPassword) {
-            pass = ParanoiaMessage.input("Enter server password");
-        }
-        //PONG!
-        sendCommand(new HelloCommand(playerName, pass, hasPassword, null));
-    }
-
-    @Override
-    public void pong() {
-        sendCommand(new PingCommand());
+    public boolean sendCommand(ParanoiaCommand command) {
+        return network.sendCommand(command);
     }
 }

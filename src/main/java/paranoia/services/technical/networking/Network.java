@@ -3,6 +3,7 @@ package paranoia.services.technical.networking;
 import paranoia.services.technical.CommandParser;
 import paranoia.services.technical.HelperThread;
 import paranoia.services.technical.command.DisconnectCommand;
+import paranoia.services.technical.command.ParanoiaCommand;
 import paranoia.visuals.messages.ParanoiaMessage;
 
 import java.io.BufferedInputStream;
@@ -87,7 +88,16 @@ public class Network implements
         ParanoiaMessage.info("You have been disconnected from the Alpha Complex");
     }
 
-    public synchronized void sendMessage(String jsonMsg) {
+    public boolean sendCommand(ParanoiaCommand command) {
+        if(isOpen()) {
+            sendMessage(command.toJsonObject().toString());
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private synchronized void sendMessage(String jsonMsg) {
         try {
             if(connected) {
                 output.write(jsonMsg);
