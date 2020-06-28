@@ -22,6 +22,7 @@ import static paranoia.core.cpu.ParanoiaAttribute.getStat;
 public class Paranoia {
 
     public static final Color PARANOIA_BACKGROUND = new Color(255, 255, 255);
+    public static final String version = "version v.alpha";
 
     public static void main(String[] args) {
 

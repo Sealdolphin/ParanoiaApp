@@ -1,5 +1,6 @@
 package paranoia.visuals;
 
+import paranoia.Paranoia;
 import paranoia.core.Clone;
 import paranoia.core.SecurityClearance;
 import paranoia.services.hpdmc.ControlUnit;
@@ -120,7 +121,7 @@ public class MenuFrame extends JFrame {
             btnExit
         }, BoxLayout.PAGE_AXIS), BorderLayout.CENTER);
 
-        add(new JLabel("version v.alpha"), BorderLayout.SOUTH);
+        add(new JLabel(Paranoia.version), BorderLayout.SOUTH);
         pack();
         setResizable(false);
         setLocationRelativeTo(null);
