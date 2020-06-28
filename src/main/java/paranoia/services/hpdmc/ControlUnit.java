@@ -12,6 +12,7 @@ import paranoia.services.hpdmc.manager.TroubleShooterManager;
 import paranoia.services.technical.CommandParser;
 import paranoia.services.technical.command.HelloCommand;
 import paranoia.services.technical.command.ParanoiaCommand;
+import paranoia.services.technical.command.PingCommand;
 import paranoia.services.technical.command.RollCommand;
 import paranoia.services.technical.networking.Network;
 import paranoia.visuals.CerebralCoretech;
@@ -36,7 +37,8 @@ import java.util.Map;
  */
 public class ControlUnit implements ParanoiaController,
     RollCommand.ParanoiaRollListener,
-    HelloCommand.ParanoiaInfoListener
+    HelloCommand.ParanoiaInfoListener,
+    PingCommand.ParanoiaPingListener
 {
 
     CerebralCoretech visuals;
@@ -69,6 +71,7 @@ public class ControlUnit implements ParanoiaController,
         parser.setAcpfListener(clone);
         parser.setRollListener(this);
         parser.setInfoListener(this);
+        parser.setPingListener(this);
         parser.setDefineListener(acpfPanel.getDefineListener());
         parser.setReorderListener(acpfPanel.getReorderListener());
         //Setup visuals
@@ -92,8 +95,9 @@ public class ControlUnit implements ParanoiaController,
         //Connect to server
         if(ipAddress.contains(":")){
             network.connect(new URL(ipAddress));
+        } else {
+            network.connectWithIP(ipAddress);
         }
-        network.connectWithIP(ipAddress);
         network.listen();
     }
 
@@ -147,5 +151,10 @@ public class ControlUnit implements ParanoiaController,
         }
         //PONG!
         sendCommand(new HelloCommand(playerName, pass, hasPassword, null));
+    }
+
+    @Override
+    public void pong() {
+        sendCommand(new PingCommand());
     }
 }

@@ -2,13 +2,7 @@ package paranoia.services.technical.networking;
 
 import paranoia.services.technical.CommandParser;
 import paranoia.services.technical.HelperThread;
-import paranoia.services.technical.command.ACPFCommand;
-import paranoia.services.technical.command.ChatCommand;
-import paranoia.services.technical.command.DefineCommand;
 import paranoia.services.technical.command.DisconnectCommand;
-import paranoia.services.technical.command.HelloCommand;
-import paranoia.services.technical.command.ReorderCommand;
-import paranoia.services.technical.command.RollCommand;
 import paranoia.visuals.messages.ParanoiaMessage;
 
 import java.io.BufferedInputStream;
@@ -22,7 +16,12 @@ import java.net.Socket;
 import java.net.URL;
 
 /**
- * Establishes the Network
+ * Establishes the Network.
+ * Every client follows the Paranoia protocol:
+ *  - Establishing socket connection
+ *  - checking server version
+ *  - sending credentials if necessary
+ *  - sending appropriate command(s)
  */
 public class Network implements
     DisconnectCommand.ParanoiaDisconnectListener
@@ -36,24 +35,6 @@ public class Network implements
     private boolean connected = false;
     private final Object readLock = new Object();
 
-    public Network(
-        ChatCommand.ParanoiaChatListener chatListener,
-        ACPFCommand.ParanoiaACPFListener acpfListener,
-        DefineCommand.ParanoiaDefineListener defineListener,
-        ReorderCommand.ParanoiaReorderListener reorderListener,
-        RollCommand.ParanoiaRollListener rollListener,
-        HelloCommand.ParanoiaInfoListener infoListener
-    ) {
-        parser = new CommandParser();
-        parser.setChatListener(chatListener);
-        parser.setDisconnectListener(this);
-        parser.setAcpfListener(acpfListener);
-        parser.setDefineListener(defineListener);
-        parser.setReorderListener(reorderListener);
-        parser.setRollListener(rollListener);
-        parser.setInfoListener(infoListener);
-    }
-
     public Network(CommandParser parser) {
         this.parser = parser;
     }
@@ -64,7 +45,7 @@ public class Network implements
     }
 
     public void connect(URL url) throws IOException {
-        System.out.println("Connecting to " + url.toString());
+        System.out.println("Connecting to " + url);
         client = new Socket(url.getHost(), url.getPort());
 
         output = new BufferedWriter(
@@ -143,5 +124,10 @@ public class Network implements
 
     public boolean isOpen() {
         return connected;
+    }
+
+    public String getIP() {
+        if(client == null) return "Not connected";
+        return client.getInetAddress().getHostAddress();
     }
 }

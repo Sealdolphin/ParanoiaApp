@@ -12,6 +12,7 @@ import paranoia.services.technical.command.DisconnectCommand;
 import paranoia.services.technical.command.HelloCommand;
 import paranoia.services.technical.command.ModifyCommand;
 import paranoia.services.technical.command.ParanoiaCommand;
+import paranoia.services.technical.command.PingCommand;
 import paranoia.services.technical.command.ReorderCommand;
 import paranoia.services.technical.command.RollCommand;
 import paranoia.visuals.messages.ParanoiaMessage;
@@ -34,6 +35,7 @@ public class CommandParser {
     private RollCommand.ParanoiaRollListener rollListener;
     private DiceCommand.ParanoiaDiceResultListener diceListener;
     private HelloCommand.ParanoiaInfoListener infoListener;
+    private PingCommand.ParanoiaPingListener pingListener;
 
     public void parse(String pureMessage) {
         JSONObject message = new JSONObject(pureMessage);
@@ -70,12 +72,19 @@ public class CommandParser {
             case HELLO:
                 command = parseHelloCommand(body);
                 break;
+            case PING:
+                command = parsePingCommand();
+                break;
             default:
                 command = null;
                 break;
         }
         if(command != null)
             command.execute();
+    }
+
+    private ParanoiaCommand parsePingCommand() {
+        return new PingCommand(pingListener);
     }
 
     private ParanoiaCommand parseHelloCommand(JSONObject body) {
@@ -208,6 +217,9 @@ public class CommandParser {
     }
     public void setInfoListener(HelloCommand.ParanoiaInfoListener listener) {
         this.infoListener = listener;
+    }
+    public void setPingListener(PingCommand.ParanoiaPingListener listener) {
+        this.pingListener = listener;
     }
 
 }
