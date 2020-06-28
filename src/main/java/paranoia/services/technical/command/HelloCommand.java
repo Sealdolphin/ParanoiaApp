@@ -2,6 +2,17 @@ package paranoia.services.technical.command;
 
 import org.json.JSONObject;
 
+/**
+ * This command is for greeting a connecting client
+ * The server greets the client and the client in response sends data back
+ * -----
+ * PLAYERNAME: The name of the player
+ * PASSWORD: The password attempt
+ * HASPASSWORD: true, if the server is password protected
+ * -----
+ * SERVER SIDE: Sends the password protected status
+ * CLIENT SIDE: Sends the credentials to the server
+ */
 public class HelloCommand extends ParanoiaCommand {
 
     public interface ParanoiaInfoListener {

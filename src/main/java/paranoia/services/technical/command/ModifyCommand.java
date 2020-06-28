@@ -2,6 +2,18 @@ package paranoia.services.technical.command;
 
 import org.json.JSONObject;
 
+/**
+ * This is the command for modifying a Paranoia Attribute or a Game attribute.
+ * The different attributes require different parsing.
+ * This command handles SKILLS, STATS, MOXIE, MAXIMUM MOXIE, TREASON STAR, CLONE ID
+ * -----
+ * ATTRIBUTE: the modifiable attribute
+ * VALUE: the new value of the attribute
+ * DETAILS: details of the attribute (optional)
+ *      SKILL: the name of the modifiable skill
+ *      STAT: the name of the modifiable stat
+ * -----
+ */
 public class ModifyCommand extends ParanoiaCommand {
 
     public enum Modifiable {

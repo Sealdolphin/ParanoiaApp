@@ -3,7 +3,14 @@ package paranoia.services.technical.command;
 import org.json.JSONObject;
 import paranoia.core.cpu.DiceRoll;
 
-public class DiceCommand extends ParanoiaCommand{
+/**
+ * This is the command which conveys a result of a dice roll.
+ * -----
+ * SUCCESS: the number of success (5 or 6 on a dice)
+ * COMPUTER: true if the result of the computer dice equals 6
+ * -----
+ */
+public class DiceCommand extends ParanoiaCommand {
 
     public DiceCommand(DiceRoll result) {
         this(result.getSuccess(), result.isComputer(), null);

@@ -9,6 +9,18 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+/**
+ * This is the command for signaling updates about the Alpha Complex Personality Form.
+ * The arguments are different in server and client side.
+ * -----
+ * NAME: The name of the clone
+ * GENDER: The gender of the clone
+ * PERSONALITY: The three personality adjectives
+ * IMAGE: The chosen picture
+ * -----
+ * SERVER SIDE: the server sends this command when the client arrives in the lobby
+ * CLIENT SIDE: the client sends the data above to update the database
+**/
 public class ACPFCommand extends ParanoiaCommand {
 
     public interface ParanoiaACPFListener {

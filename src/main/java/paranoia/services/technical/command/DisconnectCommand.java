@@ -2,6 +2,9 @@ package paranoia.services.technical.command;
 
 import org.json.JSONObject;
 
+/**
+ * This command shuts down the connection of the client socket
+ */
 public class DisconnectCommand extends ParanoiaCommand {
 
     public interface ParanoiaDisconnectListener {

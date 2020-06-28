@@ -4,6 +4,19 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import paranoia.core.cpu.Skill;
 
+/**
+ * This command signals when a Paranoia Attribute have to be
+ * modified in the Alpha Complex Personality Form.
+ * The arguments are different on server side and client side.
+ * -----
+ * FILLVALUE: the value that has to be assigned
+ * LASTCHOICE: true if this is the last round
+ * ATTRIBUTE(server): the attribute that was modified
+ * DISABLED: all the attributes that cannot be modified
+ * -----
+ * SERVER SIDE: sends the FILLVALUE and the ROUND and the DISABLED
+ * CLIENT SIDE: sends the ATTRIBUTE and the FILLVALUE
+ */
 public class DefineCommand extends ParanoiaCommand {
 
     public interface ParanoiaDefineListener {

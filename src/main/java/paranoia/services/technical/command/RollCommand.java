@@ -9,6 +9,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This is the command for dice rolls. It is sent by the server to signal the roll event
+ * -----
+ * POSITIVE: a map of positive modifiers
+ * NEGATIVE: a map of negative modifiers
+ * DEFAULTSKILL: the skill displayed by default
+ * DEFAULTSTAT: the stat displayed by default
+ * SKILLCHANGE: if true the skill can be chosen
+ * STATCHANGE: if true the stat can be chosen
+ * -----
+ */
 public class RollCommand extends ParanoiaCommand{
 
     public interface ParanoiaRollListener {

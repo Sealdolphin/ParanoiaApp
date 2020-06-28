@@ -5,6 +5,15 @@ import org.json.JSONObject;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * This command conveys a chat message between the server and the client.
+ * The arguments are the same on both sides.
+ * -----
+ * SENDER: the name of the sender
+ * BODY: the content of the chat message
+ * TIMESTAMP: the time when the message was sent
+ * -----
+ */
 public class ChatCommand extends ParanoiaCommand {
 
     public interface ParanoiaChatListener {

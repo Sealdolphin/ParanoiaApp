@@ -3,6 +3,13 @@ package paranoia.services.technical.command;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+/**
+ * This command carries the data of an ACPF reorder session.
+ * -----
+ * ORDER: the new order of the Paranoia Stats
+ * PLAYER: the player that got their attributes modified
+ * -----
+ */
 public class ReorderCommand extends ParanoiaCommand {
 
     public interface ParanoiaReorderListener {
