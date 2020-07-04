@@ -27,7 +27,8 @@ public abstract class ParanoiaCommand {
         ROLL,
         DICE,
         HELLO,
-        PING
+        PING,
+        LOBBY
     }
 
     protected ParanoiaCommand(CommandType type) {
