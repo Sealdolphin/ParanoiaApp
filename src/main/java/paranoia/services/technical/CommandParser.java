@@ -172,22 +172,25 @@ public class CommandParser {
         String[] personalities = body.getJSONArray("personality")
             .toList().stream().map(Object::toString)
             .toArray(String[]::new);
-        Byte[] imageRaw = body.getJSONArray("profile").toList()
-           .stream().map(Object::toString).map(Integer::parseInt).map(Integer::byteValue)
-           .toArray(Byte[]::new);
+        BufferedImage image = parseImageFromJson(body, "profile");
+        return new ACPFCommand(name, gender, personalities, image, acpfListener);
+    }
+
+    private BufferedImage parseImageFromJson(JSONObject body, String key) {
+        Byte[] imageRaw = body.getJSONArray(key).toList()
+            .stream().map(Object::toString).map(Integer::parseInt).map(Integer::byteValue)
+            .toArray(Byte[]::new);
         byte[] trueByteImage = new byte[imageRaw.length];
         for (int i = 0; i < imageRaw.length; i++) {
             trueByteImage[i] = imageRaw[i];
         }
-
         BufferedImage image = null;
         try {
-           image = ImageIO.read(new ByteArrayInputStream(trueByteImage));
+            image = ImageIO.read(new ByteArrayInputStream(trueByteImage));
         } catch (IOException e) {
             ParanoiaMessage.error(e);
         }
-
-        return new ACPFCommand(name, gender, personalities, image, acpfListener);
+        return image;
     }
 
     private ParanoiaCommand parseDefineCommand(JSONObject body) {
@@ -204,9 +207,9 @@ public class CommandParser {
         LobbyCommand.LobbyEvent event = LobbyCommand.LobbyEvent.valueOf(body.getString("event"));
         JSONObject playerObj = body.getJSONObject("player");
         String name = playerObj.getString("name");
-        //get image
+        BufferedImage image = parseImageFromJson(body, "image");
         //get last picked attribute
-        Player player = new Player(name, null);
+        Player player = new Player(name, image);
         return new LobbyCommand(player, event, lobbyListener);
     }
 

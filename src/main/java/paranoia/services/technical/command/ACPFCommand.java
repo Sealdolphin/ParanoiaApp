@@ -2,12 +2,8 @@ package paranoia.services.technical.command;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import paranoia.visuals.messages.ParanoiaMessage;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 
 /**
  * This is the command for signaling updates about the Alpha Complex Personality Form.
@@ -62,20 +58,11 @@ public class ACPFCommand extends ParanoiaCommand {
     public JSONObject toJsonObject() {
         JSONObject body = new JSONObject();
         if(image == null) return body;  //Safe-check for image
-        //Parse buffered image
-        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-        byte[] imageRaw = new byte[0];
-        try {
-            ImageIO.write(image, "png", outStream);
-            imageRaw = outStream.toByteArray();
-        } catch (IOException e) {
-            ParanoiaMessage.error(e);
-        }
         //Create JSON
         body.put("name", name);
         body.put("gender", gender);
         body.put("personality", new JSONArray(personality));
-        body.put("profile", new JSONArray(imageRaw));
+        body.put("profile", new JSONArray(parseImage(image)));
         //Wrap command
         return wrapCommand(body);
     }

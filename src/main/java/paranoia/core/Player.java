@@ -1,5 +1,6 @@
 package paranoia.core;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import paranoia.core.cpu.ParanoiaAttribute;
 import paranoia.services.plc.LayoutManager;
@@ -10,6 +11,8 @@ import javax.swing.JPanel;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.image.BufferedImage;
+
+import static paranoia.services.technical.command.ParanoiaCommand.parseImage;
 
 public class Player extends JPanel implements ParanoiaPlayer {
 
@@ -51,6 +54,7 @@ public class Player extends JPanel implements ParanoiaPlayer {
         json.put("name", name);
         json.put("last", lastPicked.getName());
         json.put("value", lastPicked.getValue());
+        json.put("image", new JSONArray(parseImage(image)));
         return json;
     }
 }

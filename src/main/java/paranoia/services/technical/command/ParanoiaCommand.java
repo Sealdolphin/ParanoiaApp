@@ -2,6 +2,12 @@ package paranoia.services.technical.command;
 
 import org.json.JSONObject;
 import paranoia.Paranoia;
+import paranoia.visuals.messages.ParanoiaMessage;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 /**
  * Abstract Paranoia Command. Every child has it's respective command type and
@@ -40,6 +46,19 @@ public abstract class ParanoiaCommand {
     public abstract void execute();
 
     public abstract JSONObject toJsonObject();
+
+    public static byte[] parseImage(BufferedImage image) {
+        //Parse buffered image
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+        byte[] imageRaw = new byte[0];
+        try {
+            ImageIO.write(image, "png", outStream);
+            imageRaw = outStream.toByteArray();
+        } catch (IOException e) {
+            ParanoiaMessage.error(e);
+        }
+        return imageRaw;
+    }
 
     protected JSONObject wrapCommand(JSONObject body) {
         JSONObject json = new JSONObject();
