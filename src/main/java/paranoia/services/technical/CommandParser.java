@@ -2,6 +2,7 @@ package paranoia.services.technical;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import paranoia.core.Player;
 import paranoia.core.cpu.Skill;
 import paranoia.core.cpu.Stat;
 import paranoia.services.technical.command.ACPFCommand;
@@ -10,6 +11,7 @@ import paranoia.services.technical.command.DefineCommand;
 import paranoia.services.technical.command.DiceCommand;
 import paranoia.services.technical.command.DisconnectCommand;
 import paranoia.services.technical.command.HelloCommand;
+import paranoia.services.technical.command.LobbyCommand;
 import paranoia.services.technical.command.ModifyCommand;
 import paranoia.services.technical.command.ParanoiaCommand;
 import paranoia.services.technical.command.PingCommand;
@@ -36,6 +38,7 @@ public class CommandParser {
     private DiceCommand.ParanoiaDiceResultListener diceListener;
     private HelloCommand.ParanoiaInfoListener infoListener;
     private PingCommand.ParanoiaPingListener pingListener;
+    private LobbyCommand.LobbyListener lobbyListener;
 
     public void parse(String pureMessage) {
         JSONObject message = new JSONObject(pureMessage);
@@ -74,6 +77,9 @@ public class CommandParser {
                 break;
             case PING:
                 command = parsePingCommand();
+                break;
+            case LOBBY:
+                command = parseLobbyCommand(body);
                 break;
             default:
                 command = null;
@@ -194,6 +200,16 @@ public class CommandParser {
         return new DefineCommand(value, last, null, disabled, defineListener);
     }
 
+    private ParanoiaCommand parseLobbyCommand(JSONObject body) {
+        LobbyCommand.LobbyEvent event = LobbyCommand.LobbyEvent.valueOf(body.getString("event"));
+        JSONObject playerObj = body.getJSONObject("player");
+        String name = playerObj.getString("name");
+        //get image
+        //get last picked attribute
+        Player player = new Player(name, null);
+        return new LobbyCommand(player, event, lobbyListener);
+    }
+
     public void setChatListener(ChatCommand.ParanoiaChatListener listener) {
         chatListener = listener;
     }
@@ -220,6 +236,9 @@ public class CommandParser {
     }
     public void setPingListener(PingCommand.ParanoiaPingListener listener) {
         this.pingListener = listener;
+    }
+    public void setLobbyListener(LobbyCommand.LobbyListener listener) {
+        this.lobbyListener = listener;
     }
 
 }

@@ -17,6 +17,10 @@ public class Player extends JPanel implements ParanoiaPlayer {
     private final BufferedImage image;
     private ParanoiaAttribute lastPicked = new ParanoiaAttribute("");
 
+    public Player(String name) {
+        this(name, null);
+    }
+
     public Player(String name, BufferedImage image) {
         this.name = name;
         this.image = image;
@@ -29,6 +33,7 @@ public class Player extends JPanel implements ParanoiaPlayer {
 
     @Override
     public JPanel getVisual() {
+        removeAll();
         ParanoiaImage g = new ParanoiaImage(image, true);
         g.setPreferredSize(new Dimension(75, 75));
 

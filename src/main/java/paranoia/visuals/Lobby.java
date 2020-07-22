@@ -1,11 +1,10 @@
-package paranoia.visuals.panels;
+package paranoia.visuals;
 
 import paranoia.core.Player;
 import paranoia.services.hpdmc.manager.PlayerManager;
 import paranoia.services.plc.AssetManager;
 import paranoia.services.technical.command.LobbyCommand;
 import paranoia.services.technical.networking.Network;
-import paranoia.visuals.LobbyFrame;
 import paranoia.visuals.custom.ParanoiaButton;
 
 import javax.swing.Box;
@@ -18,7 +17,7 @@ import java.awt.Component;
 
 import static paranoia.services.plc.LayoutManager.panelOf;
 
-public class LobbyPanel implements LobbyCommand.LobbyListener {
+public class Lobby implements LobbyCommand.LobbyListener {
 
     private final JLabel lbAddress = new JLabel();
     private final JLabel lbPlayerName = new JLabel();
@@ -26,7 +25,7 @@ public class LobbyPanel implements LobbyCommand.LobbyListener {
     private final JButton btnLeave = new ParanoiaButton("Leave");
     private final PlayerManager manager = new PlayerManager();
 
-    public LobbyPanel(
+    public Lobby(
         LobbyFrame parent,
         Network network,
         String player

@@ -40,7 +40,7 @@ public class LobbyCommand extends ParanoiaCommand {
     public JSONObject toJsonObject() {
         JSONObject body = new JSONObject();
 
-        body.put("event", eventType);
+        body.put("event", eventType.name());
         body.put("player", playerInfo.toJsonObject());
 
         return wrapCommand(body);

@@ -7,7 +7,6 @@ import paranoia.services.technical.command.HelloCommand;
 import paranoia.services.technical.command.PingCommand;
 import paranoia.services.technical.networking.Network;
 import paranoia.visuals.messages.ParanoiaMessage;
-import paranoia.visuals.panels.LobbyPanel;
 import paranoia.visuals.panels.acpf.ACPFPanel;
 
 import javax.swing.Box;
@@ -33,7 +32,7 @@ public class LobbyFrame extends JFrame implements
 
     private final Network network;
     private final String name;
-    private JScrollPane lobby;
+    private JScrollPane lobbyPanel = new JScrollPane();
 
     public LobbyFrame(Network network, String player) {
         this.network = network;
@@ -43,15 +42,15 @@ public class LobbyFrame extends JFrame implements
         setMinimumSize(new Dimension(700, 400));
         setTitle("Alpha Complex Personal Lobby");
 
+        Lobby lobby = new Lobby(this, network, name);
+
         network.getParser().setPingListener(this);
         network.getParser().setInfoListener(this);
-        LobbyPanel lobbyPanel = new LobbyPanel(this, network, name);
-
-        lobby = new JScrollPane();
+        network.getParser().setLobbyListener(lobby);
 
         setLayout(new BorderLayout());
-        add(lobbyPanel.createInfoPanel(), BorderLayout.NORTH);
-        add(lobby, BorderLayout.EAST);
+        add(lobby.createInfoPanel(), BorderLayout.NORTH);
+        add(lobbyPanel, BorderLayout.EAST);
         add(new ACPFPanel(network), BorderLayout.CENTER);
         pack();
     }
@@ -79,9 +78,10 @@ public class LobbyFrame extends JFrame implements
 
     @Override
     public void updateVisualDataChange(Collection<ParanoiaPlayer> updatedModel) {
-        remove(lobby);
-        lobby = new JScrollPane(createLobbyPanel((List<ParanoiaPlayer>) updatedModel));
-        add(lobby, BorderLayout.EAST);
+        remove(lobbyPanel);
+        lobbyPanel = new JScrollPane(createLobbyPanel((List<ParanoiaPlayer>) updatedModel));
+        add(lobbyPanel, BorderLayout.EAST);
+        pack();
     }
 
     public JPanel createLobbyPanel(List<ParanoiaPlayer> players) {
