@@ -51,12 +51,13 @@ public abstract class ParanoiaCommand {
         //Parse buffered image
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
         byte[] imageRaw = new byte[0];
-        try {
-            ImageIO.write(image, "png", outStream);
-            imageRaw = outStream.toByteArray();
-        } catch (IOException e) {
-            ParanoiaMessage.error(e);
-        }
+        if(image != null)
+            try {
+                ImageIO.write(image, "png", outStream);
+                imageRaw = outStream.toByteArray();
+            } catch (IOException e) {
+                ParanoiaMessage.error(e);
+            }
         return imageRaw;
     }
 

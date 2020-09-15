@@ -204,10 +204,11 @@ public class CommandParser {
     }
 
     private ParanoiaCommand parseLobbyCommand(JSONObject body) {
+        System.out.println(body.toString());
         LobbyCommand.LobbyEvent event = LobbyCommand.LobbyEvent.valueOf(body.getString("event"));
         JSONObject playerObj = body.getJSONObject("player");
         String name = playerObj.getString("name");
-        BufferedImage image = parseImageFromJson(body, "image");
+        BufferedImage image = parseImageFromJson(playerObj, "image");
         //get last picked attribute
         Player player = new Player(name, image);
         return new LobbyCommand(player, event, lobbyListener);
