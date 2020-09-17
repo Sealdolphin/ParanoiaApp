@@ -71,4 +71,7 @@ public class Network implements
         }
     }
 
+    public String getIP() {
+        return client.getAddress();
+    }
 }

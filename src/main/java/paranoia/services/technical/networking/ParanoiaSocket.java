@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.net.SocketException;
 
 public class ParanoiaSocket {
 
@@ -35,8 +36,11 @@ public class ParanoiaSocket {
         while (isOpen()) {
             try {
                 String line = input.readLine();
-                if(line != null)
+                if (line != null)
                     parser.parse(line);
+            } catch (SocketException e) {
+                if(!client.isClosed())
+                    e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -66,4 +70,7 @@ public class ParanoiaSocket {
         }
     }
 
+    public String getAddress() {
+        return String.valueOf(client.getInetAddress());
+    }
 }
