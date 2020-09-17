@@ -18,6 +18,7 @@ import java.net.URL;
  *  - sending appropriate command(s)
  */
 public class Network implements
+    SocketListener,
     DisconnectCommand.ParanoiaDisconnectListener
 {
 
@@ -33,7 +34,7 @@ public class Network implements
         System.out.println("Connecting to " + url);
         Socket socket = new Socket(url.getHost(), url.getPort());
         client = new ParanoiaSocket(socket);
-        client.listen(parser);
+        client.addListener(this);
     }
 
     private void connectWithIP(String ip) throws IOException {
@@ -73,5 +74,21 @@ public class Network implements
 
     public String getIP() {
         return client.getAddress();
+    }
+
+    @Override
+    public void readInput(String host, String message) {
+        if(message != null) {
+            parser.parse(message);
+            if(message.equals("Hello")) {
+                client.sendMessage("Hello");
+            }
+        }
+    }
+
+    @Override
+    public void fireTerminated() {
+        //TODO: alert listening window class
+        System.out.println("Socket finished reading");
     }
 }

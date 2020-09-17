@@ -1,7 +1,5 @@
 package paranoia.services.technical.networking;
 
-import paranoia.services.technical.CommandParser;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -9,6 +7,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ParanoiaSocket {
 
@@ -16,28 +16,34 @@ public class ParanoiaSocket {
     private final BufferedReader input;
     private final BufferedWriter output;
     private Thread readInput;
+    private final List<SocketListener> listeners = new ArrayList<>();
 
     public ParanoiaSocket(Socket socket) throws IOException {
         client = socket;
         input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         output = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+        listen();
     }
 
     public boolean isOpen() {
         return client.isConnected() && !client.isClosed();
     }
 
-    public void listen(CommandParser parser) {
-        readInput = new Thread(() -> readSocketInput(parser));
+    private void listen() {
+        readInput = new Thread(this::readSocketInput);
         readInput.start();
     }
 
-    private void readSocketInput(CommandParser parser) {
+    public void addListener(SocketListener listener) {
+        listeners.add(listener);
+    }
+
+    private void readSocketInput() {
         while (isOpen()) {
             try {
                 String line = input.readLine();
-                if (line != null)
-                    parser.parse(line);
+                if(line == null) break;
+                listeners.forEach(l -> l.readInput(getAddress(), line));
             } catch (SocketException e) {
                 if(!client.isClosed())
                     e.printStackTrace();
@@ -45,6 +51,7 @@ public class ParanoiaSocket {
                 e.printStackTrace();
             }
         }
+        listeners.forEach(SocketListener::fireTerminated);
     }
 
     public void sendMessage(String message) {
@@ -71,6 +78,6 @@ public class ParanoiaSocket {
     }
 
     public String getAddress() {
-        return String.valueOf(client.getInetAddress());
+        return String.valueOf(client.getInetAddress().getHostAddress());
     }
 }
