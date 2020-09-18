@@ -63,8 +63,7 @@ public class Network implements
     }
 
     public boolean sendCommand(ParanoiaCommand command) {
-        if(client == null) return false;
-        if(client.isOpen()) {
+        if(client != null && client.isOpen()) {
             client.sendMessage(command.toNetworkMessage(client.getAddress()));
             return true;
         } else {
@@ -78,17 +77,17 @@ public class Network implements
 
     @Override
     public void readInput(String message) {
-        if(message != null) {
-            parser.parse(message);
-            if(message.equals("Hello")) {
-                client.sendMessage("Hello");
-            }
+        try {
+            ParanoiaCommand parsedCommand = ParanoiaCommand.parseCommand(message);
+            //Parse command!
+            parser.parse(parsedCommand);
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
     @Override
     public void fireTerminated() {
-        //TODO: alert listening window class
-        System.out.println("Socket finished reading");
+        disconnect();
     }
 }

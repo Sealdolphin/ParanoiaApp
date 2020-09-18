@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +14,6 @@ public class ParanoiaSocket {
     private final Socket client;
     private final BufferedReader input;
     private final BufferedWriter output;
-    private Thread readInput;
     private final List<SocketListener> listeners = new ArrayList<>();
 
     public ParanoiaSocket(Socket socket) throws IOException {
@@ -30,7 +28,7 @@ public class ParanoiaSocket {
     }
 
     private void listen() {
-        readInput = new Thread(this::readSocketInput);
+        Thread readInput = new Thread(this::readSocketInput);
         readInput.start();
     }
 
@@ -44,11 +42,9 @@ public class ParanoiaSocket {
                 String line = input.readLine();
                 if(line == null) break;
                 listeners.forEach(l -> l.readInput(line));
-            } catch (SocketException e) {
-                if(!client.isClosed())
-                    e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
+                break;
             }
         }
         try { client.close(); } catch (IOException ignored) { }
@@ -69,11 +65,8 @@ public class ParanoiaSocket {
 
     public void destroy() {
         try {
-            client.shutdownInput();
-            client.shutdownOutput();
             client.close();
-            readInput.join();
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             if(!client.isClosed())
                 e.printStackTrace();
         }

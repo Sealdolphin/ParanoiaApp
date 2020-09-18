@@ -5,6 +5,8 @@ import paranoia.core.Computer;
 import javax.swing.JOptionPane;
 import java.awt.Component;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ParanoiaMessage {
@@ -20,11 +22,20 @@ public class ParanoiaMessage {
         "You've been entered sector #@&, which does NOT exist"
     };
 
+    private static final Map<String, String> knownErrors = new HashMap<String, String>() {{
+        put("Connection refused: connect", "There are no existing Alpha Complex on this address!");
+    }};
+
     public static void error(String errorMsg) {
         error(errorMsg, null);
     }
 
     public static void error(Throwable error) {
+        if(knownErrors.containsKey(error.getLocalizedMessage())) {
+            error(knownErrors.get(error.getLocalizedMessage()));
+            return;
+        }
+
         String stack = Arrays
             .stream(error.getStackTrace())
             .map(StackTraceElement::toString)
