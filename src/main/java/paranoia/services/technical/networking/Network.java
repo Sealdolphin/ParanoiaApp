@@ -65,7 +65,7 @@ public class Network implements
     public boolean sendCommand(ParanoiaCommand command) {
         if(client == null) return false;
         if(client.isOpen()) {
-            client.sendMessage(command.toJsonObject().toString());
+            client.sendMessage(command.toNetworkMessage(client.getAddress()));
             return true;
         } else {
             return false;
@@ -77,7 +77,7 @@ public class Network implements
     }
 
     @Override
-    public void readInput(String host, String message) {
+    public void readInput(String message) {
         if(message != null) {
             parser.parse(message);
             if(message.equals("Hello")) {

@@ -1,11 +1,9 @@
 package paranoia.services.technical.command;
 
-import org.json.JSONObject;
-
 /**
  * Basic implementation of ParanoiaCommand
  */
-public class PingCommand extends ParanoiaCommand{
+public class PingCommand extends ParanoiaCommand {
 
     public interface ParanoiaPingListener {
         void pong();
@@ -25,10 +23,5 @@ public class PingCommand extends ParanoiaCommand{
     @Override
     public void execute() {
         listener.pong();
-    }
-
-    @Override
-    public JSONObject toJsonObject() {
-        return wrapCommand(new JSONObject());
     }
 }

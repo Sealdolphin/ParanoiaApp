@@ -1,13 +1,17 @@
 package paranoia.services.technical.command;
 
-import org.json.JSONObject;
 import paranoia.Paranoia;
 import paranoia.visuals.messages.ParanoiaMessage;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Abstract Paranoia Command. Every child has it's respective command type and
@@ -20,7 +24,7 @@ import java.io.IOException;
  * VERSION: the version of the Paranoia High Programmer Interface
  * -----
  */
-public abstract class ParanoiaCommand {
+public abstract class ParanoiaCommand implements Serializable {
 
     public enum CommandType {
         CHAT,
@@ -43,9 +47,38 @@ public abstract class ParanoiaCommand {
 
     private final CommandType type;
 
+    private String host;
+
+    private final Date timestamp = new Date();
+
+    private final String version = Paranoia.version;
+
+    transient private ByteArrayOutputStream output = new ByteArrayOutputStream();
+
     public abstract void execute();
 
-    public abstract JSONObject toJsonObject();
+    public String toNetworkMessage(String host) {
+        this.host = host;
+
+        try {
+            ObjectOutputStream outStream = new ObjectOutputStream(output);
+            outStream.writeObject(this);
+            outStream.close();
+            output.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return output.toString();
+    }
+
+    public String getHost() {
+        return host;
+    }
+
+    public String getType() {
+        return type.name();
+    }
 
     public static byte[] parseImage(BufferedImage image) {
         //Parse buffered image
@@ -61,11 +94,12 @@ public abstract class ParanoiaCommand {
         return imageRaw;
     }
 
-    protected JSONObject wrapCommand(JSONObject body) {
-        JSONObject json = new JSONObject();
-        json.put("type", type.name());
-        json.put("command", body);
-        json.put("version", Paranoia.version);
-        return json;
+    public static ParanoiaCommand parseCommand(String message) throws IOException, ClassNotFoundException {
+        ByteArrayInputStream input = new ByteArrayInputStream(message.getBytes());
+        ObjectInputStream inputStream = new ObjectInputStream(input);
+        ParanoiaCommand command = (ParanoiaCommand) inputStream.readObject();
+        inputStream.close();
+        input.close();
+        return command;
     }
 }
