@@ -43,7 +43,7 @@ public class ParanoiaSocket {
             try {
                 String line = input.readLine();
                 if(line == null) break;
-                listeners.forEach(l -> l.readInput(getAddress(), line));
+                listeners.forEach(l -> l.readInput(line));
             } catch (SocketException e) {
                 if(!client.isClosed())
                     e.printStackTrace();
@@ -51,6 +51,7 @@ public class ParanoiaSocket {
                 e.printStackTrace();
             }
         }
+        try { client.close(); } catch (IOException ignored) { }
         listeners.forEach(SocketListener::fireTerminated);
     }
 
@@ -73,7 +74,8 @@ public class ParanoiaSocket {
             client.close();
             readInput.join();
         } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
+            if(!client.isClosed())
+                e.printStackTrace();
         }
     }
 
