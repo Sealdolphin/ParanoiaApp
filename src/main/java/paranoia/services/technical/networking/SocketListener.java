@@ -4,6 +4,6 @@ public interface SocketListener {
 
     void fireTerminated();
 
-    void readInput(String message);
+    void readInput(byte[] message);
 
 }

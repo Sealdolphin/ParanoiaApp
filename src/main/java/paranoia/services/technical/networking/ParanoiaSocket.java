@@ -1,10 +1,8 @@
 package paranoia.services.technical.networking;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,14 +10,14 @@ import java.util.List;
 public class ParanoiaSocket {
 
     private final Socket client;
-    private final BufferedReader input;
-    private final BufferedWriter output;
+    private final DataInputStream input;
+    private final DataOutputStream output;
     private final List<SocketListener> listeners = new ArrayList<>();
 
     public ParanoiaSocket(Socket socket) throws IOException {
         client = socket;
-        input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        output = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+        input = new DataInputStream(socket.getInputStream());
+        output = new DataOutputStream(socket.getOutputStream());
         listen();
     }
 
@@ -39,9 +37,13 @@ public class ParanoiaSocket {
     private void readSocketInput() {
         while (isOpen()) {
             try {
-                String line = input.readLine();
-                if(line == null) break;
-                listeners.forEach(l -> l.readInput(line));
+                int length = input.readInt();
+                byte[] message = new byte[length];
+                if(length > 0) {
+                    input.readFully(message, 0, message.length);
+                }
+                if(length == 0) break;
+                listeners.forEach(l -> l.readInput(message));
             } catch (IOException e) {
                 e.printStackTrace();
                 break;
@@ -51,11 +53,11 @@ public class ParanoiaSocket {
         listeners.forEach(SocketListener::fireTerminated);
     }
 
-    public void sendMessage(String message) {
+    public void sendMessage(byte[] message) {
         if(client.isConnected()) {
             try {
+                output.writeInt(message.length);
                 output.write(message);
-                output.newLine();
                 output.flush();
             } catch (IOException e) {
                 e.printStackTrace();

@@ -57,27 +57,32 @@ public abstract class ParanoiaCommand implements Serializable {
 
     public abstract void execute();
 
-    public String toNetworkMessage(String host) {
+    public byte[] toNetworkMessage(String host) {
         this.host = host;
 
+        byte[] message = null;
         try {
             ObjectOutputStream outStream = new ObjectOutputStream(output);
             outStream.writeObject(this);
-            outStream.close();
-            output.close();
+            outStream.flush();
+            message = output.toByteArray();
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                output.close();
+            } catch (IOException ignored) { }
         }
 
-        return output.toString();
+        return message;
     }
 
     public String getHost() {
         return host;
     }
 
-    public String getType() {
-        return type.name();
+    public CommandType getType() {
+        return type;
     }
 
     public static byte[] parseImage(BufferedImage image) {
@@ -94,8 +99,8 @@ public abstract class ParanoiaCommand implements Serializable {
         return imageRaw;
     }
 
-    public static ParanoiaCommand parseCommand(String message) throws IOException, ClassNotFoundException {
-        ByteArrayInputStream input = new ByteArrayInputStream(message.getBytes());
+    public static ParanoiaCommand parseCommand(byte[] message) throws IOException, ClassNotFoundException {
+        ByteArrayInputStream input = new ByteArrayInputStream(message);
         ObjectInputStream inputStream = new ObjectInputStream(input);
         ParanoiaCommand command = (ParanoiaCommand) inputStream.readObject();
         inputStream.close();

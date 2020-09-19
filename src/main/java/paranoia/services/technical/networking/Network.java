@@ -76,7 +76,7 @@ public class Network implements
     }
 
     @Override
-    public void readInput(String message) {
+    public void readInput(byte[] message) {
         try {
             ParanoiaCommand parsedCommand = ParanoiaCommand.parseCommand(message);
             //Parse command!

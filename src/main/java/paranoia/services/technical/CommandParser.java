@@ -40,57 +40,46 @@ public class CommandParser {
     private PingCommand.ParanoiaPingListener pingListener;
     private LobbyCommand.LobbyListener lobbyListener;
 
-    public void parse(String pureMessage) {
-        JSONObject message = new JSONObject(pureMessage);
-        ParanoiaCommand.CommandType type = ParanoiaCommand.CommandType
-                .valueOf(message.getString("type").toUpperCase());
-        JSONObject body = message.getJSONObject("command");
+    public void parse(ParanoiaCommand command) {
 
-        ParanoiaCommand command;
-        switch (type) {
-            case CHAT:
-                command = parseChatCommand(body);
-                break;
-            case DISCONNECT:
-                command = parseDisconnectCommand();
-                break;
-            case ACPF:
-                command = parseACPFCommand(body);
-                break;
-            case DEFINE:
-                command = parseDefineCommand(body);
-                break;
-            case REORDER:
-                command = parseReorderCommand(body);
-                break;
-            case MODIFY:
-                command = parseModifiyCommand(body);
-                break;
-            case ROLL:
-                command = parseRollCommand(body);
-                break;
-            case DICE:
-                command = parseDiceCommand(body);
-                break;
-            case HELLO:
-                command = parseHelloCommand(body);
-                break;
+        switch (command.getType()) {
+//            case CHAT:
+//                parsedCommand = parseChatCommand(command);
+//                break;
+//            case DISCONNECT:
+//                command = parseDisconnectCommand();
+//                break;
+//            case ACPF:
+//                command = parseACPFCommand(body);
+//                break;
+//            case DEFINE:
+//                command = parseDefineCommand(body);
+//                break;
+//            case REORDER:
+//                command = parseReorderCommand(body);
+//                break;
+//            case MODIFY:
+//                command = parseModifiyCommand(body);
+//                break;
+//            case ROLL:
+//                command = parseRollCommand(body);
+//                break;
+//            case DICE:
+//                command = parseDiceCommand(body);
+//                break;
+//            case HELLO:
+//                command = parseHelloCommand(body);
+//                break;
             case PING:
-                command = parsePingCommand();
+                PingCommand.copy(pingListener).execute();
                 break;
-            case LOBBY:
-                command = parseLobbyCommand(body);
-                break;
+//            case LOBBY:
+//                command = parseLobbyCommand(body);
+//                break;
             default:
-                command = null;
                 break;
+//        }
         }
-        if(command != null)
-            command.execute();
-    }
-
-    private ParanoiaCommand parsePingCommand() {
-        return new PingCommand(pingListener);
     }
 
     private ParanoiaCommand parseHelloCommand(JSONObject body) {

@@ -9,15 +9,19 @@ public class PingCommand extends ParanoiaCommand {
         void pong();
     }
 
-    private final ParanoiaPingListener listener;
+    transient private final ParanoiaPingListener listener;
 
     public PingCommand() {
         this(null);
     }
 
-    public PingCommand(ParanoiaPingListener listener) {
+    private PingCommand(ParanoiaPingListener listener) {
         super(CommandType.PING);
         this.listener = listener;
+    }
+
+    public static PingCommand copy(ParanoiaPingListener listener) {
+        return new PingCommand(listener);
     }
 
     @Override
