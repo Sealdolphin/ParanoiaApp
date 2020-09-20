@@ -9,7 +9,7 @@ public class PingCommand extends ParanoiaCommand {
         void pong();
     }
 
-    transient private final ParanoiaPingListener listener;
+    transient private ParanoiaPingListener listener;
 
     public PingCommand() {
         this(null);
@@ -20,7 +20,7 @@ public class PingCommand extends ParanoiaCommand {
         this.listener = listener;
     }
 
-    public static PingCommand copy(ParanoiaPingListener listener) {
+    public static PingCommand create(ParanoiaPingListener listener) {
         return new PingCommand(listener);
     }
 

@@ -1,7 +1,6 @@
 package paranoia.services.technical.networking;
 
 import paranoia.services.technical.CommandParser;
-import paranoia.services.technical.command.DisconnectCommand;
 import paranoia.services.technical.command.ParanoiaCommand;
 import paranoia.visuals.messages.ParanoiaMessage;
 
@@ -17,10 +16,7 @@ import java.net.URL;
  *  - sending credentials if necessary
  *  - sending appropriate command(s)
  */
-public class Network implements
-    SocketListener,
-    DisconnectCommand.ParanoiaDisconnectListener
-{
+public class Network implements SocketListener {
 
     private ParanoiaSocket client = null;
     public static final int workingPort = 6532;

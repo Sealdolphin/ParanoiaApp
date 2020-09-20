@@ -10,7 +10,6 @@ import paranoia.services.hpdmc.manager.MissionManager;
 import paranoia.services.hpdmc.manager.ParanoiaManager;
 import paranoia.services.hpdmc.manager.TroubleShooterManager;
 import paranoia.services.technical.command.ParanoiaCommand;
-import paranoia.services.technical.command.RollCommand;
 import paranoia.services.technical.networking.Network;
 import paranoia.visuals.CerebralCoretech;
 import paranoia.visuals.ComponentName;
@@ -29,9 +28,7 @@ import java.util.Map;
 /**
  * Controls the core game elements - GameMaster interface
  */
-public class ControlUnit implements ParanoiaController,
-    RollCommand.ParanoiaRollListener
-{
+public class ControlUnit implements ParanoiaController {
     CerebralCoretech visuals;
     private final Map<ComponentName, ParanoiaManager<? extends ICoreTechPart>> managerMap;
     private final OperationPanel operationPanel;
@@ -56,11 +53,11 @@ public class ControlUnit implements ParanoiaController,
         //Setup network
         this.network = network;
         ACPFPanel acpfPanel = new ACPFPanel(network);
-        network.getParser().setChatListener(chatPanel);
-        network.getParser().setAcpfListener(clone);
-        network.getParser().setRollListener(this);
-        network.getParser().setDefineListener(acpfPanel.getDefineListener());
-        network.getParser().setReorderListener(acpfPanel.getReorderListener());
+//        network.getParser().setChatListener(chatPanel);
+//        network.getParser().setAcpfListener(clone);
+//        network.getParser().setRollListener(this);
+//        network.getParser().setDefineListener(acpfPanel.getDefineListener());
+//        network.getParser().setReorderListener(acpfPanel.getReorderListener());
         //Setup visuals
         visuals = new CerebralCoretech(this, clone);
     }

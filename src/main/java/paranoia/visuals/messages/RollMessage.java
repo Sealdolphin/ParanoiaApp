@@ -10,7 +10,6 @@ import paranoia.services.hpdmc.manager.AttributeManager;
 import paranoia.services.hpdmc.manager.DiceManager;
 import paranoia.services.hpdmc.manager.TroubleShooterManager;
 import paranoia.services.plc.AssetManager;
-import paranoia.services.technical.command.DiceCommand;
 import paranoia.visuals.ComponentName;
 import paranoia.visuals.custom.ParanoiaButton;
 import paranoia.visuals.panels.OperationPanel;
@@ -191,7 +190,7 @@ public class RollMessage extends JDialog {
         DiceManager diceManager = new DiceManager(calculateDiceValue(), clearance);
         JPanel dicePanel = diceManager.getDicePanel();
         diceManager.roll();
-        controller.sendCommand(new DiceCommand(diceManager.getResult()));
+//        controller.sendCommand(new DiceCommand(diceManager.getResult()));
         panel.activatePanel(dicePanel, ComponentName.DICE_PANEL.name());
         this.dispose();
     }

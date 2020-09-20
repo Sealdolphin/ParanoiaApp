@@ -3,7 +3,6 @@ package paranoia.visuals.panels.acpf;
 import paranoia.core.cpu.Skill;
 import paranoia.core.cpu.Stat;
 import paranoia.services.plc.AssetManager;
-import paranoia.services.technical.command.ModifyCommand;
 import paranoia.visuals.custom.ParanoiaAttributeSpinner;
 import paranoia.visuals.mechanics.Moxie;
 
@@ -87,24 +86,24 @@ public class ACPFOptimizePage extends JPanel implements ACPFPage {
     private void sendResponse(ACPFPanel main) {
         int moxie = Moxie.MOXIE_COUNT - MAX_SPENT_MOXIE + moxieLeft;
         int cloneID = MAX_SPENT_CLONE - cloneLeft;
-        main.sendResponse(new ModifyCommand(ModifyCommand.Modifiable.MAX_MOXIE, moxie, null, null));
-        main.sendResponse(new ModifyCommand(ModifyCommand.Modifiable.CLONE, cloneID, null, null));
-        for (ParanoiaAttributeSpinner skillSpinner : skillSpinners) {
-            main.sendResponse(new ModifyCommand(
-                ModifyCommand.Modifiable.SKILL,
-                (Integer) skillSpinner.getValue(),
-                skillSpinner.getLabel(),
-                null
-            ));
-        }
-        for (ParanoiaAttributeSpinner statSpinner : statSpinners) {
-            main.sendResponse(new ModifyCommand(
-                ModifyCommand.Modifiable.STAT,
-                (Integer) statSpinner.getValue(),
-                statSpinner.getLabel(),
-                null
-            ));
-        }
+//        main.sendResponse(new ModifyCommand(ModifyCommand.Modifiable.MAX_MOXIE, moxie, null, null));
+//        main.sendResponse(new ModifyCommand(ModifyCommand.Modifiable.CLONE, cloneID, null, null));
+//        for (ParanoiaAttributeSpinner skillSpinner : skillSpinners) {
+//            main.sendResponse(new ModifyCommand(
+//                ModifyCommand.Modifiable.SKILL,
+//                (Integer) skillSpinner.getValue(),
+//                skillSpinner.getLabel(),
+//                null
+//            ));
+//        }
+//        for (ParanoiaAttributeSpinner statSpinner : statSpinners) {
+//            main.sendResponse(new ModifyCommand(
+//                ModifyCommand.Modifiable.STAT,
+//                (Integer) statSpinner.getValue(),
+//                statSpinner.getLabel(),
+//                null
+//            ));
+//        }
         main.lockPanel();
     }
 

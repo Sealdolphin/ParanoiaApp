@@ -1,6 +1,5 @@
 package paranoia.core;
 
-import paranoia.services.technical.command.ACPFCommand;
 import paranoia.visuals.clones.ClonePanel;
 import paranoia.visuals.clones.SelfPanel;
 import paranoia.visuals.mechanics.Moxie;
@@ -13,7 +12,6 @@ import java.util.Map;
 public class Clone implements
     Cloneable,
     ICoreTechPart,
-    ACPFCommand.ParanoiaACPFListener,
     ParanoiaPlayer
 {
     private static final String UNKNOWN = "UNKNOWN";
@@ -133,13 +131,13 @@ public class Clone implements
         return clearance;
     }
 
-    @Override
-    public void updateProfile(String name, String gender, String[] personality, BufferedImage image) {
-        this.name = name;
-        this.gender = gender;
-        profilePicture = image;
-        info.put("TRAIT", personality[0]);
-        info.put("ADDITIONAL INFO", personality[1]);
-        info.put("BEST MARK", personality[2]);
-    }
+//    @Override
+//    public void updateProfile(String name, String gender, String[] personality, BufferedImage image) {
+//        this.name = name;
+//        this.gender = gender;
+//        profilePicture = image;
+//        info.put("TRAIT", personality[0]);
+//        info.put("ADDITIONAL INFO", personality[1]);
+//        info.put("BEST MARK", personality[2]);
+//    }
 }

@@ -3,7 +3,8 @@ package paranoia.visuals;
 import paranoia.core.ParanoiaPlayer;
 import paranoia.services.hpdmc.ParanoiaListener;
 import paranoia.services.plc.AssetManager;
-import paranoia.services.technical.command.HelloCommand;
+import paranoia.services.technical.command.AuthRequest;
+import paranoia.services.technical.command.AuthResponse;
 import paranoia.services.technical.command.PingCommand;
 import paranoia.services.technical.networking.Network;
 import paranoia.visuals.messages.ParanoiaMessage;
@@ -25,8 +26,8 @@ import java.util.List;
 import static paranoia.services.plc.LayoutManager.panelOf;
 
 public class LobbyFrame extends JFrame implements
-    PingCommand.ParanoiaPingListener,
-    HelloCommand.ParanoiaInfoListener,
+    PingCommand.ParanoiaPingListener,   //TODO: client should not handle business logic!!!!
+    AuthRequest.AuthReqListener,
     ParanoiaListener<ParanoiaPlayer>
 {
 
@@ -45,8 +46,7 @@ public class LobbyFrame extends JFrame implements
         Lobby lobby = new Lobby(this, network, name);
 
         network.getParser().setPingListener(this);
-        network.getParser().setInfoListener(this);
-        network.getParser().setLobbyListener(lobby);
+        network.getParser().setAuthReqListener(this);
 
         setLayout(new BorderLayout());
         add(lobby.createInfoPanel(), BorderLayout.NORTH);
@@ -61,13 +61,13 @@ public class LobbyFrame extends JFrame implements
     }
 
     @Override
-    public void sayHello(String player, String password, boolean hasPassword) {
+    public void requestAuth(boolean hasPassword) {
         String pass = null;
         if(hasPassword) {
             pass = ParanoiaMessage.input("Enter server password");
         }
 
-        network.sendCommand(new HelloCommand(name, pass, hasPassword, null));
+        network.sendCommand(new AuthResponse(name, pass));
     }
 
     public void leave() {

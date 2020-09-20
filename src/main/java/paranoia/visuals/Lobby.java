@@ -1,9 +1,7 @@
 package paranoia.visuals;
 
-import paranoia.core.Player;
 import paranoia.services.hpdmc.manager.PlayerManager;
 import paranoia.services.plc.AssetManager;
-import paranoia.services.technical.command.LobbyCommand;
 import paranoia.services.technical.networking.Network;
 import paranoia.visuals.custom.ParanoiaButton;
 
@@ -17,7 +15,7 @@ import java.awt.Component;
 
 import static paranoia.services.plc.LayoutManager.panelOf;
 
-public class Lobby implements LobbyCommand.LobbyListener {
+public class Lobby {
 
     private final JLabel lbAddress = new JLabel();
     private final JLabel lbPlayerName = new JLabel();
@@ -56,15 +54,5 @@ public class Lobby implements LobbyCommand.LobbyListener {
                 Box.createHorizontalGlue(), btnLeave
             }, BoxLayout.LINE_AXIS
         );
-    }
-
-    @Override
-    public void playerConnects(Player newPlayer) {
-        manager.updateAsset(newPlayer);
-    }
-
-    @Override
-    public void playerDisconnects(Player oldPlayer) {
-        manager.removeAsset(oldPlayer);
     }
 }

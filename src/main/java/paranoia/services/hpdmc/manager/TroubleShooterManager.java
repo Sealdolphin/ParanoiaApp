@@ -4,15 +4,13 @@ import paranoia.core.Clone;
 import paranoia.core.ICoreTechPart;
 import paranoia.core.SecurityClearance;
 import paranoia.services.hpdmc.ParanoiaListener;
-import paranoia.services.technical.command.ModifyCommand;
-import paranoia.visuals.mechanics.Moxie;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 public class TroubleShooterManager implements
-    ParanoiaManager<Clone>, ModifyCommand.ParanoiaModifyListener {
+    ParanoiaManager<Clone> {
 
     private final Collection<Clone> troubleShooters = new ArrayList<>();
     private final List<ParanoiaListener<Clone>> listeners = new ArrayList<>();
@@ -101,32 +99,4 @@ public class TroubleShooterManager implements
         return findCloneById(SELF_ID).getClearance();
     }
 
-    @Override
-    public void modify(ModifyCommand.Modifiable attribute, int value, Object details) {
-        switch (attribute) {
-            case MOXIE:
-                setMoxie(value);
-                break;
-            case TREASON_STAR:
-                setTreasonStars(value);
-                break;
-            case MAX_MOXIE:
-                int crossOut = Moxie.MOXIE_COUNT - value;
-                for (int i = 0; i < crossOut; i++) {
-                    crossOutMoxie();
-                }
-                break;
-            case CLONE:
-                Clone lastClone = troubleShooters.iterator().next();
-                for (int i = 0; i < value; i++) {
-                    lastClone = (Clone) lastClone.clone();
-                }
-                troubleShooters.clear();
-                troubleShooters.add(lastClone);
-                break;
-            default:
-                break;
-        }
-        updateListeners();
-    }
 }

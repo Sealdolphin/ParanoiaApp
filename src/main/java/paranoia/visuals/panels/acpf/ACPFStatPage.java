@@ -3,7 +3,6 @@ package paranoia.visuals.panels.acpf;
 import paranoia.core.cpu.Skill;
 import paranoia.core.cpu.Stat;
 import paranoia.services.plc.AssetManager;
-import paranoia.services.technical.command.DefineCommand;
 import paranoia.visuals.custom.ParanoiaSkillButton;
 
 import javax.swing.Box;
@@ -27,8 +26,7 @@ import static paranoia.services.plc.LayoutManager.createGrid;
 import static paranoia.services.plc.LayoutManager.panelOf;
 
 public class ACPFStatPage extends JPanel implements
-    ACPFPage, ParanoiaSkillButton.ParanoiaSkillBroadcastListener,
-    DefineCommand.ParanoiaDefineListener {
+    ACPFPage, ParanoiaSkillButton.ParanoiaSkillBroadcastListener {
 
     private final JLabel lbValue = new JLabel("");
     private final JTextArea lbChoose =  new JTextArea(2,5);
@@ -141,16 +139,16 @@ public class ACPFStatPage extends JPanel implements
         attributes.values().forEach(ParanoiaSkillButton::unset);
     }
 
-    @Override
-    public void alert(int fillValue, Skill[] disabled, boolean lastChoice) {
-        lbValue.setText(String.valueOf(fillValue));
-        lbChoose.setText(txtChoose);
-        this.lastChoice = lastChoice;
-        attributes.forEach((key, value) -> {
-            value.setEditable(true);
-            for (Skill skill : disabled)
-                if(skill.equals(key))
-                    value.setEditable(false);
-        });
-    }
+//    @Override
+//    public void alert(int fillValue, Skill[] disabled, boolean lastChoice) {
+//        lbValue.setText(String.valueOf(fillValue));
+//        lbChoose.setText(txtChoose);
+//        this.lastChoice = lastChoice;
+//        attributes.forEach((key, value) -> {
+//            value.setEditable(true);
+//            for (Skill skill : disabled)
+//                if(skill.equals(key))
+//                    value.setEditable(false);
+//        });
+//    }
 }

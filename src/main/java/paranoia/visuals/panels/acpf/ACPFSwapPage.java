@@ -2,8 +2,6 @@ package paranoia.visuals.panels.acpf;
 
 import paranoia.core.cpu.Stat;
 import paranoia.services.plc.AssetManager;
-import paranoia.services.technical.command.ParanoiaCommand;
-import paranoia.services.technical.command.ReorderCommand;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -24,7 +22,7 @@ import static javax.swing.SwingConstants.CENTER;
 import static paranoia.services.plc.LayoutManager.panelOf;
 
 public class ACPFSwapPage extends JPanel
-    implements ACPFPage, ReorderCommand.ParanoiaReorderListener {
+    implements ACPFPage {
 
     private final JButton btnReady = new JButton("READY");
     private final JButton btnUndo = new JButton("UNDO");
@@ -48,10 +46,10 @@ public class ACPFSwapPage extends JPanel
             Integer[] order = Arrays.stream(modifiedStats)
                 .map(JLabel::getText).map(Integer::parseInt)
                 .toArray(Integer[]::new);
-            ParanoiaCommand reorder = new ReorderCommand(
-                "name", order, null
-            );
-            main.sendResponse(reorder);
+//            ParanoiaCommand reorder = new ReorderCommand(
+//                "name", order, null
+//            );
+//            main.sendResponse(reorder);
         });
 
         btnUndo.setAlignmentX(CENTER_ALIGNMENT);
@@ -139,10 +137,10 @@ public class ACPFSwapPage extends JPanel
         return ready;
     }
 
-    @Override
-    public void reorder(String player, Integer[] order) {
-        lbTitle.setText("Replace the stats of " + player);
-        add(createSwapPanel(order), BorderLayout.CENTER);
-        revalidate();
-    }
+//    @Override
+//    public void reorder(String player, Integer[] order) {
+//        lbTitle.setText("Replace the stats of " + player);
+//        add(createSwapPanel(order), BorderLayout.CENTER);
+//        revalidate();
+//    }
 }

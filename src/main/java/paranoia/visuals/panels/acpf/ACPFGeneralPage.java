@@ -2,8 +2,6 @@ package paranoia.visuals.panels.acpf;
 
 import paranoia.Paranoia;
 import paranoia.services.plc.AssetManager;
-import paranoia.services.technical.command.ACPFCommand;
-import paranoia.services.technical.command.ParanoiaCommand;
 import paranoia.visuals.custom.ParanoiaImage;
 import paranoia.visuals.custom.ParanoiaImageFilter;
 import paranoia.visuals.custom.ParanoiaSectorFilter;
@@ -152,14 +150,14 @@ public class ACPFGeneralPage extends JPanel implements ACPFPage {
             if(hasEmptyTF()) {
                 String[] personalitiesText = Arrays.stream(personalities)
                     .map(JTextComponent::getText).toArray(String[]::new);
-                ParanoiaCommand command = new ACPFCommand(
-                    tfName.getText(),
-                    tfGender.getText(),
-                    personalitiesText,
-                    profilePicture.getImage(),
-                    null
-                );
-                main.sendResponse(command);
+//                ParanoiaCommand command = new ACPFCommand(
+//                    tfName.getText(),
+//                    tfGender.getText(),
+//                    personalitiesText,
+//                    profilePicture.getImage(),
+//                    null
+//                );
+//                main.sendResponse(command);
                 return true;
             } else return false;
         }

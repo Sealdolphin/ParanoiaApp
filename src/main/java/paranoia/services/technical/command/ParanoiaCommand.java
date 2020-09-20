@@ -27,18 +27,9 @@ import java.util.Date;
 public abstract class ParanoiaCommand implements Serializable {
 
     public enum CommandType {
-        CHAT,
-        DISCONNECT,
-        ACPF,
-        DEFINE,
-        REORDER,
-        OPTIMIZE,
-        MODIFY,
-        ROLL,
-        DICE,
-        HELLO,
         PING,
-        LOBBY
+        REQ_AUTH,
+        AUTH
     }
 
     protected ParanoiaCommand(CommandType type) {
@@ -53,24 +44,22 @@ public abstract class ParanoiaCommand implements Serializable {
 
     private final String version = Paranoia.version;
 
-    transient private ByteArrayOutputStream output = new ByteArrayOutputStream();
-
     public abstract void execute();
 
     public byte[] toNetworkMessage(String host) {
         this.host = host;
-
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
         byte[] message = null;
         try {
-            ObjectOutputStream outStream = new ObjectOutputStream(output);
+            ObjectOutputStream outStream = new ObjectOutputStream(bos);
             outStream.writeObject(this);
             outStream.flush();
-            message = output.toByteArray();
+            message = bos.toByteArray();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
             try {
-                output.close();
+                bos.close();
             } catch (IOException ignored) { }
         }
 
@@ -87,12 +76,12 @@ public abstract class ParanoiaCommand implements Serializable {
 
     public static byte[] parseImage(BufferedImage image) {
         //Parse buffered image
-        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
         byte[] imageRaw = new byte[0];
         if(image != null)
             try {
-                ImageIO.write(image, "png", outStream);
-                imageRaw = outStream.toByteArray();
+                ImageIO.write(image, "png", bos);
+                imageRaw = bos.toByteArray();
             } catch (IOException e) {
                 ParanoiaMessage.error(e);
             }
@@ -100,11 +89,11 @@ public abstract class ParanoiaCommand implements Serializable {
     }
 
     public static ParanoiaCommand parseCommand(byte[] message) throws IOException, ClassNotFoundException {
-        ByteArrayInputStream input = new ByteArrayInputStream(message);
-        ObjectInputStream inputStream = new ObjectInputStream(input);
+        ByteArrayInputStream bis = new ByteArrayInputStream(message);
+        ObjectInputStream inputStream = new ObjectInputStream(bis);
         ParanoiaCommand command = (ParanoiaCommand) inputStream.readObject();
         inputStream.close();
-        input.close();
+        bis.close();
         return command;
     }
 }

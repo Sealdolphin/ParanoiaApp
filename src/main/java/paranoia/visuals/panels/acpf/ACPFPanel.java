@@ -2,9 +2,7 @@ package paranoia.visuals.panels.acpf;
 
 import paranoia.services.plc.AssetManager;
 import paranoia.services.plc.LayoutManager;
-import paranoia.services.technical.command.DefineCommand;
 import paranoia.services.technical.command.ParanoiaCommand;
-import paranoia.services.technical.command.ReorderCommand;
 import paranoia.services.technical.networking.Network;
 
 import javax.swing.Box;
@@ -21,8 +19,8 @@ import java.awt.Insets;
 public class ACPFPanel extends JPanel {
 
     private final CardLayout layout = new CardLayout();
-    private final DefineCommand.ParanoiaDefineListener defineListener;
-    private final ReorderCommand.ParanoiaReorderListener reorderListener;
+//    private final DefineCommand.ParanoiaDefineListener defineListener;
+//    private final ReorderCommand.ParanoiaReorderListener reorderListener;
     private final Network network;
 
     public ACPFPanel(Network network) {
@@ -43,8 +41,8 @@ public class ACPFPanel extends JPanel {
         layout.first(this);
 
         //Define listeners
-        defineListener = statPage;
-        reorderListener = swapPage;
+//        defineListener = statPage;
+//        reorderListener = swapPage;
     }
 
     public void lockPanel(){
@@ -104,11 +102,11 @@ public class ACPFPanel extends JPanel {
         return btnNext;
     }
 
-    public ReorderCommand.ParanoiaReorderListener getReorderListener() {
-        return reorderListener;
-    }
-
-    public DefineCommand.ParanoiaDefineListener getDefineListener() {
-        return defineListener;
-    }
+//    public ReorderCommand.ParanoiaReorderListener getReorderListener() {
+//        return reorderListener;
+//    }
+//
+//    public DefineCommand.ParanoiaDefineListener getDefineListener() {
+//        return defineListener;
+//    }
 }
