@@ -1,8 +1,8 @@
 package paranoia.visuals.panels.acpf;
 
+import daiv.ui.AssetManager;
 import paranoia.core.cpu.Skill;
 import paranoia.core.cpu.Stat;
-import paranoia.services.plc.AssetManager;
 import paranoia.visuals.custom.ParanoiaSkillButton;
 
 import javax.swing.Box;
@@ -20,10 +20,10 @@ import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.util.HashMap;
 
+import static daiv.ui.LayoutManager.createGrid;
+import static daiv.ui.LayoutManager.panelOf;
 import static java.awt.GridBagConstraints.BOTH;
 import static java.awt.GridBagConstraints.CENTER;
-import static paranoia.services.plc.LayoutManager.createGrid;
-import static paranoia.services.plc.LayoutManager.panelOf;
 
 public class ACPFStatPage extends JPanel implements
     ACPFPage, ParanoiaSkillButton.ParanoiaSkillBroadcastListener {

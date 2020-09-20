@@ -1,8 +1,8 @@
 package paranoia.visuals.panels.acpf;
 
+import daiv.ui.AssetManager;
 import paranoia.core.cpu.Skill;
 import paranoia.core.cpu.Stat;
-import paranoia.services.plc.AssetManager;
 import paranoia.visuals.custom.ParanoiaAttributeSpinner;
 import paranoia.visuals.mechanics.Moxie;
 
@@ -15,13 +15,13 @@ import java.awt.GridBagLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import static daiv.ui.LayoutManager.createGrid;
 import static java.awt.GridBagConstraints.BOTH;
 import static java.awt.GridBagConstraints.CENTER;
 import static java.awt.GridBagConstraints.LINE_END;
 import static java.awt.GridBagConstraints.PAGE_START;
 import static java.awt.GridBagConstraints.RELATIVE;
 import static java.awt.GridBagConstraints.REMAINDER;
-import static paranoia.services.plc.LayoutManager.createGrid;
 import static paranoia.visuals.custom.ParanoiaAttributeSpinner.createSkillSpinner;
 import static paranoia.visuals.custom.ParanoiaAttributeSpinner.createStatSpinner;
 

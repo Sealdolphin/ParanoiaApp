@@ -1,9 +1,9 @@
 package paranoia.visuals;
 
+import daiv.ui.AssetManager;
+import daiv.ui.visuals.ParanoiaButton;
 import paranoia.services.hpdmc.manager.PlayerManager;
-import paranoia.services.plc.AssetManager;
 import paranoia.services.technical.networking.Network;
-import paranoia.visuals.custom.ParanoiaButton;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Component;
 
-import static paranoia.services.plc.LayoutManager.panelOf;
+import static daiv.ui.LayoutManager.panelOf;
 
 public class Lobby {
 

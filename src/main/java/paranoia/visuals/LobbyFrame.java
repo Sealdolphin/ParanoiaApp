@@ -1,13 +1,13 @@
 package paranoia.visuals;
 
+import daiv.networking.command.AuthRequest;
+import daiv.networking.command.AuthResponse;
+import daiv.networking.command.PingCommand;
+import daiv.ui.AssetManager;
+import daiv.ui.custom.ParanoiaMessage;
 import paranoia.core.ParanoiaPlayer;
 import paranoia.services.hpdmc.ParanoiaListener;
-import paranoia.services.plc.AssetManager;
-import paranoia.services.technical.command.AuthRequest;
-import paranoia.services.technical.command.AuthResponse;
-import paranoia.services.technical.command.PingCommand;
 import paranoia.services.technical.networking.Network;
-import paranoia.visuals.messages.ParanoiaMessage;
 import paranoia.visuals.panels.acpf.ACPFPanel;
 
 import javax.swing.Box;
@@ -23,7 +23,7 @@ import java.awt.Dimension;
 import java.util.Collection;
 import java.util.List;
 
-import static paranoia.services.plc.LayoutManager.panelOf;
+import static daiv.ui.LayoutManager.panelOf;
 
 public class LobbyFrame extends JFrame implements
     PingCommand.ParanoiaPingListener,   //TODO: client should not handle business logic!!!!

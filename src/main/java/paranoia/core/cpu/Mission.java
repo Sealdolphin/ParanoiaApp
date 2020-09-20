@@ -1,9 +1,9 @@
 package paranoia.core.cpu;
 
+import daiv.ui.visuals.ParanoiaImage;
 import paranoia.core.ICoreTechPart;
 import paranoia.services.plc.ResourceManager;
 import paranoia.visuals.ComponentName;
-import paranoia.visuals.custom.ParanoiaImage;
 
 import javax.swing.JPanel;
 import javax.swing.JTextArea;

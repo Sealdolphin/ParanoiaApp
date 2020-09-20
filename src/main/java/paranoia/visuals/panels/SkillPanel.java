@@ -1,11 +1,11 @@
 package paranoia.visuals.panels;
 
+import daiv.ui.AssetManager;
 import paranoia.core.cpu.ParanoiaAttribute;
 import paranoia.core.cpu.Skill;
 import paranoia.core.cpu.Stat;
 import paranoia.services.hpdmc.ParanoiaListener;
 import paranoia.services.hpdmc.manager.ParanoiaManager;
-import paranoia.services.plc.AssetManager;
 import paranoia.visuals.ComponentName;
 
 import javax.swing.Box;

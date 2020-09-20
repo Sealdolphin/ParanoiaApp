@@ -1,6 +1,7 @@
 package paranoia.visuals.custom;
 
-import paranoia.services.plc.AssetManager;
+
+import daiv.ui.AssetManager;
 
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
@@ -8,7 +9,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.Color;
 
-import static paranoia.services.plc.AssetManager.defaultButtonBackground;
+import static daiv.ui.AssetManager.defaultButtonBackground;
 
 public class ParanoiaAttributeSpinner extends JSpinner implements ChangeListener {
 

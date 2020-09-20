@@ -1,7 +1,7 @@
 package paranoia.helper;
 
+import daiv.networking.command.ParanoiaCommand;
 import org.junit.Assert;
-import paranoia.services.technical.command.ParanoiaCommand;
 
 import java.io.BufferedWriter;
 import java.io.IOException;

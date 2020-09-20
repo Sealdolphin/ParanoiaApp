@@ -1,9 +1,9 @@
 package paranoia.visuals.panels;
 
+import daiv.ui.AssetManager;
 import paranoia.core.cpu.Mission;
 import paranoia.services.hpdmc.ParanoiaListener;
 import paranoia.services.hpdmc.manager.ParanoiaManager;
-import paranoia.services.plc.AssetManager;
 import paranoia.visuals.ComponentName;
 
 import javax.swing.BoxLayout;

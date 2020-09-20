@@ -1,6 +1,8 @@
 package paranoia.visuals.messages;
 
 
+import daiv.ui.AssetManager;
+import daiv.ui.visuals.ParanoiaButton;
 import paranoia.core.SecurityClearance;
 import paranoia.core.cpu.Skill;
 import paranoia.core.cpu.Stat;
@@ -9,9 +11,7 @@ import paranoia.services.hpdmc.ParanoiaController;
 import paranoia.services.hpdmc.manager.AttributeManager;
 import paranoia.services.hpdmc.manager.DiceManager;
 import paranoia.services.hpdmc.manager.TroubleShooterManager;
-import paranoia.services.plc.AssetManager;
 import paranoia.visuals.ComponentName;
-import paranoia.visuals.custom.ParanoiaButton;
 import paranoia.visuals.panels.OperationPanel;
 
 import javax.swing.GroupLayout;

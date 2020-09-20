@@ -1,9 +1,9 @@
 package paranoia.visuals.animation;
 
+import daiv.ui.visuals.ParanoiaImage;
 import paranoia.Paranoia;
 import paranoia.core.ICoreTechPart;
 import paranoia.core.SecurityClearance;
-import paranoia.visuals.custom.ParanoiaImage;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;

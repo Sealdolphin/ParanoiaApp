@@ -1,8 +1,10 @@
 package paranoia.services.technical.networking;
 
+import daiv.networking.ParanoiaSocket;
+import daiv.networking.SocketListener;
+import daiv.networking.command.ParanoiaCommand;
+import daiv.ui.custom.ParanoiaMessage;
 import paranoia.services.technical.CommandParser;
-import paranoia.services.technical.command.ParanoiaCommand;
-import paranoia.visuals.messages.ParanoiaMessage;
 
 import java.io.IOException;
 import java.net.Socket;

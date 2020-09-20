@@ -1,5 +1,7 @@
 package paranoia.visuals.custom;
 
+import daiv.ui.visuals.ParanoiaButton;
+
 import javax.swing.JLabel;
 import java.awt.Color;
 import java.awt.event.ActionEvent;

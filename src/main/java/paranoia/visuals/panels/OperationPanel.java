@@ -1,8 +1,8 @@
 package paranoia.visuals.panels;
 
+import daiv.ui.custom.ParanoiaMessage;
+import daiv.ui.visuals.ParanoiaButton;
 import paranoia.visuals.ComponentName;
-import paranoia.visuals.custom.ParanoiaButton;
-import paranoia.visuals.messages.ParanoiaMessage;
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;

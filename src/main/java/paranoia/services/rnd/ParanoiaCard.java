@@ -1,7 +1,7 @@
 package paranoia.services.rnd;
 
+import daiv.ui.visuals.ParanoiaImage;
 import paranoia.core.ICoreTechPart;
-import paranoia.visuals.custom.ParanoiaImage;
 
 import javax.imageio.ImageIO;
 import java.awt.Dimension;

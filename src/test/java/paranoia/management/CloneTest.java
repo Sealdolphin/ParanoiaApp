@@ -30,7 +30,7 @@ public class CloneTest {
         Assert.assertEquals(1, clones.get(0).getClone());
         Assert.assertEquals(testClone, clones.get(0));
         //Do cloning
-        manager.modify(ModifyCommand.Modifiable.CLONE, id, null);
+//        manager.modify(ModifyCommand.Modifiable.CLONE, id, null);
         //Assert cloned clone to original clone
         Assert.assertEquals(1, clones.getSize());
         Assert.assertEquals(1 + id, clones.get(0).getClone());

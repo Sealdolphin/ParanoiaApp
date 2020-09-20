@@ -1,6 +1,6 @@
 package paranoia.services.hpdmc;
 
-import paranoia.services.technical.command.ParanoiaCommand;
+import daiv.networking.command.ParanoiaCommand;
 
 public interface ParanoiaController {
 

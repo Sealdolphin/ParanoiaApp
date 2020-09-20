@@ -1,5 +1,6 @@
 package paranoia.services.hpdmc;
 
+import daiv.networking.command.ParanoiaCommand;
 import paranoia.core.Clone;
 import paranoia.core.ICoreTechPart;
 import paranoia.core.cpu.Skill;
@@ -9,7 +10,6 @@ import paranoia.services.hpdmc.manager.CardManager;
 import paranoia.services.hpdmc.manager.MissionManager;
 import paranoia.services.hpdmc.manager.ParanoiaManager;
 import paranoia.services.hpdmc.manager.TroubleShooterManager;
-import paranoia.services.technical.command.ParanoiaCommand;
 import paranoia.services.technical.networking.Network;
 import paranoia.visuals.CerebralCoretech;
 import paranoia.visuals.ComponentName;

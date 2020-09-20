@@ -1,9 +1,9 @@
 package paranoia.services.technical;
 
-import paranoia.services.technical.command.AuthRequest;
-import paranoia.services.technical.command.AuthResponse;
-import paranoia.services.technical.command.ParanoiaCommand;
-import paranoia.services.technical.command.PingCommand;
+import daiv.networking.command.AuthRequest;
+import daiv.networking.command.AuthResponse;
+import daiv.networking.command.ParanoiaCommand;
+import daiv.networking.command.PingCommand;
 
 public class CommandParser {
 

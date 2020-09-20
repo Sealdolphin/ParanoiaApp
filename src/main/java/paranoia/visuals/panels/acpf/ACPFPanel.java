@@ -1,8 +1,7 @@
 package paranoia.visuals.panels.acpf;
 
-import paranoia.services.plc.AssetManager;
-import paranoia.services.plc.LayoutManager;
-import paranoia.services.technical.command.ParanoiaCommand;
+import daiv.networking.command.ParanoiaCommand;
+import daiv.ui.AssetManager;
 import paranoia.services.technical.networking.Network;
 
 import javax.swing.Box;
@@ -15,6 +14,8 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.Insets;
+
+import static daiv.ui.LayoutManager.panelOf;
 
 public class ACPFPanel extends JPanel {
 
@@ -80,7 +81,7 @@ public class ACPFPanel extends JPanel {
         JButton btnNext = createNextButton(page);
         btnNext.setEnabled(hasNext);
         btnPrev.setEnabled(hasPrev);
-        return LayoutManager.panelOf(new Component[]{
+        return panelOf(new Component[]{
             Box.createHorizontalGlue(),
             btnPrev,
             btnNext

@@ -1,7 +1,7 @@
 package paranoia.core.cpu;
 
+import daiv.ui.AssetManager;
 import paranoia.core.ICoreTechPart;
-import paranoia.services.plc.AssetManager;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;

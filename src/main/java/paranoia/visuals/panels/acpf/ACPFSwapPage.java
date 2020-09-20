@@ -1,7 +1,7 @@
 package paranoia.visuals.panels.acpf;
 
+import daiv.ui.AssetManager;
 import paranoia.core.cpu.Stat;
-import paranoia.services.plc.AssetManager;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -18,8 +18,8 @@ import java.awt.Dimension;
 import java.util.Arrays;
 import java.util.Stack;
 
+import static daiv.ui.LayoutManager.panelOf;
 import static javax.swing.SwingConstants.CENTER;
-import static paranoia.services.plc.LayoutManager.panelOf;
 
 public class ACPFSwapPage extends JPanel
     implements ACPFPage {

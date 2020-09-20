@@ -1,8 +1,8 @@
 package paranoia.visuals.clones;
 
+import daiv.ui.visuals.ParanoiaImage;
 import paranoia.core.SecurityClearance;
 import paranoia.visuals.ComponentName;
-import paranoia.visuals.custom.ParanoiaImage;
 import paranoia.visuals.mechanics.Injury;
 import paranoia.visuals.mechanics.TreasonStar;
 

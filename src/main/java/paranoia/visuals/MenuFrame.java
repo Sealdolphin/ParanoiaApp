@@ -1,11 +1,11 @@
 package paranoia.visuals;
 
+import daiv.ui.AssetManager;
+import daiv.ui.custom.ParanoiaMessage;
+import daiv.ui.visuals.ParanoiaButton;
 import paranoia.Paranoia;
-import paranoia.services.plc.AssetManager;
 import paranoia.services.technical.CommandParser;
 import paranoia.services.technical.networking.Network;
-import paranoia.visuals.custom.ParanoiaButton;
-import paranoia.visuals.messages.ParanoiaMessage;
 
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
@@ -25,8 +25,8 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 
+import static daiv.ui.LayoutManager.panelOf;
 import static paranoia.Paranoia.getParanoiaResource;
-import static paranoia.services.plc.LayoutManager.panelOf;
 
 public class MenuFrame extends JFrame {
 

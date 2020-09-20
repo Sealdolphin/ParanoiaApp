@@ -1,11 +1,11 @@
 package paranoia.visuals.panels.acpf;
 
+import daiv.ui.AssetManager;
+import daiv.ui.custom.ParanoiaMessage;
+import daiv.ui.visuals.ParanoiaImage;
+import daiv.ui.visuals.ParanoiaImageFilter;
 import paranoia.Paranoia;
-import paranoia.services.plc.AssetManager;
-import paranoia.visuals.custom.ParanoiaImage;
-import paranoia.visuals.custom.ParanoiaImageFilter;
 import paranoia.visuals.custom.ParanoiaSectorFilter;
-import paranoia.visuals.messages.ParanoiaMessage;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -29,13 +29,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static daiv.ui.LayoutManager.createGrid;
 import static java.awt.GridBagConstraints.CENTER;
 import static java.awt.GridBagConstraints.LINE_START;
 import static java.awt.GridBagConstraints.PAGE_END;
 import static java.awt.GridBagConstraints.PAGE_START;
 import static java.awt.GridBagConstraints.RELATIVE;
 import static java.awt.GridBagConstraints.REMAINDER;
-import static paranoia.services.plc.LayoutManager.createGrid;
 
 public class ACPFGeneralPage extends JPanel implements ACPFPage {
 

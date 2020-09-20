@@ -24,10 +24,7 @@ repositories {
 }
 
 dependencies {
-    // This dependency is used by the application.
-    implementation 'com.google.guava:guava:28.2-jre'
-    //JSON parser
-    implementation 'org.json:json:20190722'
+    compile files('libs/DAIV-1.0-alpha.jar')
     // Use JUnit test framework
     testImplementation 'org.assertj:assertj-swing-junit:3.9.2'
     implementation 'junit:junit:4.12'

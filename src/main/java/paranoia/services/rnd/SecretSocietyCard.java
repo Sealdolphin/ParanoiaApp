@@ -1,6 +1,6 @@
 package paranoia.services.rnd;
 
-import paranoia.visuals.custom.ParanoiaImage;
+import daiv.ui.visuals.ParanoiaImage;
 
 import javax.swing.JPanel;
 

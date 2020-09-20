@@ -1,7 +1,7 @@
 package paranoia.visuals.mechanics;
 
+import daiv.ui.visuals.ParanoiaImage;
 import paranoia.visuals.ComponentName;
-import paranoia.visuals.custom.ParanoiaImage;
 
 import javax.swing.JPanel;
 import java.awt.Dimension;
