@@ -6,6 +6,8 @@ import paranoia.core.cpu.Stat;
 import paranoia.services.hpdmc.ControlUnit;
 import paranoia.services.plc.ResourceManager;
 import paranoia.services.rnd.ParanoiaCard;
+import paranoia.services.technical.CommandParser;
+import paranoia.services.technical.networking.Network;
 import paranoia.visuals.ComponentName;
 import paranoia.visuals.MenuFrame;
 
@@ -34,7 +36,7 @@ public class Paranoia {
             e.printStackTrace();
         }
 
-        new MenuFrame().setVisible(true);
+        new MenuFrame(new ControlUnit(new Network(new CommandParser()))).setVisible(true);
     }
 
     //TODO: temporary

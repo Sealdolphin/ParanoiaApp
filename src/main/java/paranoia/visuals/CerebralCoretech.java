@@ -51,7 +51,7 @@ public class CerebralCoretech extends JFrame {
             public void windowClosed(WindowEvent e) {
 //                controller.sendCommand(new DisconnectCommand(null));
                 super.windowClosed(e);
-                new MenuFrame().setVisible(true);
+                new MenuFrame(controller).setVisible(true);
             }
         });
 

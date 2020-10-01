@@ -44,8 +44,8 @@ public class OperationPanel extends JPanel {
         try {
             BufferedImage chat = ImageIO.read(new File(getParanoiaResource("ui/btnChat.png")));
             BufferedImage roll = ImageIO.read(new File(getParanoiaResource("ui/btnRoll.png")));
-            btnChat = new ParanoiaButton(chat);
-            btnRoll = new ParanoiaButton(roll);
+            btnChat = new ParanoiaButton(chat, "Chat");
+            btnRoll = new ParanoiaButton(roll, "Roll");
 
         } catch (IOException e) {
             ParanoiaMessage.error(e);

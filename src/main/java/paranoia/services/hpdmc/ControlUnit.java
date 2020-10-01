@@ -1,7 +1,8 @@
 package paranoia.services.hpdmc;
 
 import daiv.networking.command.ParanoiaCommand;
-import paranoia.core.Clone;
+import daiv.ui.custom.ParanoiaButtonListener;
+import daiv.ui.custom.ParanoiaMessage;
 import paranoia.core.ICoreTechPart;
 import paranoia.core.cpu.Skill;
 import paranoia.core.cpu.Stat;
@@ -10,11 +11,13 @@ import paranoia.services.hpdmc.manager.CardManager;
 import paranoia.services.hpdmc.manager.MissionManager;
 import paranoia.services.hpdmc.manager.ParanoiaManager;
 import paranoia.services.hpdmc.manager.TroubleShooterManager;
+import paranoia.services.technical.CommandParser;
 import paranoia.services.technical.networking.Network;
 import paranoia.visuals.CerebralCoretech;
 import paranoia.visuals.ComponentName;
+import paranoia.visuals.LobbyFrame;
+import paranoia.visuals.MenuFrame;
 import paranoia.visuals.messages.RollMessage;
-import paranoia.visuals.panels.ChatPanel;
 import paranoia.visuals.panels.OperationPanel;
 import paranoia.visuals.panels.acpf.ACPFPanel;
 
@@ -22,21 +25,24 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import java.awt.BorderLayout;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Controls the core game elements - GameMaster interface
  */
-public class ControlUnit implements ParanoiaController {
+public class ControlUnit implements ParanoiaController, ParanoiaButtonListener {
+
     CerebralCoretech visuals;
+    private MenuFrame mainFrame;
     private final Map<ComponentName, ParanoiaManager<? extends ICoreTechPart>> managerMap;
     private final OperationPanel operationPanel;
     private final Network network;
-    private final String playerName;
+    private String connectUrl = "http://127.0.0.1:6532";
+    private String player;
 
-    public ControlUnit(Clone clone, Network network, String playerName) {
-        this.playerName = playerName;
+    public ControlUnit(Network network) {
         operationPanel = new OperationPanel();
         //Setup managers
         managerMap = new HashMap<>();
@@ -48,8 +54,8 @@ public class ControlUnit implements ParanoiaController {
         managerMap.put(ComponentName.TROUBLESHOOTER_PANEL, new TroubleShooterManager());
         managerMap.put(ComponentName.SELF_PANEL, new TroubleShooterManager());
         //Setup miscellaneous
-        ChatPanel chatPanel = new ChatPanel(clone, this);
-        operationPanel.activatePanel(chatPanel, ComponentName.CHAT_PANEL.name());
+//        ChatPanel chatPanel = new ChatPanel(clone, this);
+//        operationPanel.activatePanel(chatPanel, ComponentName.CHAT_PANEL.name());
         //Setup network
         this.network = network;
         ACPFPanel acpfPanel = new ACPFPanel(network);
@@ -59,7 +65,7 @@ public class ControlUnit implements ParanoiaController {
 //        network.getParser().setDefineListener(acpfPanel.getDefineListener());
 //        network.getParser().setReorderListener(acpfPanel.getReorderListener());
         //Setup visuals
-        visuals = new CerebralCoretech(this, clone);
+//        visuals = new CerebralCoretech(this, clone);
     }
 
     @SuppressWarnings("rawtypes")
@@ -89,6 +95,7 @@ public class ControlUnit implements ParanoiaController {
         return operationPanel;
     }
 
+    //FIXME: This is frontend
     public void fireRollMessage(
         Stat stat, Skill skill,
         boolean statChange, boolean skillChange,
@@ -108,8 +115,51 @@ public class ControlUnit implements ParanoiaController {
         msg.setVisible(true);
     }
 
+    private void createPlayer(String connectUrl, MenuFrame menuFrame) {
+        String playerName = ParanoiaMessage.input("What is your name, citizen?");
+        if(playerName != null && !playerName.isEmpty()) {
+            player = playerName;
+            Network network = new Network(new CommandParser());
+            //Network
+            try {
+                network.connectToServer(connectUrl);
+                menuFrame.dispose();
+                new LobbyFrame(network, playerName).setVisible(true);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                ParanoiaMessage.error(ex);
+            }
+        }
+    }
+
+    private void changeSettings() {
+        String address = ParanoiaMessage.input("Set destination of Alpha Complex");
+        if(address != null && !address.equals("")) {
+            System.out.println("New address: '" + address + "'");
+            connectUrl = address;
+        }
+    }
+
     @Override
     public boolean sendCommand(ParanoiaCommand command) {
         return network.sendCommand(command);
+    }
+
+    @Override
+    public void runCommand(String command) {
+        ParanoiaButtonCommand btn = ParanoiaButtonCommand.NULL;
+        try {
+            btn = ParanoiaButtonCommand.valueOf(command);
+        } catch (IllegalArgumentException ignored) {}
+        switch (btn) {
+            case START_LOBBY:
+                createPlayer(connectUrl, mainFrame);
+                break;
+            case SETTINGS:
+                changeSettings();
+                break;
+            default:
+                break;
+        }
     }
 }

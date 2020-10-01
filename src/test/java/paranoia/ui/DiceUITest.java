@@ -12,7 +12,6 @@ import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import paranoia.core.Computer;
 import paranoia.core.cpu.ParanoiaAttribute;
 import paranoia.core.cpu.Skill;
 import paranoia.core.cpu.Stat;
@@ -26,6 +25,8 @@ import javax.swing.JDialog;
 import java.awt.Dimension;
 import java.util.Collections;
 
+import static daiv.Computer.randomItem;
+
 public class DiceUITest extends AssertJSwingJUnitTestCase {
 
     private TestClone testClone;
@@ -33,8 +34,8 @@ public class DiceUITest extends AssertJSwingJUnitTestCase {
     private DialogFixture dialog;
 
 
-    private final Stat testStat = Computer.randomItem(Stat.values());
-    private final Skill testSkill = Computer.randomItem(Skill.values());
+    private final Stat testStat = randomItem(Stat.values());
+    private final Skill testSkill = randomItem(Skill.values());
 
     private static final String testMessage = "Please roll with...";
 

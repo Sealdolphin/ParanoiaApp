@@ -26,8 +26,8 @@ import java.util.List;
 import static daiv.ui.LayoutManager.panelOf;
 
 public class LobbyFrame extends JFrame implements
-    PingCommand.ParanoiaPingListener,   //TODO: client should not handle business logic!!!!
-    AuthRequest.AuthReqListener,
+    PingCommand.ParanoiaPingListener,   //TODO: frontend should not handle business logic!!!!
+    AuthRequest.ParanoiaAuthListener,
     ParanoiaListener<ParanoiaPlayer>
 {
 
@@ -46,7 +46,7 @@ public class LobbyFrame extends JFrame implements
         Lobby lobby = new Lobby(this, network, name);
 
         network.getParser().setPingListener(this);
-        network.getParser().setAuthReqListener(this);
+        network.getParser().setAuthListener(this);
 
         setLayout(new BorderLayout());
         add(lobby.createInfoPanel(), BorderLayout.NORTH);
@@ -57,6 +57,7 @@ public class LobbyFrame extends JFrame implements
 
     @Override
     public void pong() {
+        if(network == null) return;
         network.sendCommand(new PingCommand());
     }
 
@@ -72,8 +73,8 @@ public class LobbyFrame extends JFrame implements
 
     public void leave() {
         dispose();
-        network.disconnect();
-        new MenuFrame().setVisible(true);
+        network.fireTerminated();
+        //open menu frame!!
     }
 
     @Override

@@ -2,12 +2,15 @@ package paranoia.services.technical.networking;
 
 import daiv.networking.ParanoiaSocket;
 import daiv.networking.SocketListener;
+import daiv.networking.command.DisconnectCommand;
 import daiv.networking.command.ParanoiaCommand;
 import daiv.ui.custom.ParanoiaMessage;
 import paranoia.services.technical.CommandParser;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.URL;
 
 /**
@@ -18,7 +21,10 @@ import java.net.URL;
  *  - sending credentials if necessary
  *  - sending appropriate command(s)
  */
-public class Network implements SocketListener {
+public class Network implements
+    SocketListener,
+    DisconnectCommand.ParanoiaDisconnectListener
+{
 
     private ParanoiaSocket client = null;
     public static final int workingPort = 6532;
@@ -33,6 +39,7 @@ public class Network implements SocketListener {
         Socket socket = new Socket(url.getHost(), url.getPort());
         client = new ParanoiaSocket(socket);
         client.addListener(this);
+        parser.setDisconnectListener(this);
     }
 
     private void connectWithIP(String ip) throws IOException {
@@ -53,11 +60,13 @@ public class Network implements SocketListener {
         return parser;
     }
 
-    public void disconnect() {
+    @Override
+    public void disconnect(String message) {
         if(client == null) return;
+        sendCommand(new DisconnectCommand(message));
         client.destroy();
         client = null;
-        ParanoiaMessage.info("You have been disconnected from the Alpha Complex");
+        ParanoiaMessage.info("You have been disconnected from the Alpha Complex.\nReason: " + message);
     }
 
     public boolean sendCommand(ParanoiaCommand command) {
@@ -85,7 +94,14 @@ public class Network implements SocketListener {
     }
 
     @Override
+    public void readError(Throwable throwable) {
+        if(!throwable.getClass().equals(EOFException.class) &&
+            !throwable.getClass().equals(SocketException.class))
+                throwable.printStackTrace();
+    }
+
+    @Override
     public void fireTerminated() {
-        disconnect();
+        disconnect("Client terminated the connection.");
     }
 }

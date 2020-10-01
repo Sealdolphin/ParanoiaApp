@@ -1,15 +1,15 @@
 package paranoia.services.technical;
 
 import daiv.networking.command.AuthRequest;
-import daiv.networking.command.AuthResponse;
+import daiv.networking.command.DisconnectCommand;
 import daiv.networking.command.ParanoiaCommand;
 import daiv.networking.command.PingCommand;
 
 public class CommandParser {
 
     private PingCommand.ParanoiaPingListener pingListener;
-    private AuthResponse.ParanoiaAuthListener authListener;
-    private AuthRequest.AuthReqListener authReqListener;
+    private AuthRequest.ParanoiaAuthListener authListener;
+    private DisconnectCommand.ParanoiaDisconnectListener disconnectListener;
 
     public void parse(ParanoiaCommand command) {
 
@@ -17,25 +17,24 @@ public class CommandParser {
             case PING:
                 PingCommand.create(pingListener).execute();
                 break;
-            case AUTH:
-                AuthResponse.create(command, authListener).execute();
-                break;
             case REQ_AUTH:
-                AuthRequest.create(command, authReqListener).execute();
+                AuthRequest.create(command, authListener).execute();
+                break;
+            case DISCONNECT:
+                DisconnectCommand.create(command, disconnectListener).execute();
                 break;
             default:
                 break;
         }
     }
 
-    public void setAuthReqListener(AuthRequest.AuthReqListener listener) {
-        this.authReqListener = listener;
-    }
     public void setPingListener(PingCommand.ParanoiaPingListener listener) {
         this.pingListener = listener;
     }
-    public void setAuthListener(AuthResponse.ParanoiaAuthListener listener) {
+    public void setAuthListener(AuthRequest.ParanoiaAuthListener listener) {
         this.authListener = listener;
     }
-
+    public void setDisconnectListener(DisconnectCommand.ParanoiaDisconnectListener disconnectListener) {
+        this.disconnectListener = disconnectListener;
+    }
 }

@@ -1,7 +1,6 @@
 package paranoia.helper;
 
 import paranoia.core.Clone;
-import paranoia.core.Computer;
 import paranoia.core.SecurityClearance;
 import paranoia.core.cpu.ParanoiaAttribute;
 import paranoia.core.cpu.Skill;
@@ -13,12 +12,14 @@ import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
 
+import static daiv.Computer.randomItem;
+
 public class TestClone extends Clone {
 
     public static final String testName = "Test";
     public static final String testSector = "TST";
     public static final String testGender = "NULL";
-    public static final SecurityClearance testClearance = Computer.randomItem(SecurityClearance.values());
+    public static final SecurityClearance testClearance = randomItem(SecurityClearance.values());
     public final Set<ParanoiaAttribute> attributes = new HashSet<>();
 
     public TestClone(){
@@ -36,7 +37,7 @@ public class TestClone extends Clone {
         Set<Skill> testAttributes = new HashSet<>();
 
         while(testAttributes.size() < 10) {
-            Skill skill = Computer.randomItem(Skill.values());
+            Skill skill = randomItem(Skill.values());
             testAttributes.add(skill);
         }
 
