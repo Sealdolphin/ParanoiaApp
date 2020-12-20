@@ -2,8 +2,8 @@ package paranoia.services.technical.networking;
 
 import daiv.networking.ParanoiaSocket;
 import daiv.networking.SocketListener;
-import daiv.networking.command.DisconnectCommand;
 import daiv.networking.command.ParanoiaCommand;
+import daiv.networking.command.general.DisconnectCommand;
 import daiv.ui.custom.ParanoiaMessage;
 import paranoia.services.technical.CommandParser;
 

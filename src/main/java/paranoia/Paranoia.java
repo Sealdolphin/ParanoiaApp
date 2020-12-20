@@ -9,7 +9,6 @@ import paranoia.services.rnd.ParanoiaCard;
 import paranoia.services.technical.CommandParser;
 import paranoia.services.technical.networking.Network;
 import paranoia.visuals.ComponentName;
-import paranoia.visuals.MenuFrame;
 
 import java.awt.Color;
 import java.io.IOException;
@@ -36,7 +35,7 @@ public class Paranoia {
             e.printStackTrace();
         }
 
-        new MenuFrame(new ControlUnit(new Network(new CommandParser()))).setVisible(true);
+        new ControlUnit(new Network(new CommandParser()));
     }
 
     //TODO: temporary

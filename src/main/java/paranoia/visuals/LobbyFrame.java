@@ -1,8 +1,8 @@
 package paranoia.visuals;
 
-import daiv.networking.command.AuthRequest;
-import daiv.networking.command.AuthResponse;
-import daiv.networking.command.PingCommand;
+import daiv.networking.command.general.AuthRequest;
+import daiv.networking.command.general.AuthResponse;
+import daiv.networking.command.general.PingCommand;
 import daiv.ui.AssetManager;
 import daiv.ui.custom.ParanoiaMessage;
 import paranoia.core.ParanoiaPlayer;

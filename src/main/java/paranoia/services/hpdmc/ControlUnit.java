@@ -34,7 +34,7 @@ import java.util.Map;
  */
 public class ControlUnit implements ParanoiaController, ParanoiaButtonListener {
 
-    CerebralCoretech visuals;
+    private CerebralCoretech visuals;
     private MenuFrame mainFrame;
     private final Map<ComponentName, ParanoiaManager<? extends ICoreTechPart>> managerMap;
     private final OperationPanel operationPanel;
@@ -44,6 +44,7 @@ public class ControlUnit implements ParanoiaController, ParanoiaButtonListener {
 
     public ControlUnit(Network network) {
         operationPanel = new OperationPanel();
+        mainFrame = new MenuFrame(this);
         //Setup managers
         managerMap = new HashMap<>();
         managerMap.put(ComponentName.MISSION_PANEL, new MissionManager());
@@ -66,6 +67,7 @@ public class ControlUnit implements ParanoiaController, ParanoiaButtonListener {
 //        network.getParser().setReorderListener(acpfPanel.getReorderListener());
         //Setup visuals
 //        visuals = new CerebralCoretech(this, clone);
+        mainFrame.setVisible(true);
     }
 
     @SuppressWarnings("rawtypes")
@@ -115,7 +117,7 @@ public class ControlUnit implements ParanoiaController, ParanoiaButtonListener {
         msg.setVisible(true);
     }
 
-    private void createPlayer(String connectUrl, MenuFrame menuFrame) {
+    private void createPlayer(String connectUrl) {
         String playerName = ParanoiaMessage.input("What is your name, citizen?");
         if(playerName != null && !playerName.isEmpty()) {
             player = playerName;
@@ -123,7 +125,7 @@ public class ControlUnit implements ParanoiaController, ParanoiaButtonListener {
             //Network
             try {
                 network.connectToServer(connectUrl);
-                menuFrame.dispose();
+                mainFrame.dispose();
                 new LobbyFrame(network, playerName).setVisible(true);
             } catch (IOException ex) {
                 ex.printStackTrace();
@@ -153,7 +155,7 @@ public class ControlUnit implements ParanoiaController, ParanoiaButtonListener {
         } catch (IllegalArgumentException ignored) {}
         switch (btn) {
             case START_LOBBY:
-                createPlayer(connectUrl, mainFrame);
+                createPlayer(connectUrl);
                 break;
             case SETTINGS:
                 changeSettings();

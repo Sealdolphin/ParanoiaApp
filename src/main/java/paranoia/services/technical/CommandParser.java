@@ -1,9 +1,11 @@
 package paranoia.services.technical;
 
-import daiv.networking.command.AuthRequest;
-import daiv.networking.command.DisconnectCommand;
+
 import daiv.networking.command.ParanoiaCommand;
-import daiv.networking.command.PingCommand;
+import daiv.networking.command.general.AuthRequest;
+import daiv.networking.command.general.DisconnectCommand;
+import daiv.networking.command.general.PingCommand;
+
 
 public class CommandParser {
 
