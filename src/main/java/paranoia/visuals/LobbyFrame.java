@@ -25,7 +25,6 @@ import java.util.List;
 import static daiv.ui.LayoutManager.panelOf;
 
 public class LobbyFrame extends JFrame implements
-    //PingCommand.ParanoiaPingListener,   //TODO: frontend should not handle business logic!!!!
     AuthRequest.ParanoiaAuthListener,
     ParanoiaListener<ParanoiaPlayer>
 {
@@ -34,9 +33,9 @@ public class LobbyFrame extends JFrame implements
     private final String name;
     private JScrollPane lobbyPanel = new JScrollPane();
 
-    public LobbyFrame(Network network, String player) {
+    public LobbyFrame(Network network, ParanoiaPlayer player) {
         this.network = network;
-        this.name = player;
+        this.name = player.getName();
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new Dimension(700, 400));

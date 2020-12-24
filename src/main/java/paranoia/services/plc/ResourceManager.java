@@ -22,7 +22,8 @@ public abstract class ResourceManager {
         MOXIE_CROSSED,
         MISSION,
         MISSION_FAILED,
-        MISSION_COMPLETED
+        MISSION_COMPLETED,
+        MISTERY_CLONE
     }
 
     public static final Color DEFAULT_FONT = new Color(0,0,0);
@@ -41,6 +42,7 @@ public abstract class ResourceManager {
         images.put(ResourceIcon.MISSION, ImageIO.read(new File(getParanoiaResource("mechanics/mission.png"))));
         images.put(ResourceIcon.MISSION_COMPLETED, ImageIO.read(new File(getParanoiaResource("mechanics/missionComplete.png"))));
         images.put(ResourceIcon.MISSION_FAILED, ImageIO.read(new File(getParanoiaResource("mechanics/missionFailed.png"))));
+        images.put(ResourceIcon.MISTERY_CLONE, ImageIO.read(new File(getParanoiaResource("clones/cloneMistery.png"))));
     }
 
     public static BufferedImage getResource(ResourceIcon key) {

@@ -4,6 +4,7 @@ import daiv.networking.command.ParanoiaCommand;
 import daiv.ui.custom.ParanoiaButtonListener;
 import daiv.ui.custom.ParanoiaMessage;
 import paranoia.core.ICoreTechPart;
+import paranoia.core.ParanoiaPlayer;
 import paranoia.core.cpu.Skill;
 import paranoia.core.cpu.Stat;
 import paranoia.services.hpdmc.manager.AttributeManager;
@@ -40,7 +41,6 @@ public class ControlUnit implements ParanoiaController, ParanoiaButtonListener {
     private final OperationPanel operationPanel;
     private final Network network;
     private String connectUrl = "http://127.0.0.1:6532";
-    private String player;
 
     public ControlUnit(Network network) {
         operationPanel = new OperationPanel();
@@ -55,6 +55,7 @@ public class ControlUnit implements ParanoiaController, ParanoiaButtonListener {
         managerMap.put(ComponentName.TROUBLESHOOTER_PANEL, new TroubleShooterManager());
         managerMap.put(ComponentName.SELF_PANEL, new TroubleShooterManager());
         //Setup miscellaneous
+        //TODO: need some update over time
 //        ChatPanel chatPanel = new ChatPanel(clone, this);
 //        operationPanel.activatePanel(chatPanel, ComponentName.CHAT_PANEL.name());
         //Setup network
@@ -120,13 +121,13 @@ public class ControlUnit implements ParanoiaController, ParanoiaButtonListener {
     private void createPlayer(String connectUrl) {
         String playerName = ParanoiaMessage.input("What is your name, citizen?");
         if(playerName != null && !playerName.isEmpty()) {
-            player = playerName;
+            ParanoiaPlayer player = new ParanoiaPlayer(playerName);
             Network network = new Network(new CommandParser());
             //Network
             try {
                 network.connectToServer(connectUrl);
                 mainFrame.dispose();
-                new LobbyFrame(network, playerName).setVisible(true);
+                new LobbyFrame(network, player).setVisible(true);
             } catch (IOException ex) {
                 ex.printStackTrace();
                 ParanoiaMessage.error(ex);
