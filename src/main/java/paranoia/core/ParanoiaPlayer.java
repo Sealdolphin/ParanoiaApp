@@ -1,7 +1,21 @@
 package paranoia.core;
 
-public interface ParanoiaPlayer extends ICoreTechPart {
+import javax.swing.JPanel;
 
-    String getFullName();
+public class ParanoiaPlayer implements ICoreTechPart {
 
+    private final String name;
+
+    public ParanoiaPlayer(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public JPanel getVisual() {
+        return null;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

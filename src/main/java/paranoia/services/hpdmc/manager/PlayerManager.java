@@ -34,4 +34,6 @@ public class PlayerManager implements ParanoiaManager<ParanoiaPlayer> {
         players.remove(player);
         listeners.forEach(l -> l.updateVisualDataChange(players));
     }
+
+
 }

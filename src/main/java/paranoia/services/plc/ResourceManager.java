@@ -1,6 +1,7 @@
 package paranoia.services.plc;
 
 import javax.imageio.ImageIO;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -24,6 +25,9 @@ public abstract class ResourceManager {
         MISSION_COMPLETED
     }
 
+    public static final Color DEFAULT_FONT = new Color(0,0,0);
+    public static final Color FAILED_MISSION = new Color(185,0,0);
+
     private static final Map<ResourceIcon, BufferedImage> images = new HashMap<>();
 
     public static void loadResources() throws IOException {
@@ -40,7 +44,20 @@ public abstract class ResourceManager {
     }
 
     public static BufferedImage getResource(ResourceIcon key) {
+        if(images.isEmpty()) try {
+            throw new ResourceNotLoadedException();
+        } catch (ResourceNotLoadedException e) {
+            e.printStackTrace();
+        }
         return images.getOrDefault(key, null);
+    }
+
+    public static class ResourceNotLoadedException extends Throwable {
+
+        public ResourceNotLoadedException() {
+            super("Paranoia resources has not been loaded!");
+        }
+
     }
 
 }

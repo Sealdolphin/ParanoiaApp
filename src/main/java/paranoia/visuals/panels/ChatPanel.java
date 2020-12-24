@@ -28,7 +28,7 @@ public class ChatPanel extends JPanel {
         JButton btnSend = new JButton("SEND");
 
         btnSend.addActionListener(l -> {
-            String sender = clone.getFullName();
+            String sender = clone.getName();
             String message = writer.getText();
             String time = DateTimeFormatter.ofPattern("hh:mm:ss").format(LocalTime.now());
 //            ChatCommand chatMessage = new ChatCommand(sender, message, time, null);

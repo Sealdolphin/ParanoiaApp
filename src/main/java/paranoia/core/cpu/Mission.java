@@ -1,25 +1,47 @@
 package paranoia.core.cpu;
 
-import daiv.ui.visuals.ParanoiaImage;
 import paranoia.core.ICoreTechPart;
 import paranoia.services.plc.ResourceManager;
-import paranoia.visuals.ComponentName;
+import paranoia.visuals.ui.MissionView;
 
+import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import java.awt.Color;
+import javax.swing.WindowConstants;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.font.TextAttribute;
-import java.util.HashMap;
-import java.util.Map;
-
-import static paranoia.services.plc.ResourceManager.ResourceIcon.MISSION;
-import static paranoia.services.plc.ResourceManager.ResourceIcon.MISSION_COMPLETED;
-import static paranoia.services.plc.ResourceManager.ResourceIcon.MISSION_FAILED;
+import java.io.IOException;
 
 public class Mission implements ICoreTechPart {
+
+    public static void main(String[] args) {
+        JFrame frame = new JFrame();
+        frame.setMinimumSize(new Dimension(320, 0));
+        try {
+            ResourceManager.loadResources();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Mission mission = new Mission(
+            0,
+            "Trial mission",
+            "Get to da CHOPPA!!",
+            MissionPriority.REQUIRED
+        );
+        frame.add(mission.getVisual());
+        frame.pack();
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        mission.fail();
+        frame.getContentPane().removeAll();
+        frame.add(mission.getVisual());
+        frame.pack();
+        System.out.println("READY");
+
+    }
 
     public enum MissionPriority {
         REQUIRED,
@@ -82,43 +104,12 @@ public class Mission implements ICoreTechPart {
         failed = true;
     }
 
-    private ResourceManager.ResourceIcon getMissionStatus() {
-        if (failed) {
-            return MISSION_FAILED;
-        } else if (completed) {
-            return MISSION_COMPLETED;
-        } else return MISSION;
-    }
-
     public MissionPriority getPriority() {
         return priority;
     }
 
     @Override
     public JPanel getVisual() {
-        JTextArea missionText = new JTextArea(title);
-        missionText.setName(ComponentName.MISSION.name() + id);
-        missionText.setToolTipText(description);
-        missionText.setEditable(false);
-        missionText.setForeground(
-            failed ? new Color(185,0,0) : new Color(0,0,0)
-        );
-        missionText.setOpaque(false);
-        if(failed) {
-            Map<TextAttribute, Boolean> fontAttributes = new HashMap<>();
-            fontAttributes.put(TextAttribute.STRIKETHROUGH, TextAttribute.STRIKETHROUGH_ON);
-            missionText.setFont(new Font(fontAttributes));
-        }
-
-        ParanoiaImage image = new ParanoiaImage(ResourceManager.getResource(getMissionStatus()));
-        image.setPreferredSize(new Dimension(32,32));
-
-        JPanel panel = new JPanel();
-        panel.setLayout(new FlowLayout(FlowLayout.LEADING));
-        panel.setOpaque(false);
-        panel.add(image);
-        panel.add(missionText);
-        panel.setMinimumSize(new Dimension(0,40));
-        return panel;
+        return new MissionView(title, description, id, failed, completed);
     }
 }

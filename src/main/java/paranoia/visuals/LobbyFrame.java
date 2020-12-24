@@ -2,7 +2,6 @@ package paranoia.visuals;
 
 import daiv.networking.command.general.AuthRequest;
 import daiv.networking.command.general.AuthResponse;
-import daiv.networking.command.general.PingCommand;
 import daiv.ui.AssetManager;
 import daiv.ui.custom.ParanoiaMessage;
 import paranoia.core.ParanoiaPlayer;
@@ -26,7 +25,7 @@ import java.util.List;
 import static daiv.ui.LayoutManager.panelOf;
 
 public class LobbyFrame extends JFrame implements
-    PingCommand.ParanoiaPingListener,   //TODO: frontend should not handle business logic!!!!
+    //PingCommand.ParanoiaPingListener,   //TODO: frontend should not handle business logic!!!!
     AuthRequest.ParanoiaAuthListener,
     ParanoiaListener<ParanoiaPlayer>
 {
@@ -45,7 +44,6 @@ public class LobbyFrame extends JFrame implements
 
         Lobby lobby = new Lobby(this, network, name);
 
-        network.getParser().setPingListener(this);
         network.getParser().setAuthListener(this);
 
         setLayout(new BorderLayout());
@@ -53,12 +51,6 @@ public class LobbyFrame extends JFrame implements
         add(lobbyPanel, BorderLayout.EAST);
         add(new ACPFPanel(network), BorderLayout.CENTER);
         pack();
-    }
-
-    @Override
-    public void pong() {
-        if(network == null) return;
-        network.sendCommand(new PingCommand());
     }
 
     @Override

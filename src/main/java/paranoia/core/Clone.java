@@ -11,8 +11,7 @@ import java.util.Map;
 
 public class Clone implements
     Cloneable,
-    ICoreTechPart,
-    ParanoiaPlayer
+    ICoreTechPart
 {
     private static final String UNKNOWN = "UNKNOWN";
     private String name;

@@ -97,7 +97,7 @@ public class ControlUnit implements ParanoiaController, ParanoiaButtonListener {
         return operationPanel;
     }
 
-    //FIXME: This is frontend
+    //FIXME: This is frontend task, not backend
     public void fireRollMessage(
         Stat stat, Skill skill,
         boolean statChange, boolean skillChange,
