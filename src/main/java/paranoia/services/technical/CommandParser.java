@@ -2,41 +2,41 @@ package paranoia.services.technical;
 
 
 import daiv.networking.command.ParanoiaCommand;
-import daiv.networking.command.general.AuthRequest;
-import daiv.networking.command.general.DisconnectCommand;
-import daiv.networking.command.general.PingCommand;
+import daiv.networking.command.acpf.response.LobbyResponse;
+import daiv.networking.command.general.DisconnectRequest;
+import daiv.networking.command.general.Ping;
 
 
 public class CommandParser {
 
-    private PingCommand.ParanoiaPingListener pingListener;
-    private AuthRequest.ParanoiaAuthListener authListener;
-    private DisconnectCommand.ParanoiaDisconnectListener disconnectListener;
+    private Ping.ParanoiaPingListener pingListener;
+    private LobbyResponse.ParanoiaAuthListener authListener;
+    private DisconnectRequest.ParanoiaDisconnectListener disconnectListener;
 
     public void parse(ParanoiaCommand command) {
 
         switch (command.getType()) {
             case PING:
-                PingCommand.create(pingListener).execute();
+                Ping.create(command.getTimestamp(), pingListener).execute();
                 break;
-            case REQ_AUTH:
-                AuthRequest.create(command, authListener).execute();
+            case LOBBY_RESP:
+                LobbyResponse.create(command, authListener).execute();
                 break;
             case DISCONNECT:
-                DisconnectCommand.create(command, disconnectListener).execute();
+                DisconnectRequest.create(command, disconnectListener).execute();
                 break;
             default:
                 break;
         }
     }
 
-    public void setPingListener(PingCommand.ParanoiaPingListener listener) {
+    public void setPingListener(Ping.ParanoiaPingListener listener) {
         this.pingListener = listener;
     }
-    public void setAuthListener(AuthRequest.ParanoiaAuthListener listener) {
+    public void setAuthListener(LobbyResponse.ParanoiaAuthListener listener) {
         this.authListener = listener;
     }
-    public void setDisconnectListener(DisconnectCommand.ParanoiaDisconnectListener disconnectListener) {
+    public void setDisconnectListener(DisconnectRequest.ParanoiaDisconnectListener disconnectListener) {
         this.disconnectListener = disconnectListener;
     }
 }

@@ -1,6 +1,8 @@
 package paranoia.services.hpdmc;
 
 import daiv.networking.command.ParanoiaCommand;
+import daiv.networking.command.acpf.request.LobbyRequest;
+import daiv.networking.command.acpf.response.LobbyResponse;
 import daiv.ui.custom.ParanoiaButtonListener;
 import daiv.ui.custom.ParanoiaMessage;
 import paranoia.core.ICoreTechPart;
@@ -33,7 +35,7 @@ import java.util.Map;
 /**
  * Controls the core game elements - GameMaster interface
  */
-public class ControlUnit implements ParanoiaController, ParanoiaButtonListener {
+public class ControlUnit implements ParanoiaController, ParanoiaButtonListener, LobbyResponse.ParanoiaAuthListener {
 
     private CerebralCoretech visuals;
     private MenuFrame mainFrame;
@@ -41,6 +43,7 @@ public class ControlUnit implements ParanoiaController, ParanoiaButtonListener {
     private final OperationPanel operationPanel;
     private final Network network;
     private String connectUrl = "http://127.0.0.1:6532";
+    private ParanoiaPlayer player;
 
     public ControlUnit(Network network) {
         operationPanel = new OperationPanel();
@@ -61,6 +64,7 @@ public class ControlUnit implements ParanoiaController, ParanoiaButtonListener {
         //Setup network
         this.network = network;
         ACPFPanel acpfPanel = new ACPFPanel(network);
+        network.getParser().setAuthListener(this);
 //        network.getParser().setChatListener(chatPanel);
 //        network.getParser().setAcpfListener(clone);
 //        network.getParser().setRollListener(this);
@@ -121,13 +125,14 @@ public class ControlUnit implements ParanoiaController, ParanoiaButtonListener {
     private void createPlayer(String connectUrl) {
         String playerName = ParanoiaMessage.input("What is your name, citizen?");
         if(playerName != null && !playerName.isEmpty()) {
-            ParanoiaPlayer player = new ParanoiaPlayer(playerName);
+            player = new ParanoiaPlayer(playerName);
             Network network = new Network(new CommandParser());
             //Network
             try {
                 network.connectToServer(connectUrl);
                 mainFrame.dispose();
                 new LobbyFrame(network, player).setVisible(true);
+                sendCommand(new LobbyRequest(player.getName(), ""));
             } catch (IOException ex) {
                 ex.printStackTrace();
                 ParanoiaMessage.error(ex);
@@ -163,6 +168,21 @@ public class ControlUnit implements ParanoiaController, ParanoiaButtonListener {
                 break;
             default:
                 break;
+        }
+    }
+
+    @Override
+    public void validateLobby(boolean valid, boolean hasPassword) {
+        if (valid) {
+            if (hasPassword) {
+                //Request password
+                String password = ParanoiaMessage.input("Enter server password");
+                sendCommand(new LobbyRequest(player.getName(), password));
+            } else {
+                //Auth successful
+            }
+        } else {
+            //Auth failed
         }
     }
 }

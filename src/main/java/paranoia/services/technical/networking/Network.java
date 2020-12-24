@@ -3,7 +3,8 @@ package paranoia.services.technical.networking;
 import daiv.networking.ParanoiaSocket;
 import daiv.networking.SocketListener;
 import daiv.networking.command.ParanoiaCommand;
-import daiv.networking.command.general.DisconnectCommand;
+import daiv.networking.command.general.DisconnectRequest;
+import daiv.networking.command.general.Ping;
 import daiv.ui.custom.ParanoiaMessage;
 import paranoia.services.technical.CommandParser;
 
@@ -12,6 +13,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.URL;
+import java.util.Date;
 
 /**
  * Establishes the Network.
@@ -23,7 +25,8 @@ import java.net.URL;
  */
 public class Network implements
     SocketListener,
-    DisconnectCommand.ParanoiaDisconnectListener
+    DisconnectRequest.ParanoiaDisconnectListener,
+    Ping.ParanoiaPingListener
 {
 
     private ParanoiaSocket client = null;
@@ -40,6 +43,7 @@ public class Network implements
         client = new ParanoiaSocket(socket);
         client.addListener(this);
         parser.setDisconnectListener(this);
+        parser.setPingListener(this);
     }
 
     private void connectWithIP(String ip) throws IOException {
@@ -63,7 +67,7 @@ public class Network implements
     @Override
     public void disconnect(String message) {
         if(client == null) return;
-        sendCommand(new DisconnectCommand(message));
+        sendCommand(new DisconnectRequest(message));
         client.destroy();
         client = null;
         ParanoiaMessage.info("You have been disconnected from the Alpha Complex.\nReason: " + message);
@@ -103,5 +107,10 @@ public class Network implements
     @Override
     public void fireTerminated() {
         disconnect("Client terminated the connection.");
+    }
+
+    @Override
+    public void pong(Date ping) {
+        sendCommand(new Ping(ping));
     }
 }

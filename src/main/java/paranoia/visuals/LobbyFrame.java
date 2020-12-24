@@ -1,9 +1,6 @@
 package paranoia.visuals;
 
-import daiv.networking.command.general.AuthRequest;
-import daiv.networking.command.general.AuthResponse;
 import daiv.ui.AssetManager;
-import daiv.ui.custom.ParanoiaMessage;
 import paranoia.core.ParanoiaPlayer;
 import paranoia.services.hpdmc.ParanoiaListener;
 import paranoia.services.technical.networking.Network;
@@ -25,7 +22,6 @@ import java.util.List;
 import static daiv.ui.LayoutManager.panelOf;
 
 public class LobbyFrame extends JFrame implements
-    AuthRequest.ParanoiaAuthListener,
     ParanoiaListener<ParanoiaPlayer>
 {
 
@@ -43,23 +39,11 @@ public class LobbyFrame extends JFrame implements
 
         Lobby lobby = new Lobby(this, network, name);
 
-        network.getParser().setAuthListener(this);
-
         setLayout(new BorderLayout());
         add(lobby.createInfoPanel(), BorderLayout.NORTH);
         add(lobbyPanel, BorderLayout.EAST);
         add(new ACPFPanel(network), BorderLayout.CENTER);
         pack();
-    }
-
-    @Override
-    public void requestAuth(boolean hasPassword) {
-        String pass = null;
-        if(hasPassword) {
-            pass = ParanoiaMessage.input("Enter server password");
-        }
-
-        network.sendCommand(new AuthResponse(name, pass));
     }
 
     public void leave() {
