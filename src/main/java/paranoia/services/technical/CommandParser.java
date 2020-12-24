@@ -17,7 +17,7 @@ public class CommandParser {
 
         switch (command.getType()) {
             case PING:
-                Ping.create(command.getTimestamp(), pingListener).execute();
+                Ping.create(command, pingListener).execute();
                 break;
             case LOBBY_RESP:
                 LobbyResponse.create(command, authListener).execute();

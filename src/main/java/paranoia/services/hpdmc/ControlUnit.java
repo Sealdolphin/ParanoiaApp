@@ -14,7 +14,6 @@ import paranoia.services.hpdmc.manager.CardManager;
 import paranoia.services.hpdmc.manager.MissionManager;
 import paranoia.services.hpdmc.manager.ParanoiaManager;
 import paranoia.services.hpdmc.manager.TroubleShooterManager;
-import paranoia.services.technical.CommandParser;
 import paranoia.services.technical.networking.Network;
 import paranoia.visuals.CerebralCoretech;
 import paranoia.visuals.ComponentName;
@@ -35,7 +34,8 @@ import java.util.Map;
 /**
  * Controls the core game elements - GameMaster interface
  */
-public class ControlUnit implements ParanoiaController, ParanoiaButtonListener, LobbyResponse.ParanoiaAuthListener {
+public class ControlUnit implements
+    ParanoiaController, ParanoiaButtonListener, LobbyResponse.ParanoiaAuthListener {
 
     private CerebralCoretech visuals;
     private MenuFrame mainFrame;
@@ -122,21 +122,23 @@ public class ControlUnit implements ParanoiaController, ParanoiaButtonListener, 
         msg.setVisible(true);
     }
 
-    private void createPlayer(String connectUrl) {
+    private void createPlayer() {
         String playerName = ParanoiaMessage.input("What is your name, citizen?");
-        if(playerName != null && !playerName.isEmpty()) {
+        if(playerName == null) {
+            network.fireTerminated();
+        } else {
             player = new ParanoiaPlayer(playerName);
-            Network network = new Network(new CommandParser());
-            //Network
-            try {
-                network.connectToServer(connectUrl);
-                mainFrame.dispose();
-                new LobbyFrame(network, player).setVisible(true);
-                sendCommand(new LobbyRequest(player.getName(), ""));
-            } catch (IOException ex) {
-                ex.printStackTrace();
-                ParanoiaMessage.error(ex);
-            }
+            sendCommand(new LobbyRequest(player.getName(), ""));
+        }
+    }
+
+    private void connectToAlphaComplex(String connectUrl) {
+        try {
+            network.connectToServer(connectUrl);
+            createPlayer();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            ParanoiaMessage.error(ex);
         }
     }
 
@@ -161,7 +163,7 @@ public class ControlUnit implements ParanoiaController, ParanoiaButtonListener, 
         } catch (IllegalArgumentException ignored) {}
         switch (btn) {
             case START_LOBBY:
-                createPlayer(connectUrl);
+                connectToAlphaComplex(connectUrl);
                 break;
             case SETTINGS:
                 changeSettings();
@@ -180,9 +182,12 @@ public class ControlUnit implements ParanoiaController, ParanoiaButtonListener, 
                 sendCommand(new LobbyRequest(player.getName(), password));
             } else {
                 //Auth successful
+                mainFrame.dispose();
+                new LobbyFrame(network, player).setVisible(true);
             }
         } else {
-            //Auth failed
+            ParanoiaMessage.error("This name is already assigned to a TroubleShooter");
+            createPlayer();
         }
     }
 }
