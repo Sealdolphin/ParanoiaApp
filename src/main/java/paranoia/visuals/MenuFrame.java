@@ -22,8 +22,8 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 
+import static daiv.Computer.getParanoiaResource;
 import static daiv.ui.LayoutManager.panelOf;
-import static paranoia.Paranoia.getParanoiaResource;
 import static paranoia.services.hpdmc.ParanoiaButtonCommand.SETTINGS;
 import static paranoia.services.hpdmc.ParanoiaButtonCommand.START_LOBBY;
 

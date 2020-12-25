@@ -1,7 +1,6 @@
 package paranoia.visuals.animation;
 
 import daiv.ui.visuals.ParanoiaImage;
-import paranoia.Paranoia;
 import paranoia.core.ICoreTechPart;
 import paranoia.core.SecurityClearance;
 
@@ -13,6 +12,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+
+import static daiv.Computer.getParanoiaResource;
 
 public class ParanoiaDice implements ICoreTechPart {
 
@@ -29,7 +30,7 @@ public class ParanoiaDice implements ICoreTechPart {
         BufferedImage dice = new BufferedImage(1,1, Image.SCALE_SMOOTH);
         try {
             dice = ImageIO.read(new File(
-                Paranoia.getParanoiaResource("other/ParanoiaCube" + color.name() + ".png")
+                getParanoiaResource("other/ParanoiaCube" + color.name() + ".png")
             ));
         } catch (IOException e) {
             e.printStackTrace();

@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static paranoia.Paranoia.getParanoiaResource;
+import static daiv.Computer.getParanoiaResource;
 
 //TODO: do not extend from Image, make it a private attribute instead!!
 public abstract class ParanoiaCard extends ParanoiaImage implements ICoreTechPart {

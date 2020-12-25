@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static paranoia.Paranoia.getParanoiaResource;
+import static daiv.Computer.getParanoiaResource;
 
 public abstract class ResourceManager {
 
@@ -42,7 +42,7 @@ public abstract class ResourceManager {
         images.put(ResourceIcon.MISSION, ImageIO.read(new File(getParanoiaResource("mechanics/mission.png"))));
         images.put(ResourceIcon.MISSION_COMPLETED, ImageIO.read(new File(getParanoiaResource("mechanics/missionComplete.png"))));
         images.put(ResourceIcon.MISSION_FAILED, ImageIO.read(new File(getParanoiaResource("mechanics/missionFailed.png"))));
-        images.put(ResourceIcon.MISTERY_CLONE, ImageIO.read(new File(getParanoiaResource("clones/cloneMistery.png"))));
+        images.put(ResourceIcon.MISTERY_CLONE, ImageIO.read(new File(getParanoiaResource("clones/clone0.png"))));
     }
 
     public static BufferedImage getResource(ResourceIcon key) {

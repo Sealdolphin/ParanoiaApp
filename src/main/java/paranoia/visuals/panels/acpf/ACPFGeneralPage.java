@@ -4,7 +4,6 @@ import daiv.ui.AssetManager;
 import daiv.ui.custom.ParanoiaMessage;
 import daiv.ui.visuals.ParanoiaImage;
 import daiv.ui.visuals.ParanoiaImageFilter;
-import paranoia.Paranoia;
 import paranoia.visuals.custom.ParanoiaSectorFilter;
 
 import javax.imageio.ImageIO;
@@ -29,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static daiv.Computer.getParanoiaResource;
 import static daiv.ui.LayoutManager.createGrid;
 import static java.awt.GridBagConstraints.CENTER;
 import static java.awt.GridBagConstraints.LINE_START;
@@ -106,7 +106,7 @@ public class ACPFGeneralPage extends JPanel implements ACPFPage {
 
         //Custom profile picture
         try {
-            profilePath = Paranoia.getParanoiaResource("clones/clone0.png");
+            profilePath = getParanoiaResource("clones/clone0.png");
         } catch (IOException e) {
             ParanoiaMessage.error(e);
         }

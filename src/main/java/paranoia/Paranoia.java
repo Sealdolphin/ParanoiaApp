@@ -9,7 +9,6 @@ import paranoia.services.technical.networking.Network;
 
 import java.awt.Color;
 import java.io.IOException;
-import java.net.URL;
 
 /**
  * The game itself
@@ -30,15 +29,6 @@ public class Paranoia {
         }
 
         new ControlUnit(new Network(new CommandParser()));
-    }
-
-    public static String getParanoiaResource(String path) throws IOException {
-        URL url = Paranoia.class.getClassLoader().getResource(path);
-        if(url != null) {
-            return url.getFile();
-        } else {
-            throw new IOException("Could not load file: " + path);
-        }
     }
 
 }

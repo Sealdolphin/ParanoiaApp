@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static paranoia.Paranoia.getParanoiaResource;
+import static daiv.Computer.getParanoiaResource;
 
 public class OperationPanel extends JPanel {
 
@@ -64,8 +64,7 @@ public class OperationPanel extends JPanel {
         operation.add(btnChat);
         return operation;
     }
-
-    @SuppressWarnings("NullableProblems")
+    
     @Override
     public void add(Component comp, Object constraints) {
         String key = (String) constraints;

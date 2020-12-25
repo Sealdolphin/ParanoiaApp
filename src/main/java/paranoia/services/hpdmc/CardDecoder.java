@@ -16,7 +16,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
 
-import static paranoia.Paranoia.getParanoiaResource;
+import static daiv.Computer.getParanoiaResource;
 
 public class CardDecoder {
 
