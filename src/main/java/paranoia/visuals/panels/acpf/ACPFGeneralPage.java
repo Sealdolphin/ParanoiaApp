@@ -1,5 +1,7 @@
 package paranoia.visuals.panels.acpf;
 
+import daiv.networking.command.ParanoiaCommand;
+import daiv.networking.command.acpf.request.DefineRequest;
 import daiv.ui.AssetManager;
 import daiv.ui.custom.ParanoiaMessage;
 import daiv.ui.visuals.ParanoiaImage;
@@ -150,14 +152,15 @@ public class ACPFGeneralPage extends JPanel implements ACPFPage {
             if(hasEmptyTF()) {
                 String[] personalitiesText = Arrays.stream(personalities)
                     .map(JTextComponent::getText).toArray(String[]::new);
-//                ParanoiaCommand command = new ACPFCommand(
-//                    tfName.getText(),
-//                    tfGender.getText(),
-//                    personalitiesText,
-//                    profilePicture.getImage(),
-//                    null
-//                );
-//                main.sendResponse(command);
+                main.sendResponse(
+                    new DefineRequest(
+                        tfName.getText(),
+                        tfSector.getText(),
+                        tfGender.getText(),
+                        personalitiesText,
+                        ParanoiaCommand.parseImage(profilePicture.getImage())
+                    )
+                );
                 return true;
             } else return false;
         }
