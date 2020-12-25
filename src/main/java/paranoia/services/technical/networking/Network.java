@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.URL;
-import java.util.Date;
+import java.time.Instant;
 
 /**
  * Establishes the Network.
@@ -110,7 +110,7 @@ public class Network implements
     }
 
     @Override
-    public void pong(Date ping) {
+    public void pong(Instant ping) {
         sendCommand(new Ping(ping));
     }
 }

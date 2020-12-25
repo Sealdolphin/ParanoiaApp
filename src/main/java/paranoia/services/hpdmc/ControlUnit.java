@@ -176,18 +176,18 @@ public class ControlUnit implements
     @Override
     public void validateLobby(boolean valid, boolean hasPassword) {
         if (valid) {
+            //Auth successful
+            mainFrame.dispose();
+            new LobbyFrame(network, player).setVisible(true);
+        } else {
             if (hasPassword) {
                 //Request password
                 String password = ParanoiaMessage.input("Enter server password");
                 sendCommand(new LobbyRequest(player.getName(), password));
             } else {
-                //Auth successful
-                mainFrame.dispose();
-                new LobbyFrame(network, player).setVisible(true);
+                ParanoiaMessage.error("This name is already assigned to a TroubleShooter");
+                createPlayer();
             }
-        } else {
-            ParanoiaMessage.error("This name is already assigned to a TroubleShooter");
-            createPlayer();
         }
     }
 }
