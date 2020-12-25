@@ -48,6 +48,7 @@ public class ControlUnit implements
     public ControlUnit(Network network) {
         operationPanel = new OperationPanel();
         mainFrame = new MenuFrame(this);
+        mainFrame.updateSettings(connectUrl);
         //Setup managers
         managerMap = new HashMap<>();
         managerMap.put(ComponentName.MISSION_PANEL, new MissionManager());
@@ -125,7 +126,7 @@ public class ControlUnit implements
     private void createPlayer() {
         String playerName = ParanoiaMessage.input("What is your name, citizen?");
         if(playerName == null) {
-            network.fireTerminated();
+            network.fireTerminated("Client terminated the connection.");
         } else {
             player = new ParanoiaPlayer(playerName);
             sendCommand(new LobbyRequest(player.getName(), ""));
@@ -147,6 +148,7 @@ public class ControlUnit implements
         if(address != null && !address.equals("")) {
             System.out.println("New address: '" + address + "'");
             connectUrl = address;
+            mainFrame.updateSettings(connectUrl);
         }
     }
 
@@ -168,6 +170,9 @@ public class ControlUnit implements
             case SETTINGS:
                 changeSettings();
                 break;
+            case EXIT_TO_MENU:
+                mainFrame.setVisible(true);
+                break;
             default:
                 break;
         }
@@ -178,7 +183,7 @@ public class ControlUnit implements
         if (valid) {
             //Auth successful
             mainFrame.dispose();
-            new LobbyFrame(network, player).setVisible(true);
+            new LobbyFrame(network, player, this).setVisible(true);
         } else {
             if (hasPassword) {
                 //Request password

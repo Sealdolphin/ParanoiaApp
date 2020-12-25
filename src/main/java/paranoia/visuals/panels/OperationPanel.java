@@ -64,7 +64,7 @@ public class OperationPanel extends JPanel {
         operation.add(btnChat);
         return operation;
     }
-    
+
     @Override
     public void add(Component comp, Object constraints) {
         String key = (String) constraints;

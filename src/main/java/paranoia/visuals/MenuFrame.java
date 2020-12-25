@@ -5,7 +5,6 @@ import daiv.ui.visuals.ParanoiaButton;
 import paranoia.Paranoia;
 import paranoia.services.hpdmc.ControlUnit;
 
-import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -19,23 +18,17 @@ import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Image;
 import java.awt.event.WindowEvent;
-import java.io.File;
-import java.io.IOException;
 
-import static daiv.Computer.getParanoiaResource;
 import static daiv.ui.LayoutManager.panelOf;
 import static paranoia.services.hpdmc.ParanoiaButtonCommand.SETTINGS;
 import static paranoia.services.hpdmc.ParanoiaButtonCommand.START_LOBBY;
 
 public class MenuFrame extends JFrame {
 
+    JLabel lbAddr = new JLabel("Address: ???");
+
     public MenuFrame(ControlUnit control) {
-        try {
-            Image icon = ImageIO.read(new File(getParanoiaResource("ui/paranoia.png")));
-            setIconImage(icon.getScaledInstance(64,64,Image.SCALE_SMOOTH));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        setIconImage(Paranoia.icon != null ? Paranoia.icon.getScaledInstance(64, 64, Image.SCALE_SMOOTH) : null);
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("Paranoia");
@@ -55,7 +48,6 @@ public class MenuFrame extends JFrame {
         btnStart.setMaximumSize(size);
         btnStart.addParanoiaButtonListener(control);
 
-        JLabel lbAddr = new JLabel("Address: ");
         lbAddr.setFont(AssetManager.getItalicFont(15));
         lbAddr.setMaximumSize(size);
 
@@ -80,6 +72,10 @@ public class MenuFrame extends JFrame {
         pack();
         setResizable(false);
         setLocationRelativeTo(null);
+    }
+
+    public void updateSettings(String address) {
+        lbAddr.setText("Address: " + address);
     }
 
 }

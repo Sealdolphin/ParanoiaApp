@@ -1,32 +1,34 @@
 package paranoia.visuals;
 
 import daiv.ui.AssetManager;
+import daiv.ui.custom.ParanoiaButtonListener;
 import daiv.ui.visuals.ParanoiaButton;
 import paranoia.services.hpdmc.manager.PlayerManager;
 import paranoia.services.technical.networking.Network;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Component;
 
 import static daiv.ui.LayoutManager.panelOf;
+import static paranoia.services.hpdmc.ParanoiaButtonCommand.EXIT_TO_MENU;
 
 public class Lobby {
 
     private final JLabel lbAddress = new JLabel();
     private final JLabel lbPlayerName = new JLabel();
     private final JLabel lbRound = new JLabel();
-    private final JButton btnLeave = new ParanoiaButton("Leave");
+    private final ParanoiaButton btnLeave = new ParanoiaButton("Leave", EXIT_TO_MENU.name());
     private final PlayerManager manager = new PlayerManager();
 
     public Lobby(
         LobbyFrame parent,
         Network network,
-        String player
+        String player,
+        ParanoiaButtonListener listener
     ) {
         //Create
         lbAddress.setText("Server IP: " + network.getIP());
@@ -44,6 +46,7 @@ public class Lobby {
         btnLeave.setForeground(Color.WHITE);
         btnLeave.setFont(AssetManager.getFont(23));
         btnLeave.addActionListener(e -> parent.leave());
+        btnLeave.addParanoiaButtonListener(listener);
     }
 
     public JPanel createInfoPanel() {

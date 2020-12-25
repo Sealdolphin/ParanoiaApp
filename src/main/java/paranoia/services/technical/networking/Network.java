@@ -5,7 +5,6 @@ import daiv.networking.SocketListener;
 import daiv.networking.command.ParanoiaCommand;
 import daiv.networking.command.general.DisconnectRequest;
 import daiv.networking.command.general.Ping;
-import daiv.ui.custom.ParanoiaMessage;
 import paranoia.services.technical.CommandParser;
 
 import java.io.EOFException;
@@ -67,10 +66,7 @@ public class Network implements
     @Override
     public void disconnect(String message) {
         if(client == null) return;
-        sendCommand(new DisconnectRequest(message));
         client.destroy();
-        client = null;
-        ParanoiaMessage.info("You have been disconnected from the Alpha Complex.\nReason: " + message);
     }
 
     public boolean sendCommand(ParanoiaCommand command) {
@@ -105,8 +101,8 @@ public class Network implements
     }
 
     @Override
-    public void fireTerminated() {
-        disconnect("Client terminated the connection.");
+    public void fireTerminated(String message) {
+        sendCommand(new DisconnectRequest(message));
     }
 
     @Override

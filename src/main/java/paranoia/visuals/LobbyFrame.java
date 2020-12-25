@@ -1,6 +1,8 @@
 package paranoia.visuals;
 
 import daiv.ui.AssetManager;
+import daiv.ui.custom.ParanoiaButtonListener;
+import paranoia.Paranoia;
 import paranoia.core.ParanoiaPlayer;
 import paranoia.services.hpdmc.ParanoiaListener;
 import paranoia.services.technical.networking.Network;
@@ -16,6 +18,7 @@ import javax.swing.WindowConstants;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.util.Collection;
 import java.util.List;
 
@@ -26,18 +29,19 @@ public class LobbyFrame extends JFrame implements
 {
 
     private final Network network;
-    private final String name;
     private JScrollPane lobbyPanel = new JScrollPane();
 
-    public LobbyFrame(Network network, ParanoiaPlayer player) {
+    public LobbyFrame(Network network, ParanoiaPlayer player, ParanoiaButtonListener listener) {
+        setIconImage(Paranoia.icon != null ? Paranoia.icon.getScaledInstance(64, 64, Image.SCALE_SMOOTH) : null);
+
         this.network = network;
-        this.name = player.getName();
+        String name = player.getName();
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new Dimension(700, 400));
         setTitle("Alpha Complex Personal Lobby");
 
-        Lobby lobby = new Lobby(this, network, name);
+        Lobby lobby = new Lobby(this, network, name, listener);
 
         setLayout(new BorderLayout());
         add(lobby.createInfoPanel(), BorderLayout.NORTH);
@@ -48,8 +52,7 @@ public class LobbyFrame extends JFrame implements
 
     public void leave() {
         dispose();
-        network.fireTerminated();
-        //open menu frame!!
+        network.fireTerminated("Player left the lobby");
     }
 
     @Override
