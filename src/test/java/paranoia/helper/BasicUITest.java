@@ -9,6 +9,8 @@ import org.junit.BeforeClass;
 import paranoia.core.Clone;
 import paranoia.core.Computer;
 import paranoia.services.hpdmc.ControlUnit;
+import paranoia.services.technical.CommandParser;
+import paranoia.services.technical.networking.Network;
 
 import javax.swing.JFrame;
 
@@ -29,7 +31,7 @@ public abstract class BasicUITest extends AssertJSwingJUnitTestCase {
         GuiActionRunner.execute(Computer::initDatabase);
         //create test clone
         testClone = new TestClone(0);
-        controller = GuiActionRunner.execute(() -> new ControlUnit(testClone, "testPlayer"));
+        controller = GuiActionRunner.execute(() -> new ControlUnit(new Network(new CommandParser())));
         utils = GuiActionRunner.execute(() -> new ParanoiaUtils(controller));
 
         //showing window

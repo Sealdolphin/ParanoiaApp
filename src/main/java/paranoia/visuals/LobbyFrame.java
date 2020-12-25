@@ -41,7 +41,8 @@ public class LobbyFrame extends JFrame implements
         setMinimumSize(new Dimension(700, 400));
         setTitle("Alpha Complex Personal Lobby");
 
-        Lobby lobby = new Lobby(this, network, name, listener);
+        Lobby lobby = new Lobby(this, network.getIP(), name, listener);
+        network.getParser().setPlayerListener(lobby);
 
         setLayout(new BorderLayout());
         add(lobby.createInfoPanel(), BorderLayout.NORTH);
@@ -64,7 +65,7 @@ public class LobbyFrame extends JFrame implements
     }
 
     public JPanel createLobbyPanel(List<ParanoiaPlayer> players) {
-        JLabel lbParty = new JLabel("Your party:");
+        JLabel lbParty = new JLabel("Your party (" + players.size() + "):");
         lbParty.setAlignmentX(Component.CENTER_ALIGNMENT);
         lbParty.setFont(AssetManager.getBoldFont(15));
         Component[] components = new Component[2 * players.size() + 1];

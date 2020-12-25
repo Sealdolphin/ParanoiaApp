@@ -1,7 +1,6 @@
 package paranoia.services.technical.networking;
 
 import daiv.networking.ParanoiaSocket;
-import daiv.networking.SocketListener;
 import daiv.networking.command.ParanoiaCommand;
 import daiv.networking.command.general.DisconnectRequest;
 import daiv.networking.command.general.Ping;
@@ -23,7 +22,7 @@ import java.time.Instant;
  *  - sending appropriate command(s)
  */
 public class Network implements
-    SocketListener,
+    daiv.networking.SocketListener,
     DisconnectRequest.ParanoiaDisconnectListener,
     Ping.ParanoiaPingListener
 {
@@ -71,7 +70,7 @@ public class Network implements
 
     public boolean sendCommand(ParanoiaCommand command) {
         if(client != null && client.isOpen()) {
-            client.sendMessage(command.toNetworkMessage(client.getAddress()));
+            client.sendMessage(command.toNetworkMessage(client.getAddress(), parser.getUUID()));
             return true;
         } else {
             return false;

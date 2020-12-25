@@ -38,7 +38,7 @@ public class ControlUnit implements
     ParanoiaController, ParanoiaButtonListener, LobbyResponse.ParanoiaAuthListener {
 
     private CerebralCoretech visuals;
-    private MenuFrame mainFrame;
+    private final MenuFrame mainFrame;
     private final Map<ComponentName, ParanoiaManager<? extends ICoreTechPart>> managerMap;
     private final OperationPanel operationPanel;
     private final Network network;

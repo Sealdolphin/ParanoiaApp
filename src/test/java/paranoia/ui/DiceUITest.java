@@ -17,6 +17,8 @@ import paranoia.core.cpu.Skill;
 import paranoia.core.cpu.Stat;
 import paranoia.helper.TestClone;
 import paranoia.services.hpdmc.ControlUnit;
+import paranoia.services.technical.CommandParser;
+import paranoia.services.technical.networking.Network;
 import paranoia.visuals.ComponentName;
 import paranoia.visuals.messages.RollMessage;
 import paranoia.visuals.panels.OperationPanel;
@@ -49,7 +51,7 @@ public class DiceUITest extends AssertJSwingJUnitTestCase {
         JDialog rollDialog;
         GuiActionRunner.execute(() -> {
             testClone = new TestClone();
-            cpu = new ControlUnit(testClone, "testPlayer");
+            cpu = new ControlUnit(new Network(new CommandParser()));
             testClone.attributes.iterator().forEachRemaining(paranoiaAttribute ->
                 cpu.updateAsset(paranoiaAttribute, ComponentName.SKILL_PANEL));
 

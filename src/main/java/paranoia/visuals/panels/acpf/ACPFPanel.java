@@ -59,6 +59,7 @@ public class ACPFPanel extends JPanel {
         text.setWrapStyleWord(true);
         text.setEditable(false);
         text.setOpaque(false);
+        text.setHighlighter(null);
         text.setFont(AssetManager.getItalicFont(25));
         text.setText(
             "Your response has been sent to Friend Computer. " +

@@ -5,15 +5,19 @@ import daiv.networking.command.ParanoiaCommand;
 import daiv.networking.command.acpf.response.LobbyResponse;
 import daiv.networking.command.general.DisconnectRequest;
 import daiv.networking.command.general.Ping;
+import daiv.networking.command.general.PlayerBroadcast;
 
 
 public class CommandParser {
 
+    private String uuid = null;
     private Ping.ParanoiaPingListener pingListener;
     private LobbyResponse.ParanoiaAuthListener authListener;
     private DisconnectRequest.ParanoiaDisconnectListener disconnectListener;
+    private PlayerBroadcast.PlayerConnectListener playerListener;
 
     public void parse(ParanoiaCommand command) {
+        if(uuid == null) { uuid = command.getUUID(); }
 
         switch (command.getType()) {
             case PING:
@@ -25,11 +29,21 @@ public class CommandParser {
             case DISCONNECT:
                 DisconnectRequest.create(command, disconnectListener).execute();
                 break;
+            case PLAYER:
+                PlayerBroadcast.create(command, uuid, playerListener).execute();
+                break;
             default:
                 break;
         }
     }
 
+    public String getUUID() {
+        return uuid;
+    }
+
+    public void setPlayerListener(PlayerBroadcast.PlayerConnectListener listener) {
+        this.playerListener = listener;
+    }
     public void setPingListener(Ping.ParanoiaPingListener listener) {
         this.pingListener = listener;
     }

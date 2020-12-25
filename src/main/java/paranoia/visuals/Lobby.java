@@ -1,10 +1,12 @@
 package paranoia.visuals;
 
+import daiv.networking.command.ParanoiaCommand;
+import daiv.networking.command.general.PlayerBroadcast;
 import daiv.ui.AssetManager;
 import daiv.ui.custom.ParanoiaButtonListener;
 import daiv.ui.visuals.ParanoiaButton;
+import paranoia.core.ParanoiaPlayer;
 import paranoia.services.hpdmc.manager.PlayerManager;
-import paranoia.services.technical.networking.Network;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -12,11 +14,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Component;
+import java.util.List;
 
 import static daiv.ui.LayoutManager.panelOf;
 import static paranoia.services.hpdmc.ParanoiaButtonCommand.EXIT_TO_MENU;
 
-public class Lobby {
+public class Lobby implements PlayerBroadcast.PlayerConnectListener {
 
     private final JLabel lbAddress = new JLabel();
     private final JLabel lbPlayerName = new JLabel();
@@ -26,12 +29,12 @@ public class Lobby {
 
     public Lobby(
         LobbyFrame parent,
-        Network network,
+        String ipAddress,
         String player,
         ParanoiaButtonListener listener
     ) {
         //Create
-        lbAddress.setText("Server IP: " + network.getIP());
+        lbAddress.setText("Server IP: " + ipAddress);
         lbAddress.setFont(AssetManager.getFont(20));
 
         lbPlayerName.setText(player);
@@ -57,5 +60,16 @@ public class Lobby {
                 Box.createHorizontalGlue(), btnLeave
             }, BoxLayout.LINE_AXIS
         );
+    }
+
+    @Override
+    public void playersConnected(List<PlayerBroadcast.PlayerData> list, String self) {
+        manager.clear();
+        for (PlayerBroadcast.PlayerData data : list) {
+            if (data.uuid.equals(self)) continue;
+            ParanoiaPlayer player = new ParanoiaPlayer(data.name, data.id);
+            player.changeProfile(ParanoiaCommand.imageFromBytes(data.profile));
+            manager.updateAsset(player);
+        }
     }
 }

@@ -16,7 +16,8 @@ public class PlayerView extends JPanel {
 
     public PlayerView(String name, ParanoiaAttribute pick, BufferedImage image) {
         JLabel lbName = new JLabel(name);
-        JLabel lbLastPick = new JLabel("Last picked: " + pick.getName() + " " + pick.getValue());
+        Integer value = pick.getValue();
+        JLabel lbLastPick = new JLabel("Last picked: " + pick.getName() + (value == null ? " " + value : ""));
         ParanoiaImage profile = new ParanoiaImage(image);
 
         lbName.setFont(AssetManager.getBoldFont(25));
