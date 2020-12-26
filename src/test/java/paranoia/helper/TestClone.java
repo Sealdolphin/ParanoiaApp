@@ -44,8 +44,8 @@ public class TestClone extends Clone {
         Iterator<Skill> skillIterator = testAttributes.iterator();
 
         for (int i = 1; i <= 5; i++) {
-            attributes.add(ParanoiaAttribute.getSkill(skillIterator.next(), i));
-            attributes.add(ParanoiaAttribute.getSkill(skillIterator.next(), -i));
+            attributes.add(skillIterator.next().createAttribute(i));
+            attributes.add(skillIterator.next().createAttribute(-i));
         }
 
         Set<ParanoiaAttribute> skills = new HashSet<>(attributes);
@@ -55,7 +55,7 @@ public class TestClone extends Clone {
                 attr.getValue() > 0 &&
                     Skill.getSkillByName(attr.getName()).getParent().equals(stat))
                 .count();
-            attributes.add(ParanoiaAttribute.getStat(stat, statValue));
+            attributes.add(stat.createAttribute(statValue));
         }
     }
 }

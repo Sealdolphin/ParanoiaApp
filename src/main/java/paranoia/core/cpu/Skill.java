@@ -49,4 +49,8 @@ public enum Skill {
         }
         return target;
     }
+
+    public ParanoiaAttribute createAttribute(int value) {
+        return new ParanoiaAttribute(name, value);
+    }
 }

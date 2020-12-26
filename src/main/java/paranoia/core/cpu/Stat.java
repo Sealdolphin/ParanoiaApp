@@ -16,4 +16,8 @@ public enum Stat {
     public String toString() {
         return name;
     }
+
+    public ParanoiaAttribute createAttribute(int value) {
+        return new ParanoiaAttribute(name, value);
+    }
 }

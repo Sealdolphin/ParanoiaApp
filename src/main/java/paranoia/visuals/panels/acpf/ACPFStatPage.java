@@ -1,38 +1,47 @@
 package paranoia.visuals.panels.acpf;
 
+import daiv.networking.command.acpf.response.SkillResponse;
 import daiv.ui.AssetManager;
 import paranoia.core.cpu.Skill;
 import paranoia.core.cpu.Stat;
-import paranoia.visuals.custom.ParanoiaSkillButton;
+import paranoia.services.technical.CommandParser;
+import paranoia.services.technical.networking.Network;
+import paranoia.visuals.custom.ParanoiaAttributePanel;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.GridBagLayout;
-import java.util.HashMap;
+import java.awt.GridLayout;
+import java.util.ArrayList;
+import java.util.List;
 
-import static daiv.ui.LayoutManager.createGrid;
 import static daiv.ui.LayoutManager.panelOf;
-import static java.awt.GridBagConstraints.BOTH;
-import static java.awt.GridBagConstraints.CENTER;
 
 public class ACPFStatPage extends JPanel implements
-    ACPFPage, ParanoiaSkillButton.ParanoiaSkillBroadcastListener {
+    ACPFPage, ParanoiaAttributePanel.ParanoiaSkillButtonListener, SkillResponse.ParanoiaSkillListener {
+
+    public static void main(String[] args) {
+        JFrame f = new JFrame();
+        f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        f.add(new ACPFPanel(new Network(new CommandParser())));
+        f.pack();
+        f.setVisible(true);
+    }
 
     private final JLabel lbValue = new JLabel("");
     private final JTextArea lbChoose =  new JTextArea(2,5);
     private final JButton btnSend = new JButton("SEND");
-    private final HashMap<Skill, ParanoiaSkillButton> attributes = new HashMap<>();
-    private final HashMap<Stat, JLabel> stats = new HashMap<>();
+    private final List<ParanoiaAttributePanel> attributePanels = new ArrayList<>();
     private boolean lastChoice = false;
 
     private static final String txtChoose = "Choose a skill with a value of";
@@ -42,15 +51,13 @@ public class ACPFStatPage extends JPanel implements
         setLayout(new BorderLayout());
         btnSend.setEnabled(false);
         btnSend.addActionListener( e -> {
-            attributes.values().forEach(ParanoiaSkillButton::lock);
             btnSend.setEnabled(false);
-            stats.forEach((stat, label) -> label.setText(String.valueOf(calculateStat(stat))));
+            attributePanels.forEach(ParanoiaAttributePanel::reset);
             lbValue.setText("");
             lbChoose.setText(txtIdle);
+
+            //main.sendResponse(new SkillRequest("", 0));
         });
-        for (Stat stat : Stat.values()) {
-            stats.put(stat, new JLabel("0", SwingConstants.CENTER));
-        }
 
         add(createInfoPanel(), BorderLayout.EAST);
         add(createStatsTable(), BorderLayout.CENTER);
@@ -63,29 +70,21 @@ public class ACPFStatPage extends JPanel implements
     }
 
     private JPanel createStatsTable() {
-        JPanel table = new JPanel(new GridBagLayout());
         final int COLS = Stat.values().length;
-        for (int i = 0; i < Skill.values().length + COLS; i++) {
-            JLabel label;
-            JComponent attributeValue;
-            if(i < COLS) {
-                Stat stat = Stat.values()[i];
-                label = new JLabel(stat.toString());
-                label.setFont(AssetManager.getBoldFont(20));
-                attributeValue = stats.get(stat);
-            } else {
-                int get = (i % COLS) * COLS + ((i - COLS) / COLS);
-                Skill skill = Skill.values()[get];
-                label = new JLabel(skill.toString());
-                label.setFont(AssetManager.getFont(15));
-                ParanoiaSkillButton btn = new ParanoiaSkillButton(lbValue, label, this);
-                attributes.put(skill, btn);
-                btn.lock();
-                btn.setBorderPainted(false);
-                attributeValue = btn;
+        JPanel table = new JPanel(new GridLayout(0,COLS,5,0));
+        for(Stat stat : Stat.values()) {
+            ParanoiaAttributePanel statPanel = new ParanoiaAttributePanel(stat.toString(), 0);
+            statPanel.setEnabled(false);
+            table.add(statPanel);
+        }
+        for (int columns = 0; columns < COLS; columns++) {
+            for (int i = 0; i < Skill.values().length; i += COLS) {
+                String skill = Skill.values()[i + columns].toString();
+                ParanoiaAttributePanel skillPanel = new ParanoiaAttributePanel(skill, 0);
+                skillPanel.setListener(this);
+                table.add(skillPanel);
+                attributePanels.add(skillPanel);
             }
-            table.add(label, createGrid(15,10,0,10).at(i % COLS, 2 * (i / COLS)).anchor(CENTER).get());
-            table.add(attributeValue, createGrid(0,0,0,0).at(i % COLS, 2 * (i / COLS) + 1).fill(BOTH).get());
         }
         return table;
     }
@@ -125,18 +124,24 @@ public class ACPFStatPage extends JPanel implements
         return infoPanel;
     }
 
-    private int calculateStat(Stat stat) {
-        return (int) attributes.entrySet().stream()
-            .filter(
-                entry -> entry.getKey().getParent().equals(stat) &&
-                    entry.getValue().getValue() > 0
-            ).count();
+//    private int calculateStat(Stat stat) {
+//        return (int) skills.entrySet().stream()
+//            .filter(
+//                entry -> entry.getKey().getParent().equals(stat) &&
+//                    entry.getValue().getValue() > 0
+//            ).count();
+//    }
+
+    @Override
+    public void skillChosen(String skill, int value, int neighbor, int next) {
+        //Set text stuff
     }
 
     @Override
-    public void unsetAll() {
+    public void selectAttribute(ParanoiaAttributePanel panel) {
+        attributePanels.forEach(ParanoiaAttributePanel::reset);
+        panel.select();
         btnSend.setEnabled(true);
-        attributes.values().forEach(ParanoiaSkillButton::unset);
     }
 
 //    @Override

@@ -3,6 +3,7 @@ package paranoia.services.technical;
 
 import daiv.networking.command.ParanoiaCommand;
 import daiv.networking.command.acpf.response.LobbyResponse;
+import daiv.networking.command.acpf.response.SkillResponse;
 import daiv.networking.command.general.DisconnectRequest;
 import daiv.networking.command.general.Ping;
 import daiv.networking.command.general.PlayerBroadcast;
@@ -15,6 +16,7 @@ public class CommandParser {
     private LobbyResponse.ParanoiaAuthListener authListener;
     private DisconnectRequest.ParanoiaDisconnectListener disconnectListener;
     private PlayerBroadcast.PlayerConnectListener playerListener;
+    private SkillResponse.ParanoiaSkillListener skillListener;
 
     public void parse(ParanoiaCommand command) {
         if(uuid == null) { uuid = command.getUUID(); }
@@ -31,6 +33,9 @@ public class CommandParser {
                 break;
             case PLAYER:
                 PlayerBroadcast.create(command, uuid, playerListener).execute();
+                break;
+            case STAT_RESP:
+                SkillResponse.create(command, skillListener).execute();
                 break;
             default:
                 break;
@@ -52,5 +57,8 @@ public class CommandParser {
     }
     public void setDisconnectListener(DisconnectRequest.ParanoiaDisconnectListener disconnectListener) {
         this.disconnectListener = disconnectListener;
+    }
+    public void setSkillListener(SkillResponse.ParanoiaSkillListener listener) {
+        this.skillListener = listener;
     }
 }

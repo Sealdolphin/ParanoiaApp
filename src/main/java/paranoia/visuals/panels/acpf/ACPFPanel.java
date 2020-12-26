@@ -20,8 +20,6 @@ import static daiv.ui.LayoutManager.panelOf;
 public class ACPFPanel extends JPanel {
 
     private final CardLayout layout = new CardLayout();
-//    private final DefineCommand.ParanoiaDefineListener defineListener;
-//    private final ReorderCommand.ParanoiaReorderListener reorderListener;
     private final Network network;
 
     public ACPFPanel(Network network) {
@@ -40,10 +38,7 @@ public class ACPFPanel extends JPanel {
         add(optimizePage);
         add(createFinalPage());
         layout.first(this);
-
-        //Define listeners
-//        defineListener = statPage;
-//        reorderListener = swapPage;
+        network.getParser().setSkillListener(statPage);
     }
 
     public void lockPanel(){

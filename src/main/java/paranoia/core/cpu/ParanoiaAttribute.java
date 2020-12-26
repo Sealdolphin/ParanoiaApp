@@ -2,6 +2,7 @@ package paranoia.core.cpu;
 
 import daiv.ui.AssetManager;
 import paranoia.core.ICoreTechPart;
+import paranoia.visuals.custom.ParanoiaAttributePanel;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -40,17 +41,9 @@ public class ParanoiaAttribute implements ICoreTechPart {
         return new ParanoiaNameRenderer();
     }
 
-    public static ParanoiaAttribute getSkill(Skill name, int value) {
-        return new ParanoiaAttribute(name.toString(), value);
-    }
-
-    public static ParanoiaAttribute getStat(Stat name, int value) {
-        return new ParanoiaAttribute(name.toString(), value);
-    }
-
     @Override
     public JPanel getVisual() {
-        return null;
+        return new ParanoiaAttributePanel(name, value);
     }
 
     @Override

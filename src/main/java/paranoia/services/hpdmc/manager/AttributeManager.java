@@ -19,8 +19,8 @@ public class AttributeManager implements
 
     public AttributeManager(){
         //Set up default skills and stats
-        Arrays.stream(Stat.values()).forEach(s -> updateAsset(ParanoiaAttribute.getStat(s, 0)));
-        Arrays.stream(Skill.values()).forEach(s -> updateAsset(ParanoiaAttribute.getSkill(s, 0)));
+        Arrays.stream(Stat.values()).forEach(s -> updateAsset(s.createAttribute(0)));
+        Arrays.stream(Skill.values()).forEach(s -> updateAsset(s.createAttribute(0)));
     }
 
     private void updateListeners() {
