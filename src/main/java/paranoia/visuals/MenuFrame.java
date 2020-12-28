@@ -1,9 +1,9 @@
 package paranoia.visuals;
 
 import daiv.ui.AssetManager;
+import daiv.ui.custom.ParanoiaButtonListener;
 import daiv.ui.visuals.ParanoiaButton;
 import paranoia.Paranoia;
-import paranoia.services.hpdmc.ControlUnit;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -27,7 +27,7 @@ public class MenuFrame extends JFrame {
 
     JLabel lbAddr = new JLabel("Address: ???");
 
-    public MenuFrame(ControlUnit control) {
+    public MenuFrame(ParanoiaButtonListener control) {
         setIconImage(Paranoia.icon != null ? Paranoia.icon.getScaledInstance(64, 64, Image.SCALE_SMOOTH) : null);
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

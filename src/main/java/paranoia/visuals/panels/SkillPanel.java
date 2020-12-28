@@ -5,7 +5,6 @@ import paranoia.core.cpu.ParanoiaAttribute;
 import paranoia.core.cpu.Skill;
 import paranoia.core.cpu.Stat;
 import paranoia.services.hpdmc.ParanoiaListener;
-import paranoia.services.hpdmc.manager.ParanoiaManager;
 import paranoia.visuals.ComponentName;
 
 import javax.swing.Box;
@@ -25,13 +24,12 @@ public class SkillPanel extends JPanel implements ParanoiaListener<ParanoiaAttri
     private final JLabel lbSkills = new JLabel("Skills");
     private final JLabel lbStats = new JLabel("Stats");
 
-    public SkillPanel(ParanoiaManager<ParanoiaAttribute> cpu) {
+    public SkillPanel() {
         Font stringFont = AssetManager.getItalicFont(20);
         //Set UI
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         lbSkills.setFont(stringFont);
         lbStats.setFont(stringFont);
-        cpu.addListener(this);
         setName(ComponentName.SKILL_PANEL.name());
     }
 

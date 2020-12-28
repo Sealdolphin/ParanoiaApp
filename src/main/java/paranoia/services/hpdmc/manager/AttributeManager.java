@@ -1,5 +1,6 @@
 package paranoia.services.hpdmc.manager;
 
+import daiv.networking.command.acpf.response.SkillResponse;
 import paranoia.core.ICoreTechPart;
 import paranoia.core.cpu.ParanoiaAttribute;
 import paranoia.core.cpu.Skill;
@@ -12,7 +13,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class AttributeManager implements
-    ParanoiaManager<ParanoiaAttribute> {
+    ParanoiaManager<ParanoiaAttribute>, SkillResponse.ParanoiaSkillListener {
 
     private final Collection<ParanoiaAttribute> attributes = new ArrayList<>();
     private final List<ParanoiaListener<ParanoiaAttribute>> listeners = new ArrayList<>();
@@ -66,5 +67,12 @@ public class AttributeManager implements
         attributes.stream().filter(attr -> attr.getName().equals(removable.getName()))
             .findAny().ifPresent(old -> attributes.remove(removable));
         updateListeners();
+    }
+
+    @Override
+    public void skillChosen(String skill, int value, String s1, String s2) {
+        if(!skill.isEmpty()) {
+            updateAsset(Skill.getSkillByName(skill).createAttribute(value));
+        }
     }
 }

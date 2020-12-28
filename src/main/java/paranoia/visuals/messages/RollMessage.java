@@ -76,7 +76,8 @@ public class RollMessage extends JDialog {
         lbDiceValue.setName("lbNode");
         btnRoll.setName("btnRoll");
         //Other properties
-        setupRollButton(boldFont20, cpu.getOperationPanel(), clearance, cpu);
+        //FIXME
+        //setupRollButton(boldFont20, getOperationPanel(), clearance, cpu);
         setupSkill(boldFont20, allowChangeSkill);
         setupStat(boldFont20, allowChangeStat);
         //Set initial selection

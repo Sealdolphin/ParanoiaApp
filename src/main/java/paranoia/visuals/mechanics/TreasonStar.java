@@ -1,11 +1,12 @@
 package paranoia.visuals.mechanics;
 
+import paranoia.core.ICoreTechPart;
 import paranoia.services.plc.ResourceManager;
 import paranoia.visuals.ComponentName;
 
 import javax.swing.JPanel;
 
-public class TreasonStar extends ParanoiaMechanic {
+public class TreasonStar extends ParanoiaMechanic implements ICoreTechPart {
 
     public static final int TREASON_STAR_COUNT = 5;
 
@@ -31,5 +32,10 @@ public class TreasonStar extends ParanoiaMechanic {
     @Override
     public ComponentName getPanelName() {
         return ComponentName.TREASON_STAR_PANEL;
+    }
+
+    @Override
+    public JPanel getVisual() {
+        return this;
     }
 }

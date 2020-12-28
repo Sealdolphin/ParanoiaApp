@@ -46,6 +46,7 @@ public class ParanoiaAttributePanel extends JPanel implements ActionListener {
 
     public void reset() {
         selected = false;
+        editable = true;
         setColors();
     }
 
@@ -58,16 +59,22 @@ public class ParanoiaAttributePanel extends JPanel implements ActionListener {
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
         editable = enabled;
-        btnValue.setLabelMode(enabled);
+        btnValue.setLabelMode(!enabled);
     }
 
     public int getValue() {
         return Integer.parseInt(btnValue.getText());
     }
 
+    public String getName() { return label.getText(); }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (listener != null)
+        if (listener != null && editable)
             listener.selectAttribute(this);
     }
 
@@ -75,21 +82,23 @@ public class ParanoiaAttributePanel extends JPanel implements ActionListener {
         if(selected) {
             selected = false;
         }
+        editable = false;
         setColors();
     }
 
     private void setColors() {
+        btnValue.setEnabled(editable);
         Color c;
         if(editable) {
             label.setForeground(lbColor);
             if(selected) {
-                c = new Color(232, 219, 29, 255);
+                c = new Color(189, 178, 6, 255);
             } else {
                 c = AssetManager.defaultButtonBackground;
             }
         } else {
             label.setForeground(lbColorDisabled);
-            c = new Color(158, 0, 0, 255);
+            c = new Color(234, 181, 181, 255);
         }
         btnValue.setBackground(c);
     }

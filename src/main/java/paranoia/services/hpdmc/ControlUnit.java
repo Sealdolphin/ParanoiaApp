@@ -5,30 +5,31 @@ import daiv.networking.command.acpf.request.LobbyRequest;
 import daiv.networking.command.acpf.response.LobbyResponse;
 import daiv.ui.custom.ParanoiaButtonListener;
 import daiv.ui.custom.ParanoiaMessage;
+import paranoia.core.Clone;
 import paranoia.core.ICoreTechPart;
 import paranoia.core.ParanoiaPlayer;
+import paranoia.core.cpu.Mission;
+import paranoia.core.cpu.ParanoiaAttribute;
 import paranoia.core.cpu.Skill;
 import paranoia.core.cpu.Stat;
 import paranoia.services.hpdmc.manager.AttributeManager;
 import paranoia.services.hpdmc.manager.CardManager;
 import paranoia.services.hpdmc.manager.MissionManager;
 import paranoia.services.hpdmc.manager.ParanoiaManager;
+import paranoia.services.hpdmc.manager.PlayerManager;
 import paranoia.services.hpdmc.manager.TroubleShooterManager;
+import paranoia.services.rnd.ParanoiaCard;
+import paranoia.services.technical.ParanoiaManagerMap;
 import paranoia.services.technical.networking.Network;
 import paranoia.visuals.CerebralCoretech;
 import paranoia.visuals.ComponentName;
 import paranoia.visuals.LobbyFrame;
 import paranoia.visuals.MenuFrame;
 import paranoia.visuals.messages.RollMessage;
-import paranoia.visuals.panels.OperationPanel;
-import paranoia.visuals.panels.acpf.ACPFPanel;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.WindowConstants;
-import java.awt.BorderLayout;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -39,68 +40,52 @@ public class ControlUnit implements
 
     private CerebralCoretech visuals;
     private final MenuFrame mainFrame;
-    private final Map<ComponentName, ParanoiaManager<? extends ICoreTechPart>> managerMap;
-    private final OperationPanel operationPanel;
+    private final ParanoiaManagerMap managerMap = new ParanoiaManagerMap();
     private final Network network;
     private String connectUrl = "http://127.0.0.1:6532";
     private ParanoiaPlayer player;
 
     public ControlUnit(Network network) {
-        operationPanel = new OperationPanel();
         mainFrame = new MenuFrame(this);
         mainFrame.updateSettings(connectUrl);
         //Setup managers
-        managerMap = new HashMap<>();
-        managerMap.put(ComponentName.MISSION_PANEL, new MissionManager());
-        managerMap.put(ComponentName.ACTION_CARD_PANEL, new CardManager());
-        managerMap.put(ComponentName.EQUIPMENT_CARD_PANEL, new CardManager());
-        managerMap.put(ComponentName.MISC_CARD_PANEL, new CardManager());
-        managerMap.put(ComponentName.SKILL_PANEL, new AttributeManager());
-        managerMap.put(ComponentName.TROUBLESHOOTER_PANEL, new TroubleShooterManager());
-        managerMap.put(ComponentName.SELF_PANEL, new TroubleShooterManager());
+        AttributeManager attrManager = new AttributeManager();
+        managerMap.put(Mission.class, new MissionManager());
+        managerMap.put(ParanoiaCard.class, new CardManager());
+        managerMap.put(ParanoiaAttribute.class, attrManager);
+        managerMap.put(ParanoiaPlayer.class, new PlayerManager());
+        managerMap.put(Clone.class, new TroubleShooterManager());
         //Setup miscellaneous
         //TODO: need some update over time
 //        ChatPanel chatPanel = new ChatPanel(clone, this);
 //        operationPanel.activatePanel(chatPanel, ComponentName.CHAT_PANEL.name());
         //Setup network
         this.network = network;
-        ACPFPanel acpfPanel = new ACPFPanel(network);
         network.getParser().setAuthListener(this);
+        network.getParser().addSkillListener(attrManager);
 //        network.getParser().setChatListener(chatPanel);
-//        network.getParser().setAcpfListener(clone);
-//        network.getParser().setRollListener(this);
-//        network.getParser().setDefineListener(acpfPanel.getDefineListener());
-//        network.getParser().setReorderListener(acpfPanel.getReorderListener());
         //Setup visuals
 //        visuals = new CerebralCoretech(this, clone);
         mainFrame.setVisible(true);
     }
 
-    @SuppressWarnings("rawtypes")
+    @Deprecated
     public ParanoiaManager getManager(ComponentName name) {
-        return managerMap.get(name);
+        return null;
+    }
+
+    @Override
+    public <T extends ICoreTechPart> void addListener(Class<T> asset, ParanoiaListener<T> listener) {
+        managerMap.get(asset).addListener(listener);
     }
 
     public JFrame getVisuals() {
         return visuals;
     }
 
+    @Deprecated
     public void updateAsset(ICoreTechPart asset, ComponentName managerName) {
-        managerMap.get(managerName).updateAsset(asset);
-    }
-
-    public JPanel getMiscPanel() {
-        JPanel miscPanel = new JPanel();
-        miscPanel.setLayout(new BorderLayout());
-        miscPanel.setName(ComponentName.MISC_PANEL.name());
-
-        miscPanel.add(OperationPanel.createOperationPanel(operationPanel), BorderLayout.NORTH);
-        miscPanel.add(operationPanel, BorderLayout.CENTER);
-        return miscPanel;
-    }
-
-    public OperationPanel getOperationPanel() {
-        return operationPanel;
+        //Do nothing
     }
 
     //FIXME: This is frontend task, not backend

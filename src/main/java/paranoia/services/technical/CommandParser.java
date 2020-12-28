@@ -8,6 +8,9 @@ import daiv.networking.command.general.DisconnectRequest;
 import daiv.networking.command.general.Ping;
 import daiv.networking.command.general.PlayerBroadcast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class CommandParser {
 
@@ -16,7 +19,7 @@ public class CommandParser {
     private LobbyResponse.ParanoiaAuthListener authListener;
     private DisconnectRequest.ParanoiaDisconnectListener disconnectListener;
     private PlayerBroadcast.PlayerConnectListener playerListener;
-    private SkillResponse.ParanoiaSkillListener skillListener;
+    private final List<SkillResponse.ParanoiaSkillListener> skillListeners = new ArrayList<>();
 
     public void parse(ParanoiaCommand command) {
         if(uuid == null) { uuid = command.getUUID(); }
@@ -34,8 +37,9 @@ public class CommandParser {
             case PLAYER:
                 PlayerBroadcast.create(command, uuid, playerListener).execute();
                 break;
-            case STAT_RESP:
-                SkillResponse.create(command, skillListener).execute();
+            case SKILL_RESP:
+                for (SkillResponse.ParanoiaSkillListener skillListener : skillListeners)
+                    SkillResponse.create(command, skillListener).execute();
                 break;
             default:
                 break;
@@ -58,7 +62,7 @@ public class CommandParser {
     public void setDisconnectListener(DisconnectRequest.ParanoiaDisconnectListener disconnectListener) {
         this.disconnectListener = disconnectListener;
     }
-    public void setSkillListener(SkillResponse.ParanoiaSkillListener listener) {
-        this.skillListener = listener;
+    public void addSkillListener(SkillResponse.ParanoiaSkillListener listener) {
+        skillListeners.add(listener);
     }
 }

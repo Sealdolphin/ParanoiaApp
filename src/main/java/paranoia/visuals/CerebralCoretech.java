@@ -1,9 +1,13 @@
 package paranoia.visuals;
 
 import paranoia.core.Clone;
-import paranoia.services.hpdmc.ControlUnit;
+import paranoia.core.cpu.Mission;
+import paranoia.core.cpu.ParanoiaAttribute;
+import paranoia.services.hpdmc.ParanoiaController;
+import paranoia.services.rnd.ParanoiaCard;
 import paranoia.visuals.panels.CardPanel;
 import paranoia.visuals.panels.MissionPanel;
+import paranoia.visuals.panels.OperationPanel;
 import paranoia.visuals.panels.SkillPanel;
 import paranoia.visuals.panels.TroubleShooterPanel;
 
@@ -13,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.WindowConstants;
+import java.awt.BorderLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -23,20 +28,25 @@ public class CerebralCoretech extends JFrame {
     private final GroupLayout layout;
     //Assets
     private final JScrollPane troubleShooterPanel;
-    private final JScrollPane missionPanel;
+    private final JScrollPane missionScrollPanel;
     private final JPanel selfPanel;
     private final JTabbedPane cardStatPanel;
     private final JPanel miscPanel;
 
+    //TODO: Settings must implement this
+    @SuppressWarnings("FieldCanBeLocal")
     private Boolean isFullScreen = false;
 
-    public CerebralCoretech(ControlUnit controller, Clone self) {
-        //noinspection unchecked
-        missionPanel = new MissionPanel(controller.getManager(ComponentName.MISSION_PANEL)).getScrollPanel();
+    public CerebralCoretech(ParanoiaController controller, Clone self) {
+        //Missions
+        MissionPanel missionPanel = new MissionPanel();
+        controller.addListener(Mission.class, missionPanel);
+        missionScrollPanel = missionPanel.getScrollPanel();
+        //Cards
         cardStatPanel = createCardSkillPanel(controller);
         troubleShooterPanel = createTroubleShooterPanel(controller);
-        selfPanel = createSelfPanel(controller, self);
-        miscPanel = controller.getMiscPanel();
+        selfPanel = createSelfPanel(self);
+        miscPanel = createMiscPanel();
 
         layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -51,7 +61,6 @@ public class CerebralCoretech extends JFrame {
             public void windowClosed(WindowEvent e) {
 //                controller.sendCommand(new DisconnectCommand(null));
                 super.windowClosed(e);
-                new MenuFrame(controller).setVisible(true);
             }
         });
 
@@ -62,23 +71,17 @@ public class CerebralCoretech extends JFrame {
         setLocationRelativeTo(null);
     }
 
-    @SuppressWarnings("unchecked")
-    private JTabbedPane createCardSkillPanel(ControlUnit controller) {
-        JPanel action = new CardPanel(
-            controller.getManager(ComponentName.ACTION_CARD_PANEL),
-            ComponentName.ACTION_CARD_PANEL
-        );
-        JPanel equipment = new CardPanel(
-            controller.getManager(ComponentName.EQUIPMENT_CARD_PANEL),
-            ComponentName.EQUIPMENT_CARD_PANEL
-        );
-        JPanel other = new CardPanel(
-            controller.getManager(ComponentName.MISC_CARD_PANEL),
-            ComponentName.MISC_CARD_PANEL
-        );
-        JPanel skillPanel = new SkillPanel(
-            controller.getManager(ComponentName.SKILL_PANEL)
-        );
+    private JTabbedPane createCardSkillPanel(ParanoiaController controller) {
+        CardPanel action = new CardPanel();
+        CardPanel equipment = new CardPanel();
+        CardPanel other = new CardPanel();
+        controller.addListener(ParanoiaCard.class, action);
+        controller.addListener(ParanoiaCard.class, equipment);
+        controller.addListener(ParanoiaCard.class, other);
+
+        SkillPanel skillPanel = new SkillPanel();
+        controller.addListener(ParanoiaAttribute.class, skillPanel);
+
         JTabbedPane holderPanel = new JTabbedPane();
         holderPanel.addTab("Action cards", action);
         holderPanel.addTab("Equipment cards", equipment);
@@ -94,15 +97,25 @@ public class CerebralCoretech extends JFrame {
         setUndecorated(isFullScreen);
     }
 
-    @SuppressWarnings("unchecked")
-    private JScrollPane createTroubleShooterPanel(ControlUnit controller) {
-        return new TroubleShooterPanel(controller.getManager(
-            ComponentName.TROUBLESHOOTER_PANEL)).getScrollPane();
+    private JScrollPane createTroubleShooterPanel(ParanoiaController controller) {
+        TroubleShooterPanel tPanel = new TroubleShooterPanel();
+        controller.addListener(Clone.class, tPanel);
+        return tPanel.getScrollPane();
     }
 
-    @SuppressWarnings("unchecked")
-    private JPanel createSelfPanel(ControlUnit controller, Clone c) {
-        return new TroubleShooterPanel(controller.getManager(ComponentName.SELF_PANEL), true, c);
+    private JPanel createSelfPanel(Clone c) {
+        //FIXME: need another panel for that
+        return new TroubleShooterPanel(true, c);
+    }
+
+    public JPanel createMiscPanel() {
+        JPanel miscPanel = new JPanel();
+        miscPanel.setLayout(new BorderLayout());
+        OperationPanel operationPanel = new OperationPanel();
+
+        miscPanel.add(OperationPanel.createOperationPanel(operationPanel), BorderLayout.NORTH);
+        miscPanel.add(operationPanel, BorderLayout.CENTER);
+        return miscPanel;
     }
 
 
@@ -117,7 +130,7 @@ public class CerebralCoretech extends JFrame {
                                 .addComponent(troubleShooterPanel)
                                 .addGroup(
                                     layout.createSequentialGroup()
-                                        .addComponent(missionPanel)
+                                        .addComponent(missionScrollPanel)
                                         .addGap(0, 100, Short.MAX_VALUE)
                                 )
                         )
@@ -148,7 +161,7 @@ public class CerebralCoretech extends JFrame {
                                     GroupLayout.PREFERRED_SIZE,
                                     Short.MAX_VALUE
                                 )
-                                .addComponent(missionPanel)
+                                .addComponent(missionScrollPanel)
                         )
                         .addComponent(miscPanel)
                 )

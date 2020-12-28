@@ -2,7 +2,6 @@ package paranoia.visuals.panels;
 
 import paranoia.core.Clone;
 import paranoia.services.hpdmc.ParanoiaListener;
-import paranoia.services.hpdmc.manager.ParanoiaManager;
 import paranoia.visuals.ComponentName;
 
 import javax.swing.JPanel;
@@ -16,15 +15,14 @@ public class TroubleShooterPanel extends JPanel implements ParanoiaListener<Clon
 
     private final boolean self;
 
-    public TroubleShooterPanel(ParanoiaManager<Clone> cpu) {
-        this(cpu, false, null);
+    public TroubleShooterPanel() {
+        this(false, null);
     }
 
-    public TroubleShooterPanel(ParanoiaManager<Clone> cpu, boolean selfPanel, Clone clone) {
+    public TroubleShooterPanel(boolean selfPanel, Clone clone) {
         FlowLayout panelLayout = new FlowLayout();
         setLayout(panelLayout);
         setOpaque(false);
-        cpu.addListener(this);
         self = selfPanel;
         if(!selfPanel) {
             panelLayout.setHgap(25);
@@ -32,7 +30,6 @@ public class TroubleShooterPanel extends JPanel implements ParanoiaListener<Clon
             setName(ComponentName.TROUBLESHOOTER_PANEL.name());
             updateVisualDataChange(Collections.emptyList());
         } else {
-            cpu.updateAsset(clone);
             updateVisualDataChange(Collections.singletonList(clone));
         }
     }

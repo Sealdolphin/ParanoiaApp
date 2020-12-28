@@ -38,7 +38,7 @@ public class ACPFPanel extends JPanel {
         add(optimizePage);
         add(createFinalPage());
         layout.first(this);
-        network.getParser().setSkillListener(statPage);
+        network.getParser().addSkillListener(statPage);
     }
 
     public void lockPanel(){

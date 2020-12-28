@@ -1,9 +1,12 @@
 package paranoia.visuals.panels.acpf;
 
+import daiv.networking.command.acpf.request.SkillRequest;
 import daiv.networking.command.acpf.response.SkillResponse;
 import daiv.ui.AssetManager;
+import paranoia.core.cpu.ParanoiaAttribute;
 import paranoia.core.cpu.Skill;
 import paranoia.core.cpu.Stat;
+import paranoia.services.hpdmc.ParanoiaListener;
 import paranoia.services.technical.CommandParser;
 import paranoia.services.technical.networking.Network;
 import paranoia.visuals.custom.ParanoiaAttributePanel;
@@ -23,19 +26,26 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import static daiv.ui.LayoutManager.panelOf;
 
 public class ACPFStatPage extends JPanel implements
-    ACPFPage, ParanoiaAttributePanel.ParanoiaSkillButtonListener, SkillResponse.ParanoiaSkillListener {
+    ACPFPage,
+    ParanoiaAttributePanel.ParanoiaSkillButtonListener,
+    SkillResponse.ParanoiaSkillListener,
+    ParanoiaListener<ParanoiaAttribute> {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         JFrame f = new JFrame();
+        CommandParser parser = new CommandParser();
         f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        f.add(new ACPFPanel(new Network(new CommandParser())));
+        f.add(new ACPFPanel(new Network(parser)));
         f.pack();
         f.setVisible(true);
+        Thread.sleep(8000);
+        parser.parse(new SkillResponse("", 2, "0", "0"));
     }
 
     private final JLabel lbValue = new JLabel("");
@@ -52,15 +62,21 @@ public class ACPFStatPage extends JPanel implements
         btnSend.setEnabled(false);
         btnSend.addActionListener( e -> {
             btnSend.setEnabled(false);
-            attributePanels.forEach(ParanoiaAttributePanel::reset);
-            lbValue.setText("");
-            lbChoose.setText(txtIdle);
+            ParanoiaAttributePanel selected = attributePanels.stream()
+                .filter(ParanoiaAttributePanel::isSelected).findAny().orElse(null);
+            if( selected == null) return;
 
-            //main.sendResponse(new SkillRequest("", 0));
+            attributePanels.forEach(ParanoiaAttributePanel::reset);
+            attributePanels.forEach(ParanoiaAttributePanel::lock);
+            lbChoose.setText(txtIdle);
+            System.out.println("Selected " + selected.getName());
+
+            main.sendResponse(new SkillRequest(selected.getName()));
         });
 
         add(createInfoPanel(), BorderLayout.EAST);
         add(createStatsTable(), BorderLayout.CENTER);
+        attributePanels.forEach(ParanoiaAttributePanel::lock);
         add(main.createButtonPanel(this, true, true), BorderLayout.SOUTH);
     }
 
@@ -133,8 +149,12 @@ public class ACPFStatPage extends JPanel implements
 //    }
 
     @Override
-    public void skillChosen(String skill, int value, int neighbor, int next) {
-        //Set text stuff
+    public void skillChosen(String skill, int value, String who, String chose) {
+        if(skill.isEmpty()) {
+            lbChoose.setText(txtChoose);
+            lbValue.setText(Integer.toString(value));
+            attributePanels.forEach(ParanoiaAttributePanel::reset);
+        }
     }
 
     @Override
@@ -142,6 +162,11 @@ public class ACPFStatPage extends JPanel implements
         attributePanels.forEach(ParanoiaAttributePanel::reset);
         panel.select();
         btnSend.setEnabled(true);
+    }
+
+    @Override
+    public void updateVisualDataChange(Collection<ParanoiaAttribute> updatedModel) {
+
     }
 
 //    @Override

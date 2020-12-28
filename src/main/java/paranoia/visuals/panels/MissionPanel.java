@@ -3,7 +3,6 @@ package paranoia.visuals.panels;
 import daiv.ui.AssetManager;
 import paranoia.core.cpu.Mission;
 import paranoia.services.hpdmc.ParanoiaListener;
-import paranoia.services.hpdmc.manager.ParanoiaManager;
 import paranoia.visuals.ComponentName;
 
 import javax.swing.BoxLayout;
@@ -21,10 +20,9 @@ public class MissionPanel extends JPanel implements ParanoiaListener<Mission> {
     private final JLabel lbTitle = new JLabel("Mission:");
     private final JLabel lbOpTitle = new JLabel("Secondary objectives:");
 
-    public MissionPanel(ParanoiaManager<Mission> cpu) {
+    public MissionPanel() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         updateVisualDataChange(Collections.emptyList());
-        cpu.addListener(this);
         setName(ComponentName.MISSION_PANEL.name());
         setOpaque(false);
     }
