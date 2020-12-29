@@ -2,6 +2,8 @@ package paranoia.visuals.panels.acpf;
 
 import daiv.networking.command.ParanoiaCommand;
 import daiv.ui.AssetManager;
+import paranoia.core.cpu.ParanoiaAttribute;
+import paranoia.services.hpdmc.ParanoiaController;
 import paranoia.services.technical.networking.Network;
 
 import javax.swing.Box;
@@ -22,7 +24,7 @@ public class ACPFPanel extends JPanel {
     private final CardLayout layout = new CardLayout();
     private final Network network;
 
-    public ACPFPanel(Network network) {
+    public ACPFPanel(Network network, ParanoiaController controller) {
         setLayout(layout);
         this.network = network;
 
@@ -38,7 +40,9 @@ public class ACPFPanel extends JPanel {
         add(optimizePage);
         add(createFinalPage());
         layout.first(this);
+        //Setup listeners
         network.getParser().addSkillListener(statPage);
+        controller.addListener(ParanoiaAttribute.class, statPage);
     }
 
     public void lockPanel(){
@@ -99,11 +103,4 @@ public class ACPFPanel extends JPanel {
         return btnNext;
     }
 
-//    public ReorderCommand.ParanoiaReorderListener getReorderListener() {
-//        return reorderListener;
-//    }
-//
-//    public DefineCommand.ParanoiaDefineListener getDefineListener() {
-//        return defineListener;
-//    }
 }

@@ -23,7 +23,6 @@ public class Lobby implements PlayerBroadcast.PlayerConnectListener {
 
     private final JLabel lbAddress = new JLabel();
     private final JLabel lbPlayerName = new JLabel();
-    private final JLabel lbRound = new JLabel();
     private final ParanoiaButton btnLeave = new ParanoiaButton("Leave", EXIT_TO_MENU.name());
     private final PlayerManager manager = new PlayerManager();
 
@@ -40,9 +39,6 @@ public class Lobby implements PlayerBroadcast.PlayerConnectListener {
         lbPlayerName.setText(player);
         lbPlayerName.setFont(AssetManager.getFont(20, true, true, false));
 
-        lbRound.setText("Round: 0");
-        lbRound.setFont(AssetManager.getBoldFont(15));
-
         manager.addListener(parent);
 
         btnLeave.setBackground(Color.RED.darker());
@@ -56,7 +52,6 @@ public class Lobby implements PlayerBroadcast.PlayerConnectListener {
         return panelOf(new Component[]{
                 Box.createHorizontalStrut(5), lbAddress,
                 Box.createHorizontalGlue(), lbPlayerName,
-                Box.createHorizontalStrut(15), lbRound,
                 Box.createHorizontalGlue(), btnLeave
             }, BoxLayout.LINE_AXIS
         );

@@ -21,9 +21,10 @@ public class ParanoiaAttributePanel extends JPanel implements ActionListener {
     private final JLabel label = new JLabel();
     private boolean editable = true;
     private boolean selected = false;
+    private boolean locked = false;
     private ParanoiaSkillButtonListener listener = null;
     private static final Color lbColor = new Color(38, 38, 38);
-    private static final Color lbColorDisabled = new Color(177, 44, 44);
+    private static final Color lbColorDisabled = new Color(45, 0, 0);
 
     public ParanoiaAttributePanel(String name, int value) {
         btnValue.setText(String.valueOf(value));
@@ -45,6 +46,7 @@ public class ParanoiaAttributePanel extends JPanel implements ActionListener {
     }
 
     public void reset() {
+        if(locked) return;
         selected = false;
         editable = true;
         setColors();
@@ -79,11 +81,15 @@ public class ParanoiaAttributePanel extends JPanel implements ActionListener {
     }
 
     public void lock() {
-        if(selected) {
-            selected = false;
-        }
+        locked = true;
+        selected = false;
         editable = false;
         setColors();
+    }
+
+    public void unlock() {
+        locked = false;
+        reset();
     }
 
     private void setColors() {
@@ -92,15 +98,16 @@ public class ParanoiaAttributePanel extends JPanel implements ActionListener {
         if(editable) {
             label.setForeground(lbColor);
             if(selected) {
-                c = new Color(189, 178, 6, 255);
+                c = new Color(255, 241, 28, 255);
             } else {
                 c = AssetManager.defaultButtonBackground;
             }
         } else {
             label.setForeground(lbColorDisabled);
-            c = new Color(234, 181, 181, 255);
+            c = new Color(177, 177, 177, 87);
         }
         btnValue.setBackground(c);
+        btnValue.setForeground(label.getForeground());
     }
 
     public interface ParanoiaSkillButtonListener {

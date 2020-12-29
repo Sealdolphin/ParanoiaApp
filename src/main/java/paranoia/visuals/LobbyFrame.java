@@ -1,9 +1,9 @@
 package paranoia.visuals;
 
 import daiv.ui.AssetManager;
-import daiv.ui.custom.ParanoiaButtonListener;
 import paranoia.Paranoia;
 import paranoia.core.ParanoiaPlayer;
+import paranoia.services.hpdmc.ControlUnit;
 import paranoia.services.hpdmc.ParanoiaListener;
 import paranoia.services.technical.networking.Network;
 import paranoia.visuals.panels.acpf.ACPFPanel;
@@ -31,7 +31,7 @@ public class LobbyFrame extends JFrame implements
     private final Network network;
     private JScrollPane lobbyPanel = new JScrollPane();
 
-    public LobbyFrame(Network network, ParanoiaPlayer player, ParanoiaButtonListener listener) {
+    public LobbyFrame(Network network, ParanoiaPlayer player, ControlUnit controller) {
         setIconImage(Paranoia.icon != null ? Paranoia.icon.getScaledInstance(64, 64, Image.SCALE_SMOOTH) : null);
 
         this.network = network;
@@ -41,13 +41,13 @@ public class LobbyFrame extends JFrame implements
         setMinimumSize(new Dimension(700, 400));
         setTitle("Alpha Complex Personal Lobby");
 
-        Lobby lobby = new Lobby(this, network.getIP(), name, listener);
+        Lobby lobby = new Lobby(this, network.getIP(), name, controller);
         network.getParser().setPlayerListener(lobby);
 
         setLayout(new BorderLayout());
         add(lobby.createInfoPanel(), BorderLayout.NORTH);
         add(lobbyPanel, BorderLayout.EAST);
-        add(new ACPFPanel(network), BorderLayout.CENTER);
+        add(new ACPFPanel(network, controller), BorderLayout.CENTER);
         pack();
     }
 
@@ -61,6 +61,8 @@ public class LobbyFrame extends JFrame implements
         remove(lobbyPanel);
         lobbyPanel = new JScrollPane(createLobbyPanel((List<ParanoiaPlayer>) updatedModel));
         add(lobbyPanel, BorderLayout.EAST);
+        revalidate();
+        //TODO: if not fullscreen
         pack();
     }
 

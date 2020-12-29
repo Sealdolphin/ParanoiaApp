@@ -10,6 +10,10 @@ import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
 import java.awt.Color;
 import java.awt.Component;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 public class ParanoiaAttribute implements ICoreTechPart {
 
@@ -23,6 +27,15 @@ public class ParanoiaAttribute implements ICoreTechPart {
     public ParanoiaAttribute(String name, Integer value){
         this.value = value;
         this.name = name;
+    }
+
+    public static Collection<ParanoiaAttribute> getDefaultModel() {
+        List<ParanoiaAttribute> defaultAttributes = new ArrayList<>();
+        for(Stat stat: Stat.values())
+            defaultAttributes.add(stat.createAttribute(0));
+        for(Skill skill: Skill.values())
+            defaultAttributes.add(skill.createAttribute(0));
+        return defaultAttributes;
     }
 
     public Integer getValue() {
@@ -53,6 +66,14 @@ public class ParanoiaAttribute implements ICoreTechPart {
         if(!other.getClass().equals(ParanoiaAttribute.class)) return false;
         ParanoiaAttribute o = (ParanoiaAttribute) other;
         return o.name.equals(name);
+    }
+
+    public boolean isStat() {
+        return Arrays.stream(Stat.values()).anyMatch(s -> s.toString().equals(name));
+    }
+
+    public boolean isSkill() {
+        return Arrays.stream(Skill.values()).anyMatch(s -> s.toString().equals(name));
     }
 
     private static class ParanoiaAttributeRenderer extends JLabel implements TableCellRenderer {

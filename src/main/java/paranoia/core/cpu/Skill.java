@@ -1,25 +1,28 @@
 package paranoia.core.cpu;
 
+/**
+ * Skill enumerations in TL order (Top-to-bottom, Left-to-Right)
+ */
 public enum Skill {
 
     ATHLETICS("Athletics", Stat.VIOLENCE),
-    GUNS("Guns", Stat.VIOLENCE),
-    MELEE("Melee", Stat.VIOLENCE),
-    THROW("Throw", Stat.VIOLENCE),
-
     SCIENCE("Science", Stat.BRAINS),
-    PSYCHOLOGY("Psychology", Stat.BRAINS),
-    BUREAUCRACY("Bureaucracy", Stat.BRAINS),
-    ALPHA_COMPLEX("Alpha Complex", Stat.BRAINS),
-
     BLUFF("Bluff", Stat.CHUTZPAH),
-    CHARM("Charm", Stat.CHUTZPAH),
-    INTIMIDATE("Intimidate", Stat.CHUTZPAH),
-    STEALTH("Stealth", Stat.CHUTZPAH),
-
     OPERATE("Operate", Stat.MECHANICS),
+
+    GUNS("Guns", Stat.VIOLENCE),
+    PSYCHOLOGY("Psychology", Stat.BRAINS),
+    CHARM("Charm", Stat.CHUTZPAH),
     ENGINEER("Engineer", Stat.MECHANICS),
+
+    MELEE("Melee", Stat.VIOLENCE),
+    BUREAUCRACY("Bureaucracy", Stat.BRAINS),
+    INTIMIDATE("Intimidate", Stat.CHUTZPAH),
     PROGRAM("Program", Stat.MECHANICS),
+
+    THROW("Throw", Stat.VIOLENCE),
+    ALPHA_COMPLEX("Alpha Complex", Stat.BRAINS),
+    STEALTH("Stealth", Stat.CHUTZPAH),
     DEMOLITIONS("Demolitions", Stat.MECHANICS);
 
     private final String name;

@@ -70,7 +70,7 @@ public class AttributeManager implements
     }
 
     @Override
-    public void skillChosen(String skill, int value, String s1, String s2) {
+    public void skillChosen(String skill, int value, List<String> disabled) {
         if(!skill.isEmpty()) {
             updateAsset(Skill.getSkillByName(skill).createAttribute(value));
         }
